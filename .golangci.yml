@@ -53,4 +53,4 @@ formatters:
   settings:
     goimports:
       local-prefixes:
-        - github.com/fundament-oss/fundament
+        - github.com/fundament-oss/dcim
