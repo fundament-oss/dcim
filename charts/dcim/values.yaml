@@ -1,0 +1,42 @@
+# DCIM Helm Chart - Default Values
+
+# External URLs - must be set for your environment
+externalUrls:
+  api: "" # e.g., https://api.example.com
+  console: "" # e.g., https://dcim.example.com
+  corsAllowedOrigins: "" # e.g., "https://dcim.example.com" (space-separated; defaults to console URL if empty)
+
+# Container images
+images:
+  dbMigrations: ghcr.io/fundament-oss/dcim/db-migrations:latest
+  api: ghcr.io/fundament-oss/dcim/api:latest
+  frontend: ghcr.io/fundament-oss/dcim/frontend:latest
+
+# Database (CloudNativePG)
+db:
+  enabled: true
+  instances: 1
+  storageSize: 1Gi
+  reset: false
+  insertTestData: false
+  exposePort: 0 # Expose postgres on this port via LoadBalancer (0 = disabled)
+
+# DCIM API
+api:
+  enabled: true
+  replicas: 1
+  logLevel: info
+
+# Console Frontend
+frontend:
+  enabled: false
+  replicas: 1
+
+# Ingress
+ingress:
+  enabled: false
+  className: nginx
+  domain: ""
+  subdomainInfix: "" # e.g., "pr123." for PR environments
+  tls:
+    clusterIssuer: ""

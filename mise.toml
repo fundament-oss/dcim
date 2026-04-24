@@ -1,7 +1,7 @@
 [env]
 JUST_ONE = true
 # Local k3d registry for Skaffold image builds
-SKAFFOLD_DEFAULT_REPO = "k3d-registry.localhost:5112"
+SKAFFOLD_DEFAULT_REPO = "k3d-registry-dcim.localhost:5112"
 
 [tools]
 # Scripting & Meta

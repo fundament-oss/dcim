@@ -1,0 +1,99 @@
+{{- if $.Values.frontend.enabled }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  labels:
+    {{- include "dcim.labels" (dict "root" $ "name" "frontend" "component" "frontend") | nindent 4 }}
+data:
+  config.json: |
+    {
+      "apiUrl": "{{ $.Values.externalUrls.api }}"
+    }
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  labels:
+    {{- include "dcim.labels" (dict "root" $ "name" "frontend" "component" "frontend") | nindent 4 }}
+spec:
+  replicas: {{ $.Values.frontend.replicas }}
+  selector:
+    matchLabels:
+      {{- include "dcim.selectorLabels" (dict "root" $ "name" "frontend") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "dcim.labels" (dict "root" $ "name" "frontend" "component" "frontend") | nindent 8 }}
+    spec:
+      containers:
+        - name: frontend
+          image: {{ $.Values.images.frontend }}
+          env:
+            - name: CONNECT_SRC
+              value: "{{ $.Values.externalUrls.api }}"
+          ports:
+            - name: http
+              containerPort: 80
+          volumeMounts:
+            - name: config
+              mountPath: /usr/share/nginx/html/assets/config
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: frontend-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  labels:
+    {{- include "dcim.labels" (dict "root" $ "name" "frontend" "component" "frontend") | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      name: http
+  selector:
+    {{- include "dcim.selectorLabels" (dict "root" $ "name" "frontend") | nindent 4 }}
+
+{{- if $.Values.ingress.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend
+  labels:
+    {{- include "dcim.labels" (dict "root" $ "name" "frontend" "component" "frontend") | nindent 4 }}
+  {{- if $.Values.ingress.tls.clusterIssuer }}
+  annotations:
+    cert-manager.io/cluster-issuer: {{ $.Values.ingress.tls.clusterIssuer }}
+  {{- end }}
+spec:
+  ingressClassName: {{ $.Values.ingress.className }}
+  {{- if $.Values.ingress.tls.clusterIssuer }}
+  tls:
+    - hosts:
+        - console.{{ include "dcim.ingress.infix" . }}{{ $.Values.ingress.domain }}
+      secretName: frontend-tls
+  {{- end }}
+  rules:
+    - host: console.{{ include "dcim.ingress.infix" . }}{{ $.Values.ingress.domain }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend
+                port:
+                  name: http
+{{- end }}
+
+{{- end }}

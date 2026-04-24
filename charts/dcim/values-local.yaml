@@ -1,0 +1,34 @@
+# Local development environment values
+
+externalUrls:
+  api: http://api.dcim.localhost:11080
+  console: http://console.dcim.localhost:11080
+  corsAllowedOrigins: "http://console.dcim.localhost:11080,http://localhost:4200"
+
+db:
+  enabled: true
+  instances: 1
+  storageSize: 1Gi
+  reset: true
+  insertTestData: true
+  exposePort: 11432
+  postgresql:
+    parameters:
+      log_statement: "all"
+      log_error_verbosity: "verbose"
+      log_min_messages: "info"
+      log_min_error_statement: "error"
+
+api:
+  enabled: true
+  replicas: 1
+  logLevel: debug
+
+frontend:
+  enabled: true
+  replicas: 1
+
+ingress:
+  enabled: true
+  className: nginx
+  domain: dcim.localhost

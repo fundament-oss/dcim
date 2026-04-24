@@ -1,0 +1,102 @@
+{{- if $.Values.api.enabled }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  labels:
+    {{- include "dcim.labels" (dict "root" $ "name" "api" "component" "backend") | nindent 4 }}
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: {{ $.Values.api.replicas }}
+  selector:
+    matchLabels:
+      {{- include "dcim.selectorLabels" (dict "root" $ "name" "api") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "dcim.labels" (dict "root" $ "name" "api" "component" "backend") | nindent 8 }}
+    spec:
+      containers:
+        - name: api
+          image: {{ $.Values.images.api }}
+          ports:
+            - name: http
+              containerPort: 8080
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: db-dcim-api
+                  key: uri
+            - name: LOG_LEVEL
+              value: {{ .Values.api.logLevel }}
+            {{- if $.Values.externalUrls.corsAllowedOrigins }}
+            - name: CORS_ALLOWED_ORIGINS
+              value: {{ $.Values.externalUrls.corsAllowedOrigins }}
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /livez
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  labels:
+    {{- include "dcim.labels" (dict "root" $ "name" "api" "component" "backend") | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      name: http
+  selector:
+    {{- include "dcim.selectorLabels" (dict "root" $ "name" "api") | nindent 4 }}
+
+{{- if $.Values.ingress.enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api
+  labels:
+    {{- include "dcim.labels" (dict "root" $ "name" "api" "component" "backend") | nindent 4 }}
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "GRPC"
+    {{- if $.Values.ingress.tls.clusterIssuer }}
+    cert-manager.io/cluster-issuer: {{ $.Values.ingress.tls.clusterIssuer }}
+    {{- end }}
+spec:
+  ingressClassName: {{ $.Values.ingress.className }}
+  {{- if $.Values.ingress.tls.clusterIssuer }}
+  tls:
+    - hosts:
+        - api.{{ include "dcim.ingress.infix" . }}{{ $.Values.ingress.domain }}
+      secretName: api-tls
+  {{- end }}
+  rules:
+    - host: api.{{ include "dcim.ingress.infix" . }}{{ $.Values.ingress.domain }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: api
+                port:
+                  name: http
+{{- end }}
+
+{{- end }}

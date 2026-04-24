@@ -1,0 +1,60 @@
+{{- if $.Values.db.enabled }}
+
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ include "dcim.db.name" . }}
+  labels:
+    {{- include "dcim.labels" (dict "root" $ "name" "db" "component" "database") | nindent 4 }}
+spec:
+  instances: {{ $.Values.db.instances }}
+  imageName: ghcr.io/cloudnative-pg/postgresql:18
+  enableSuperuserAccess: true
+  {{- if $.Values.db.postgresql }}
+  postgresql:
+    parameters:
+      {{- toYaml $.Values.db.postgresql.parameters | nindent 6 }}
+  {{- end }}
+  bootstrap:
+    initdb:
+      database: dcim
+      owner: dcim
+  storage:
+    size: {{ $.Values.db.storageSize }}
+  managed:
+    roles:
+      - name: dcim_api
+        login: true
+        passwordSecret:
+          name: db-dcim-api
+      - name: dcim_operator
+        login: true
+        superuser: true
+        bypassrls: true
+        passwordSecret:
+          name: db-dcim-operator
+      - name: dcim_owner
+        login: false
+
+{{- if gt (int $.Values.db.exposePort) 0 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "dcim.db.name" . }}-external
+  labels:
+    {{- include "dcim.labels" (dict "root" $ "name" "db" "component" "database") | nindent 4 }}
+spec:
+  type: LoadBalancer
+  selector:
+    cnpg.io/cluster: {{ include "dcim.db.name" . }}
+    role: primary
+  ports:
+    - name: postgres
+      port: {{ $.Values.db.exposePort }}
+      protocol: TCP
+      targetPort: 5432
+{{- end }}
+
+{{- end }}

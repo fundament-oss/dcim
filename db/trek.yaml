@@ -1,0 +1,8 @@
+model_name: dcim
+db_name: dcim
+roles:
+  - name: dcim_api
+  - name: dcim_operator
+  - name: dcim_owner
+outputs:
+  - sql
