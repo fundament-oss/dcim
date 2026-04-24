@@ -1145,7 +1145,7 @@ const file_v1_rack_proto_rawDesc = "" +
 	"\n" +
 	"UpdateRack\x12\x1a.dcim.v1.UpdateRackRequest\x1a\x1b.dcim.v1.UpdateRackResponse\x12E\n" +
 	"\n" +
-	"DeleteRack\x12\x1a.dcim.v1.DeleteRackRequest\x1a\x1b.dcim.v1.DeleteRackResponseBJZ>github.com/fundament-oss/dcim/dcim-api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"DeleteRack\x12\x1a.dcim.v1.DeleteRackRequest\x1a\x1b.dcim.v1.DeleteRackResponseBEZ9github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_v1_rack_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_v1_rack_proto_goTypes = []any{

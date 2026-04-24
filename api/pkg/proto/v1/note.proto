@@ -9,7 +9,7 @@ import "v1/common.proto";
 
 option features.(pb.go).api_level = API_OPAQUE;
 option features.field_presence = IMPLICIT;
-option go_package = "github.com/fundament-oss/dcim/dcim-api/pkg/proto/gen/v1;dcimv1";
+option go_package = "github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1";
 
 // Note is a polymorphic comment attached to any DCIM entity (dcim.note).
 // There is no FK on entity_id — integrity is enforced at the application layer.

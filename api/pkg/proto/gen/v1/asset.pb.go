@@ -1940,7 +1940,7 @@ const file_v1_asset_proto_rawDesc = "" +
 	"\vUpdateAsset\x12\x1b.dcim.v1.UpdateAssetRequest\x1a\x1c.dcim.v1.UpdateAssetResponse\x12H\n" +
 	"\vDeleteAsset\x12\x1b.dcim.v1.DeleteAssetRequest\x1a\x1c.dcim.v1.DeleteAssetResponse\x12Q\n" +
 	"\x0eGetAssetEvents\x12\x1e.dcim.v1.GetAssetEventsRequest\x1a\x1f.dcim.v1.GetAssetEventsResponse\x12N\n" +
-	"\rGetAssetStats\x12\x1d.dcim.v1.GetAssetStatsRequest\x1a\x1e.dcim.v1.GetAssetStatsResponseBJZ>github.com/fundament-oss/dcim/dcim-api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"\rGetAssetStats\x12\x1d.dcim.v1.GetAssetStatsRequest\x1a\x1e.dcim.v1.GetAssetStatsResponseBEZ9github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_v1_asset_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_v1_asset_proto_msgTypes = make([]protoimpl.MessageInfo, 16)

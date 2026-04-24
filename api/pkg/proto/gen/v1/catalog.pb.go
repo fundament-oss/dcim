@@ -3337,7 +3337,7 @@ const file_v1_catalog_proto_rawDesc = "" +
 	"\x14DeletePortDefinition\x12$.dcim.v1.DeletePortDefinitionRequest\x1a%.dcim.v1.DeletePortDefinitionResponse\x12l\n" +
 	"\x17ListPortCompatibilities\x12'.dcim.v1.ListPortCompatibilitiesRequest\x1a(.dcim.v1.ListPortCompatibilitiesResponse\x12l\n" +
 	"\x17CreatePortCompatibility\x12'.dcim.v1.CreatePortCompatibilityRequest\x1a(.dcim.v1.CreatePortCompatibilityResponse\x12l\n" +
-	"\x17DeletePortCompatibility\x12'.dcim.v1.DeletePortCompatibilityRequest\x1a(.dcim.v1.DeletePortCompatibilityResponseBJZ>github.com/fundament-oss/dcim/dcim-api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"\x17DeletePortCompatibility\x12'.dcim.v1.DeletePortCompatibilityRequest\x1a(.dcim.v1.DeletePortCompatibilityResponseBEZ9github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_v1_catalog_proto_msgTypes = make([]protoimpl.MessageInfo, 35)
 var file_v1_catalog_proto_goTypes = []any{

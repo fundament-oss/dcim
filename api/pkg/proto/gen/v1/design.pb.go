@@ -4064,7 +4064,7 @@ const file_v1_design_proto_rawDesc = "" +
 	"\tGetLayout\x12\x19.dcim.v1.GetLayoutRequest\x1a\x1a.dcim.v1.GetLayoutResponse\x12E\n" +
 	"\n" +
 	"SaveLayout\x12\x1a.dcim.v1.SaveLayoutRequest\x1a\x1b.dcim.v1.SaveLayoutResponse\x12K\n" +
-	"\fDeleteLayout\x12\x1c.dcim.v1.DeleteLayoutRequest\x1a\x1d.dcim.v1.DeleteLayoutResponseBJZ>github.com/fundament-oss/dcim/dcim-api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"\fDeleteLayout\x12\x1c.dcim.v1.DeleteLayoutRequest\x1a\x1d.dcim.v1.DeleteLayoutResponseBEZ9github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_v1_design_proto_enumTypes = make([]protoimpl.EnumInfo, 3)
 var file_v1_design_proto_msgTypes = make([]protoimpl.MessageInfo, 41)

@@ -2,8 +2,8 @@ root = "/src"
 tmp_dir = "tmp"
 
 [build]
-cmd = "go build -o tmp/dcim-api ./api/cmd/dcim-api"
-entrypoint = "tmp/dcim-api"
+cmd = "go build -o tmp/api ./api/cmd/api"
+entrypoint = "tmp/api"
 include_ext = ["go", "mod", "sum"]
 include_dir = ["api"]
 exclude_dir = ["tmp"]
