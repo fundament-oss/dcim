@@ -1,0 +1,34 @@
+[env]
+JUST_ONE = true
+# Local k3d registry for Skaffold image builds
+SKAFFOLD_DEFAULT_REPO = "k3d-registry.localhost:5112"
+
+[tools]
+# Scripting & Meta
+just = "1.42.4"
+act = "0.2.84"
+
+# Database
+"go:github.com/printeers/trek" = "0.12.1"
+
+# Kubernetes & Deployment
+kubectl = "1.31.4"
+helm = "3.16.3"
+skaffold = "2.17.0"
+k3d = "5.7.5"
+flux2 = "2.7.5"
+
+# Protobuf
+"aqua:bufbuild/buf" = "1.66.0"
+"go:google.golang.org/protobuf/cmd/protoc-gen-go" = "1.36.11"
+"go:connectrpc.com/connect/cmd/protoc-gen-connect-go" = "1.19.1"
+
+# Go
+go = "1.26.2"
+golangci-lint = "2.11.4"
+"aqua:sqlc-dev/sqlc" = "1.30.0"
+
+# Console Frontend
+node = "24"
+bun = "1.3.6"
+"npm:@bufbuild/protoc-gen-es" = "2.11.0"
