@@ -727,7 +727,7 @@ const file_v1_common_proto_rawDesc = "" +
 	"\x1aSORT_DIRECTION_UNSPECIFIED\x10\x00\x12\x16\n" +
 	"\x12SORT_DIRECTION_ASC\x10\n" +
 	"\x12\x17\n" +
-	"\x13SORT_DIRECTION_DESC\x10\x14BJZ>github.com/fundament-oss/dcim/dcim-api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"\x13SORT_DIRECTION_DESC\x10\x14BEZ9github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_v1_common_proto_enumTypes = make([]protoimpl.EnumInfo, 8)
 var file_v1_common_proto_msgTypes = make([]protoimpl.MessageInfo, 1)

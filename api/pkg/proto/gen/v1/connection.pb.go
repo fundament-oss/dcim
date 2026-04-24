@@ -1152,7 +1152,7 @@ const file_v1_connection_proto_rawDesc = "" +
 	"\x15GetPhysicalConnection\x12%.dcim.v1.GetPhysicalConnectionRequest\x1a&.dcim.v1.GetPhysicalConnectionResponse\x12o\n" +
 	"\x18UpdatePhysicalConnection\x12(.dcim.v1.UpdatePhysicalConnectionRequest\x1a).dcim.v1.UpdatePhysicalConnectionResponse\x12o\n" +
 	"\x18DeletePhysicalConnection\x12(.dcim.v1.DeletePhysicalConnectionRequest\x1a).dcim.v1.DeletePhysicalConnectionResponse\x12u\n" +
-	"\x1aListConnectionsByPlacement\x12*.dcim.v1.ListConnectionsByPlacementRequest\x1a+.dcim.v1.ListConnectionsByPlacementResponseBJZ>github.com/fundament-oss/dcim/dcim-api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"\x1aListConnectionsByPlacement\x12*.dcim.v1.ListConnectionsByPlacementRequest\x1a+.dcim.v1.ListConnectionsByPlacementResponseBEZ9github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_v1_connection_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_v1_connection_proto_goTypes = []any{

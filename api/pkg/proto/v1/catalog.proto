@@ -10,7 +10,7 @@ import "v1/common.proto";
 
 option features.(pb.go).api_level = API_OPAQUE;
 option features.field_presence = IMPLICIT;
-option go_package = "github.com/fundament-oss/dcim/dcim-api/pkg/proto/gen/v1;dcimv1";
+option go_package = "github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1";
 
 // DeviceCatalog is a device type definition (dcim.device_catalog).
 message DeviceCatalog {

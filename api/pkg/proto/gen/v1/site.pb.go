@@ -2812,7 +2812,7 @@ const file_v1_site_proto_rawDesc = "" +
 	"GetRackRow\x12\x1a.dcim.v1.GetRackRowRequest\x1a\x1b.dcim.v1.GetRackRowResponse\x12N\n" +
 	"\rCreateRackRow\x12\x1d.dcim.v1.CreateRackRowRequest\x1a\x1e.dcim.v1.CreateRackRowResponse\x12N\n" +
 	"\rUpdateRackRow\x12\x1d.dcim.v1.UpdateRackRowRequest\x1a\x1e.dcim.v1.UpdateRackRowResponse\x12N\n" +
-	"\rDeleteRackRow\x12\x1d.dcim.v1.DeleteRackRowRequest\x1a\x1e.dcim.v1.DeleteRackRowResponseBJZ>github.com/fundament-oss/dcim/dcim-api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"\rDeleteRackRow\x12\x1d.dcim.v1.DeleteRackRowRequest\x1a\x1e.dcim.v1.DeleteRackRowResponseBEZ9github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_v1_site_proto_msgTypes = make([]protoimpl.MessageInfo, 33)
 var file_v1_site_proto_goTypes = []any{

@@ -1642,7 +1642,7 @@ const file_v1_placement_proto_rawDesc = "" +
 	"\x0fUpdatePlacement\x12\x1f.dcim.v1.UpdatePlacementRequest\x1a .dcim.v1.UpdatePlacementResponse\x12T\n" +
 	"\x0fDeletePlacement\x12\x1f.dcim.v1.DeletePlacementRequest\x1a .dcim.v1.DeletePlacementResponse\x12c\n" +
 	"\x14ListPlacementsByRack\x12$.dcim.v1.ListPlacementsByRackRequest\x1a%.dcim.v1.ListPlacementsByRackResponse\x12`\n" +
-	"\x13ListChildPlacements\x12#.dcim.v1.ListChildPlacementsRequest\x1a$.dcim.v1.ListChildPlacementsResponseBJZ>github.com/fundament-oss/dcim/dcim-api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"\x13ListChildPlacements\x12#.dcim.v1.ListChildPlacementsRequest\x1a$.dcim.v1.ListChildPlacementsResponseBEZ9github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_v1_placement_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
 var file_v1_placement_proto_goTypes = []any{

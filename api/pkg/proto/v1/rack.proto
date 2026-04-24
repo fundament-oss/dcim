@@ -8,7 +8,7 @@ import "google/protobuf/timestamp.proto";
 
 option features.(pb.go).api_level = API_OPAQUE;
 option features.field_presence = IMPLICIT;
-option go_package = "github.com/fundament-oss/dcim/dcim-api/pkg/proto/gen/v1;dcimv1";
+option go_package = "github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1";
 
 // Rack is a physical equipment rack within a rack row (dcim.rack).
 message Rack {

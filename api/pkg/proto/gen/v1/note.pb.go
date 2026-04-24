@@ -632,7 +632,7 @@ const file_v1_note_proto_rawDesc = "" +
 	"\n" +
 	"CreateNote\x12\x1a.dcim.v1.CreateNoteRequest\x1a\x1b.dcim.v1.CreateNoteResponse\x12E\n" +
 	"\n" +
-	"DeleteNote\x12\x1a.dcim.v1.DeleteNoteRequest\x1a\x1b.dcim.v1.DeleteNoteResponseBJZ>github.com/fundament-oss/dcim/dcim-api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
+	"DeleteNote\x12\x1a.dcim.v1.DeleteNoteRequest\x1a\x1b.dcim.v1.DeleteNoteResponseBEZ9github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1\x92\x03\a\xd2>\x02\x10\x03\b\x02b\beditionsp\xe8\a"
 
 var file_v1_note_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_v1_note_proto_goTypes = []any{
