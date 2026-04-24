@@ -28,7 +28,7 @@ spec:
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: db-dcim-api
+                  name: db-api
                   key: uri
             - name: LOG_LEVEL
               value: {{ .Values.api.logLevel }}
