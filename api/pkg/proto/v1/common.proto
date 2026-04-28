@@ -33,10 +33,11 @@ enum AssetStatus {
   ASSET_STATUS_UNSPECIFIED    = 0;
   ASSET_STATUS_IN_STOCK       = 10;
   ASSET_STATUS_DEPLOYED       = 20;
-  ASSET_STATUS_RMA            = 30;
-  ASSET_STATUS_DECOMMISSIONED = 40;
-  ASSET_STATUS_IN_TRANSIT     = 50;
-  ASSET_STATUS_RESERVED       = 60;
+  ASSET_STATUS_AVAILABLE      = 30;
+  ASSET_STATUS_RMA            = 40;
+  ASSET_STATUS_DECOMMISSIONED = 50;
+  ASSET_STATUS_IN_TRANSIT     = 60;
+  ASSET_STATUS_RESERVED       = 70;
 }
 
 // AssetEventType aligns with dcim.asset_event event_type check constraint.

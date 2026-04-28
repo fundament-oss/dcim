@@ -1107,11 +1107,12 @@ type UpdateCatalogEntryRequest struct {
 	xxx_hidden_Manufacturer *string                `protobuf:"bytes,20,opt,name=manufacturer"`
 	xxx_hidden_Model        *string                `protobuf:"bytes,30,opt,name=model"`
 	xxx_hidden_PartNumber   *string                `protobuf:"bytes,40,opt,name=part_number,json=partNumber"`
-	xxx_hidden_FormFactor   *string                `protobuf:"bytes,50,opt,name=form_factor,json=formFactor"`
-	xxx_hidden_RackUnits    int32                  `protobuf:"varint,60,opt,name=rack_units,json=rackUnits"`
-	xxx_hidden_WeightKg     float64                `protobuf:"fixed64,70,opt,name=weight_kg,json=weightKg"`
-	xxx_hidden_PowerDrawW   float64                `protobuf:"fixed64,80,opt,name=power_draw_w,json=powerDrawW"`
-	xxx_hidden_Specs        map[string]string      `protobuf:"bytes,90,rep,name=specs" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	xxx_hidden_Category     AssetCategory          `protobuf:"varint,50,opt,name=category,enum=dcim.v1.AssetCategory"`
+	xxx_hidden_FormFactor   *string                `protobuf:"bytes,60,opt,name=form_factor,json=formFactor"`
+	xxx_hidden_RackUnits    int32                  `protobuf:"varint,70,opt,name=rack_units,json=rackUnits"`
+	xxx_hidden_WeightKg     float64                `protobuf:"fixed64,80,opt,name=weight_kg,json=weightKg"`
+	xxx_hidden_PowerDrawW   float64                `protobuf:"fixed64,90,opt,name=power_draw_w,json=powerDrawW"`
+	xxx_hidden_Specs        map[string]string      `protobuf:"bytes,100,rep,name=specs" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	XXX_raceDetectHookData  protoimpl.RaceDetectHookData
 	XXX_presence            [1]uint32
 	unknownFields           protoimpl.UnknownFields
@@ -1180,6 +1181,13 @@ func (x *UpdateCatalogEntryRequest) GetPartNumber() string {
 	return ""
 }
 
+func (x *UpdateCatalogEntryRequest) GetCategory() AssetCategory {
+	if x != nil {
+		return x.xxx_hidden_Category
+	}
+	return AssetCategory_ASSET_CATEGORY_UNSPECIFIED
+}
+
 func (x *UpdateCatalogEntryRequest) GetFormFactor() string {
 	if x != nil {
 		if x.xxx_hidden_FormFactor != nil {
@@ -1224,37 +1232,41 @@ func (x *UpdateCatalogEntryRequest) SetId(v string) {
 
 func (x *UpdateCatalogEntryRequest) SetManufacturer(v string) {
 	x.xxx_hidden_Manufacturer = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 1, 10)
 }
 
 func (x *UpdateCatalogEntryRequest) SetModel(v string) {
 	x.xxx_hidden_Model = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 2, 10)
 }
 
 func (x *UpdateCatalogEntryRequest) SetPartNumber(v string) {
 	x.xxx_hidden_PartNumber = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 10)
+}
+
+func (x *UpdateCatalogEntryRequest) SetCategory(v AssetCategory) {
+	x.xxx_hidden_Category = v
 }
 
 func (x *UpdateCatalogEntryRequest) SetFormFactor(v string) {
 	x.xxx_hidden_FormFactor = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 10)
 }
 
 func (x *UpdateCatalogEntryRequest) SetRackUnits(v int32) {
 	x.xxx_hidden_RackUnits = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 5, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 10)
 }
 
 func (x *UpdateCatalogEntryRequest) SetWeightKg(v float64) {
 	x.xxx_hidden_WeightKg = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 6, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 10)
 }
 
 func (x *UpdateCatalogEntryRequest) SetPowerDrawW(v float64) {
 	x.xxx_hidden_PowerDrawW = v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 7, 9)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 8, 10)
 }
 
 func (x *UpdateCatalogEntryRequest) SetSpecs(v map[string]string) {
@@ -1286,28 +1298,28 @@ func (x *UpdateCatalogEntryRequest) HasFormFactor() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
 }
 
 func (x *UpdateCatalogEntryRequest) HasRackUnits() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 5)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
 }
 
 func (x *UpdateCatalogEntryRequest) HasWeightKg() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 6)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
 }
 
 func (x *UpdateCatalogEntryRequest) HasPowerDrawW() bool {
 	if x == nil {
 		return false
 	}
-	return protoimpl.X.Present(&(x.XXX_presence[0]), 7)
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 8)
 }
 
 func (x *UpdateCatalogEntryRequest) ClearManufacturer() {
@@ -1326,22 +1338,22 @@ func (x *UpdateCatalogEntryRequest) ClearPartNumber() {
 }
 
 func (x *UpdateCatalogEntryRequest) ClearFormFactor() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
 	x.xxx_hidden_FormFactor = nil
 }
 
 func (x *UpdateCatalogEntryRequest) ClearRackUnits() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 5)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
 	x.xxx_hidden_RackUnits = 0
 }
 
 func (x *UpdateCatalogEntryRequest) ClearWeightKg() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 6)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
 	x.xxx_hidden_WeightKg = 0
 }
 
 func (x *UpdateCatalogEntryRequest) ClearPowerDrawW() {
-	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 7)
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 8)
 	x.xxx_hidden_PowerDrawW = 0
 }
 
@@ -1352,6 +1364,7 @@ type UpdateCatalogEntryRequest_builder struct {
 	Manufacturer *string
 	Model        *string
 	PartNumber   *string
+	Category     AssetCategory
 	FormFactor   *string
 	RackUnits    *int32
 	WeightKg     *float64
@@ -1365,31 +1378,32 @@ func (b0 UpdateCatalogEntryRequest_builder) Build() *UpdateCatalogEntryRequest {
 	_, _ = b, x
 	x.xxx_hidden_Id = b.Id
 	if b.Manufacturer != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 1, 10)
 		x.xxx_hidden_Manufacturer = b.Manufacturer
 	}
 	if b.Model != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 2, 10)
 		x.xxx_hidden_Model = b.Model
 	}
 	if b.PartNumber != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 10)
 		x.xxx_hidden_PartNumber = b.PartNumber
 	}
+	x.xxx_hidden_Category = b.Category
 	if b.FormFactor != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 10)
 		x.xxx_hidden_FormFactor = b.FormFactor
 	}
 	if b.RackUnits != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 5, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 10)
 		x.xxx_hidden_RackUnits = *b.RackUnits
 	}
 	if b.WeightKg != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 6, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 10)
 		x.xxx_hidden_WeightKg = *b.WeightKg
 	}
 	if b.PowerDrawW != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 7, 9)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 8, 10)
 		x.xxx_hidden_PowerDrawW = *b.PowerDrawW
 	}
 	x.xxx_hidden_Specs = b.Specs
@@ -3224,22 +3238,24 @@ const file_v1_catalog_proto_rawDesc = "" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"J\n" +
 	"\x1aCreateCatalogEntryResponse\x12,\n" +
 	"\x05entry\x18\n" +
-	" \x01(\v2\x16.dcim.v1.DeviceCatalogR\x05entry\"\xbf\x03\n" +
+	" \x01(\v2\x16.dcim.v1.DeviceCatalogR\x05entry\"\xff\x03\n" +
 	"\x19UpdateCatalogEntryRequest\x12\x18\n" +
 	"\x02id\x18\n" +
 	" \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\x12)\n" +
 	"\fmanufacturer\x18\x14 \x01(\tB\x05\xaa\x01\x02\b\x01R\fmanufacturer\x12\x1b\n" +
 	"\x05model\x18\x1e \x01(\tB\x05\xaa\x01\x02\b\x01R\x05model\x12&\n" +
 	"\vpart_number\x18( \x01(\tB\x05\xaa\x01\x02\b\x01R\n" +
-	"partNumber\x12&\n" +
-	"\vform_factor\x182 \x01(\tB\x05\xaa\x01\x02\b\x01R\n" +
+	"partNumber\x12>\n" +
+	"\bcategory\x182 \x01(\x0e2\x16.dcim.v1.AssetCategoryB\n" +
+	"\xbaH\a\x82\x01\x04\x10\x01 \x00R\bcategory\x12&\n" +
+	"\vform_factor\x18< \x01(\tB\x05\xaa\x01\x02\b\x01R\n" +
 	"formFactor\x12$\n" +
 	"\n" +
-	"rack_units\x18< \x01(\x05B\x05\xaa\x01\x02\b\x01R\trackUnits\x12\"\n" +
-	"\tweight_kg\x18F \x01(\x01B\x05\xaa\x01\x02\b\x01R\bweightKg\x12'\n" +
-	"\fpower_draw_w\x18P \x01(\x01B\x05\xaa\x01\x02\b\x01R\n" +
+	"rack_units\x18F \x01(\x05B\x05\xaa\x01\x02\b\x01R\trackUnits\x12\"\n" +
+	"\tweight_kg\x18P \x01(\x01B\x05\xaa\x01\x02\b\x01R\bweightKg\x12'\n" +
+	"\fpower_draw_w\x18Z \x01(\x01B\x05\xaa\x01\x02\b\x01R\n" +
 	"powerDrawW\x12C\n" +
-	"\x05specs\x18Z \x03(\v2-.dcim.v1.UpdateCatalogEntryRequest.SpecsEntryR\x05specs\x1a8\n" +
+	"\x05specs\x18d \x03(\v2-.dcim.v1.UpdateCatalogEntryRequest.SpecsEntryR\x05specs\x1a8\n" +
 	"\n" +
 	"SpecsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
@@ -3395,53 +3411,54 @@ var file_v1_catalog_proto_depIdxs = []int32{
 	35, // 9: dcim.v1.CreateCatalogEntryRequest.category:type_name -> dcim.v1.AssetCategory
 	33, // 10: dcim.v1.CreateCatalogEntryRequest.specs:type_name -> dcim.v1.CreateCatalogEntryRequest.SpecsEntry
 	0,  // 11: dcim.v1.CreateCatalogEntryResponse.entry:type_name -> dcim.v1.DeviceCatalog
-	34, // 12: dcim.v1.UpdateCatalogEntryRequest.specs:type_name -> dcim.v1.UpdateCatalogEntryRequest.SpecsEntry
-	0,  // 13: dcim.v1.UpdateCatalogEntryResponse.entry:type_name -> dcim.v1.DeviceCatalog
-	39, // 14: dcim.v1.ListAssetsByCatalogEntryResponse.assets:type_name -> dcim.v1.Asset
-	1,  // 15: dcim.v1.ListPortDefinitionsResponse.port_definitions:type_name -> dcim.v1.PortDefinition
-	1,  // 16: dcim.v1.GetPortDefinitionResponse.port_definition:type_name -> dcim.v1.PortDefinition
-	37, // 17: dcim.v1.CreatePortDefinitionRequest.port_type:type_name -> dcim.v1.PortType
-	38, // 18: dcim.v1.CreatePortDefinitionRequest.direction:type_name -> dcim.v1.PortDirection
-	1,  // 19: dcim.v1.CreatePortDefinitionResponse.port_definition:type_name -> dcim.v1.PortDefinition
-	37, // 20: dcim.v1.UpdatePortDefinitionRequest.port_type:type_name -> dcim.v1.PortType
-	38, // 21: dcim.v1.UpdatePortDefinitionRequest.direction:type_name -> dcim.v1.PortDirection
-	1,  // 22: dcim.v1.UpdatePortDefinitionResponse.port_definition:type_name -> dcim.v1.PortDefinition
-	2,  // 23: dcim.v1.ListPortCompatibilitiesResponse.compatibilities:type_name -> dcim.v1.PortCompatibility
-	2,  // 24: dcim.v1.CreatePortCompatibilityResponse.compatibility:type_name -> dcim.v1.PortCompatibility
-	0,  // 25: dcim.v1.ListCatalogResponse.CatalogSummary.entry:type_name -> dcim.v1.DeviceCatalog
-	3,  // 26: dcim.v1.CatalogService.ListCatalog:input_type -> dcim.v1.ListCatalogRequest
-	5,  // 27: dcim.v1.CatalogService.GetCatalogEntry:input_type -> dcim.v1.GetCatalogEntryRequest
-	7,  // 28: dcim.v1.CatalogService.CreateCatalogEntry:input_type -> dcim.v1.CreateCatalogEntryRequest
-	9,  // 29: dcim.v1.CatalogService.UpdateCatalogEntry:input_type -> dcim.v1.UpdateCatalogEntryRequest
-	11, // 30: dcim.v1.CatalogService.DeleteCatalogEntry:input_type -> dcim.v1.DeleteCatalogEntryRequest
-	13, // 31: dcim.v1.CatalogService.ListAssetsByCatalogEntry:input_type -> dcim.v1.ListAssetsByCatalogEntryRequest
-	15, // 32: dcim.v1.CatalogService.ListPortDefinitions:input_type -> dcim.v1.ListPortDefinitionsRequest
-	17, // 33: dcim.v1.CatalogService.GetPortDefinition:input_type -> dcim.v1.GetPortDefinitionRequest
-	19, // 34: dcim.v1.CatalogService.CreatePortDefinition:input_type -> dcim.v1.CreatePortDefinitionRequest
-	21, // 35: dcim.v1.CatalogService.UpdatePortDefinition:input_type -> dcim.v1.UpdatePortDefinitionRequest
-	23, // 36: dcim.v1.CatalogService.DeletePortDefinition:input_type -> dcim.v1.DeletePortDefinitionRequest
-	25, // 37: dcim.v1.CatalogService.ListPortCompatibilities:input_type -> dcim.v1.ListPortCompatibilitiesRequest
-	27, // 38: dcim.v1.CatalogService.CreatePortCompatibility:input_type -> dcim.v1.CreatePortCompatibilityRequest
-	29, // 39: dcim.v1.CatalogService.DeletePortCompatibility:input_type -> dcim.v1.DeletePortCompatibilityRequest
-	4,  // 40: dcim.v1.CatalogService.ListCatalog:output_type -> dcim.v1.ListCatalogResponse
-	6,  // 41: dcim.v1.CatalogService.GetCatalogEntry:output_type -> dcim.v1.GetCatalogEntryResponse
-	8,  // 42: dcim.v1.CatalogService.CreateCatalogEntry:output_type -> dcim.v1.CreateCatalogEntryResponse
-	10, // 43: dcim.v1.CatalogService.UpdateCatalogEntry:output_type -> dcim.v1.UpdateCatalogEntryResponse
-	12, // 44: dcim.v1.CatalogService.DeleteCatalogEntry:output_type -> dcim.v1.DeleteCatalogEntryResponse
-	14, // 45: dcim.v1.CatalogService.ListAssetsByCatalogEntry:output_type -> dcim.v1.ListAssetsByCatalogEntryResponse
-	16, // 46: dcim.v1.CatalogService.ListPortDefinitions:output_type -> dcim.v1.ListPortDefinitionsResponse
-	18, // 47: dcim.v1.CatalogService.GetPortDefinition:output_type -> dcim.v1.GetPortDefinitionResponse
-	20, // 48: dcim.v1.CatalogService.CreatePortDefinition:output_type -> dcim.v1.CreatePortDefinitionResponse
-	22, // 49: dcim.v1.CatalogService.UpdatePortDefinition:output_type -> dcim.v1.UpdatePortDefinitionResponse
-	24, // 50: dcim.v1.CatalogService.DeletePortDefinition:output_type -> dcim.v1.DeletePortDefinitionResponse
-	26, // 51: dcim.v1.CatalogService.ListPortCompatibilities:output_type -> dcim.v1.ListPortCompatibilitiesResponse
-	28, // 52: dcim.v1.CatalogService.CreatePortCompatibility:output_type -> dcim.v1.CreatePortCompatibilityResponse
-	30, // 53: dcim.v1.CatalogService.DeletePortCompatibility:output_type -> dcim.v1.DeletePortCompatibilityResponse
-	40, // [40:54] is the sub-list for method output_type
-	26, // [26:40] is the sub-list for method input_type
-	26, // [26:26] is the sub-list for extension type_name
-	26, // [26:26] is the sub-list for extension extendee
-	0,  // [0:26] is the sub-list for field type_name
+	35, // 12: dcim.v1.UpdateCatalogEntryRequest.category:type_name -> dcim.v1.AssetCategory
+	34, // 13: dcim.v1.UpdateCatalogEntryRequest.specs:type_name -> dcim.v1.UpdateCatalogEntryRequest.SpecsEntry
+	0,  // 14: dcim.v1.UpdateCatalogEntryResponse.entry:type_name -> dcim.v1.DeviceCatalog
+	39, // 15: dcim.v1.ListAssetsByCatalogEntryResponse.assets:type_name -> dcim.v1.Asset
+	1,  // 16: dcim.v1.ListPortDefinitionsResponse.port_definitions:type_name -> dcim.v1.PortDefinition
+	1,  // 17: dcim.v1.GetPortDefinitionResponse.port_definition:type_name -> dcim.v1.PortDefinition
+	37, // 18: dcim.v1.CreatePortDefinitionRequest.port_type:type_name -> dcim.v1.PortType
+	38, // 19: dcim.v1.CreatePortDefinitionRequest.direction:type_name -> dcim.v1.PortDirection
+	1,  // 20: dcim.v1.CreatePortDefinitionResponse.port_definition:type_name -> dcim.v1.PortDefinition
+	37, // 21: dcim.v1.UpdatePortDefinitionRequest.port_type:type_name -> dcim.v1.PortType
+	38, // 22: dcim.v1.UpdatePortDefinitionRequest.direction:type_name -> dcim.v1.PortDirection
+	1,  // 23: dcim.v1.UpdatePortDefinitionResponse.port_definition:type_name -> dcim.v1.PortDefinition
+	2,  // 24: dcim.v1.ListPortCompatibilitiesResponse.compatibilities:type_name -> dcim.v1.PortCompatibility
+	2,  // 25: dcim.v1.CreatePortCompatibilityResponse.compatibility:type_name -> dcim.v1.PortCompatibility
+	0,  // 26: dcim.v1.ListCatalogResponse.CatalogSummary.entry:type_name -> dcim.v1.DeviceCatalog
+	3,  // 27: dcim.v1.CatalogService.ListCatalog:input_type -> dcim.v1.ListCatalogRequest
+	5,  // 28: dcim.v1.CatalogService.GetCatalogEntry:input_type -> dcim.v1.GetCatalogEntryRequest
+	7,  // 29: dcim.v1.CatalogService.CreateCatalogEntry:input_type -> dcim.v1.CreateCatalogEntryRequest
+	9,  // 30: dcim.v1.CatalogService.UpdateCatalogEntry:input_type -> dcim.v1.UpdateCatalogEntryRequest
+	11, // 31: dcim.v1.CatalogService.DeleteCatalogEntry:input_type -> dcim.v1.DeleteCatalogEntryRequest
+	13, // 32: dcim.v1.CatalogService.ListAssetsByCatalogEntry:input_type -> dcim.v1.ListAssetsByCatalogEntryRequest
+	15, // 33: dcim.v1.CatalogService.ListPortDefinitions:input_type -> dcim.v1.ListPortDefinitionsRequest
+	17, // 34: dcim.v1.CatalogService.GetPortDefinition:input_type -> dcim.v1.GetPortDefinitionRequest
+	19, // 35: dcim.v1.CatalogService.CreatePortDefinition:input_type -> dcim.v1.CreatePortDefinitionRequest
+	21, // 36: dcim.v1.CatalogService.UpdatePortDefinition:input_type -> dcim.v1.UpdatePortDefinitionRequest
+	23, // 37: dcim.v1.CatalogService.DeletePortDefinition:input_type -> dcim.v1.DeletePortDefinitionRequest
+	25, // 38: dcim.v1.CatalogService.ListPortCompatibilities:input_type -> dcim.v1.ListPortCompatibilitiesRequest
+	27, // 39: dcim.v1.CatalogService.CreatePortCompatibility:input_type -> dcim.v1.CreatePortCompatibilityRequest
+	29, // 40: dcim.v1.CatalogService.DeletePortCompatibility:input_type -> dcim.v1.DeletePortCompatibilityRequest
+	4,  // 41: dcim.v1.CatalogService.ListCatalog:output_type -> dcim.v1.ListCatalogResponse
+	6,  // 42: dcim.v1.CatalogService.GetCatalogEntry:output_type -> dcim.v1.GetCatalogEntryResponse
+	8,  // 43: dcim.v1.CatalogService.CreateCatalogEntry:output_type -> dcim.v1.CreateCatalogEntryResponse
+	10, // 44: dcim.v1.CatalogService.UpdateCatalogEntry:output_type -> dcim.v1.UpdateCatalogEntryResponse
+	12, // 45: dcim.v1.CatalogService.DeleteCatalogEntry:output_type -> dcim.v1.DeleteCatalogEntryResponse
+	14, // 46: dcim.v1.CatalogService.ListAssetsByCatalogEntry:output_type -> dcim.v1.ListAssetsByCatalogEntryResponse
+	16, // 47: dcim.v1.CatalogService.ListPortDefinitions:output_type -> dcim.v1.ListPortDefinitionsResponse
+	18, // 48: dcim.v1.CatalogService.GetPortDefinition:output_type -> dcim.v1.GetPortDefinitionResponse
+	20, // 49: dcim.v1.CatalogService.CreatePortDefinition:output_type -> dcim.v1.CreatePortDefinitionResponse
+	22, // 50: dcim.v1.CatalogService.UpdatePortDefinition:output_type -> dcim.v1.UpdatePortDefinitionResponse
+	24, // 51: dcim.v1.CatalogService.DeletePortDefinition:output_type -> dcim.v1.DeletePortDefinitionResponse
+	26, // 52: dcim.v1.CatalogService.ListPortCompatibilities:output_type -> dcim.v1.ListPortCompatibilitiesResponse
+	28, // 53: dcim.v1.CatalogService.CreatePortCompatibility:output_type -> dcim.v1.CreatePortCompatibilityResponse
+	30, // 54: dcim.v1.CatalogService.DeletePortCompatibility:output_type -> dcim.v1.DeletePortCompatibilityResponse
+	41, // [41:55] is the sub-list for method output_type
+	27, // [27:41] is the sub-list for method input_type
+	27, // [27:27] is the sub-list for extension type_name
+	27, // [27:27] is the sub-list for extension extendee
+	0,  // [0:27] is the sub-list for field type_name
 }
 
 func init() { file_v1_catalog_proto_init() }

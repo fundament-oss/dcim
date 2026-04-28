@@ -121,11 +121,12 @@ message UpdateCatalogEntryRequest {
   string              manufacturer = 20 [features.field_presence = EXPLICIT];
   string              model        = 30 [features.field_presence = EXPLICIT];
   string              part_number  = 40 [features.field_presence = EXPLICIT];
-  string              form_factor  = 50 [features.field_presence = EXPLICIT];
-  int32               rack_units   = 60 [features.field_presence = EXPLICIT];
-  double              weight_kg    = 70 [features.field_presence = EXPLICIT];
-  double              power_draw_w = 80 [features.field_presence = EXPLICIT];
-  map<string, string> specs        = 90;
+  AssetCategory       category     = 50 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
+  string              form_factor  = 60 [features.field_presence = EXPLICIT];
+  int32               rack_units   = 70 [features.field_presence = EXPLICIT];
+  double              weight_kg    = 80 [features.field_presence = EXPLICIT];
+  double              power_draw_w = 90 [features.field_presence = EXPLICIT];
+  map<string, string> specs        = 100;
 }
 
 message UpdateCatalogEntryResponse {
