@@ -8,6 +8,9 @@ COPY frontend/package.json frontend/bun.lock ./
 # Install dependencies
 RUN bun install --frozen-lockfile
 
+# Copy proto files first (needed for generate-proto-version.js)
+COPY api/pkg/proto/v1/ /api/pkg/proto/v1/
+
 # Copy source files
 COPY frontend/ .
 
