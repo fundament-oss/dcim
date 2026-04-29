@@ -88,141 +88,141 @@ jobs:
       dockerfile: ${{ matrix.dockerfile }}
       context: ${{ matrix.context }}
 
-  deploy:
-    needs: [gate, build]
-    if: needs.gate.outputs.should_deploy == 'true'
-    runs-on: ubuntu-24.04
-    permissions:
-      contents: read
-      pull-requests: write
-    env:
-      PR_BRANCH: ${{ github.event.pull_request.head.ref }}
-    steps:
-      - uses: actions/checkout@v5
+  # deploy:
+  #   needs: [gate, build]
+  #   if: needs.gate.outputs.should_deploy == 'true'
+  #   runs-on: ubuntu-24.04
+  #   permissions:
+  #     contents: read
+  #     pull-requests: write
+  #   env:
+  #     PR_BRANCH: ${{ github.event.pull_request.head.ref }}
+  #   steps:
+  #     - uses: actions/checkout@v5
+  #
+  #     - name: Compute image tag
+  #       run: |
+  #         REF_NAME=$(echo '${{ github.ref_name }}' | tr '/' '-')
+  #         echo "IMAGE_TAG=${{ github.sha }}-${REF_NAME}-${{ github.run_number }}" >> $GITHUB_ENV
+  #
+  #     - name: Clone Flux repo
+  #       run: |
+  #         git clone --depth 1 "https://oauth2:${{ secrets.GITLAB_TOKEN }}@${{ vars.GITLAB_REPO_HOST }}/${{ vars.GITLAB_REPO_PATH }}.git" flux-repo
+  #         cd flux-repo
+  #         git config user.name "github-actions[bot]"
+  #         git config user.email "github-actions[bot]@users.noreply.github.com"
+  #
+  #     - name: Generate PR overlay
+  #       run: |
+  #         PR_DIR="flux-repo/apps/dcim/overlays/pr/pr-${PR_NUMBER}"
+  #         mkdir -p "$PR_DIR"
+  #
+  #         export PR_NUM="$PR_NUMBER"
+  #         export PR_BRANCH="$PR_BRANCH"
+  #         export DOMAIN="$DOMAIN"
+  #         export IMAGE_PREFIX="$IMAGE_PREFIX"
+  #         export IMAGE_TAG="$IMAGE_TAG"
+  #
+  #         envsubst '${PR_NUM} ${PR_BRANCH} ${DOMAIN} ${IMAGE_PREFIX} ${IMAGE_TAG}' \
+  #           < charts/dcim/pr-overlay.yaml \
+  #           > "$PR_DIR/resources.yaml"
+  #
+  #     - name: Update kustomization.yaml
+  #       run: |
+  #         cd flux-repo
+  #         KUSTOMIZATION="apps/dcim/overlays/pr/kustomization.yaml"
+  #
+  #         # Create base kustomization if it doesn't exist
+  #         if [ ! -f "$KUSTOMIZATION" ]; then
+  #           mkdir -p "$(dirname "$KUSTOMIZATION")"
+  #           cat > "$KUSTOMIZATION" << 'EOF'
+  #         apiVersion: kustomize.config.k8s.io/v1beta1
+  #         kind: Kustomization
+  #         resources:
+  #         EOF
+  #         fi
+  #
+  #         # Add PR resource entry if not already present
+  #         PR_ENTRY="pr-${PR_NUMBER}/resources.yaml"
+  #         if ! grep -q "$PR_ENTRY" "$KUSTOMIZATION"; then
+  #           echo "  - $PR_ENTRY" >> "$KUSTOMIZATION"
+  #         fi
+  #
+  #     - name: Commit and push
+  #       run: |
+  #         cd flux-repo
+  #         git add -A
+  #         if git diff --cached --quiet; then
+  #           echo "No changes to commit"
+  #         else
+  #           git commit -m "deploy: PR #${PR_NUMBER} environment
+  #
+  #         Commit: ${IMAGE_TAG}
+  #         Branch: ${PR_BRANCH}"
+  #           git push
+  #         fi
+  #
+  #     - name: Post PR comment
+  #       uses: marocchino/sticky-pull-request-comment@v2
+  #       with:
+  #         header: pr-environment
+  #         message: |
+  #           ## PR Environment
+  #
+  #           | Service | URL |
+  #           |---------|-----|
+  #           | Console | https://console.pr${{ env.PR_NUMBER }}.${{ env.DOMAIN }} |
+  #           | API | https://api.pr${{ env.PR_NUMBER }}.${{ env.DOMAIN }} |
+  #
+  #           **Commit:** `${{ env.IMAGE_TAG }}`
+  #           **Namespace:** `tn-dcim-pr-${{ env.PR_NUMBER }}`
+  #
+  #           > Environment will be ready once Flux reconciles (~5 min after images are built).
 
-      - name: Compute image tag
-        run: |
-          REF_NAME=$(echo '${{ github.ref_name }}' | tr '/' '-')
-          echo "IMAGE_TAG=${{ github.sha }}-${REF_NAME}-${{ github.run_number }}" >> $GITHUB_ENV
-
-      - name: Clone Flux repo
-        run: |
-          git clone --depth 1 "https://oauth2:${{ secrets.GITLAB_TOKEN }}@${{ vars.GITLAB_REPO_HOST }}/${{ vars.GITLAB_REPO_PATH }}.git" flux-repo
-          cd flux-repo
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Generate PR overlay
-        run: |
-          PR_DIR="flux-repo/apps/dcim/overlays/pr/pr-${PR_NUMBER}"
-          mkdir -p "$PR_DIR"
-
-          export PR_NUM="$PR_NUMBER"
-          export PR_BRANCH="$PR_BRANCH"
-          export DOMAIN="$DOMAIN"
-          export IMAGE_PREFIX="$IMAGE_PREFIX"
-          export IMAGE_TAG="$IMAGE_TAG"
-
-          envsubst '${PR_NUM} ${PR_BRANCH} ${DOMAIN} ${IMAGE_PREFIX} ${IMAGE_TAG}' \
-            < charts/dcim/pr-overlay.yaml \
-            > "$PR_DIR/resources.yaml"
-
-      - name: Update kustomization.yaml
-        run: |
-          cd flux-repo
-          KUSTOMIZATION="apps/dcim/overlays/pr/kustomization.yaml"
-
-          # Create base kustomization if it doesn't exist
-          if [ ! -f "$KUSTOMIZATION" ]; then
-            mkdir -p "$(dirname "$KUSTOMIZATION")"
-            cat > "$KUSTOMIZATION" << 'EOF'
-          apiVersion: kustomize.config.k8s.io/v1beta1
-          kind: Kustomization
-          resources:
-          EOF
-          fi
-
-          # Add PR resource entry if not already present
-          PR_ENTRY="pr-${PR_NUMBER}/resources.yaml"
-          if ! grep -q "$PR_ENTRY" "$KUSTOMIZATION"; then
-            echo "  - $PR_ENTRY" >> "$KUSTOMIZATION"
-          fi
-
-      - name: Commit and push
-        run: |
-          cd flux-repo
-          git add -A
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "deploy: PR #${PR_NUMBER} environment
-
-          Commit: ${IMAGE_TAG}
-          Branch: ${PR_BRANCH}"
-            git push
-          fi
-
-      - name: Post PR comment
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          header: pr-environment
-          message: |
-            ## PR Environment
-
-            | Service | URL |
-            |---------|-----|
-            | Console | https://console.pr${{ env.PR_NUMBER }}.${{ env.DOMAIN }} |
-            | API | https://api.pr${{ env.PR_NUMBER }}.${{ env.DOMAIN }} |
-
-            **Commit:** `${{ env.IMAGE_TAG }}`
-            **Namespace:** `tn-dcim-pr-${{ env.PR_NUMBER }}`
-
-            > Environment will be ready once Flux reconciles (~5 min after images are built).
-
-  teardown:
-    needs: gate
-    if: needs.gate.outputs.should_teardown == 'true'
-    runs-on: ubuntu-24.04
-    permissions:
-      pull-requests: write
-    steps:
-      - name: Clone Flux repo
-        run: |
-          git clone --depth 1 "https://oauth2:${{ secrets.GITLAB_TOKEN }}@${{ vars.GITLAB_REPO_HOST }}/${{ vars.GITLAB_REPO_PATH }}.git" flux-repo
-          cd flux-repo
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Remove PR overlay
-        run: |
-          cd flux-repo
-          PR_DIR="apps/dcim/overlays/pr/pr-${PR_NUMBER}"
-
-          # Remove PR directory
-          rm -rf "$PR_DIR"
-
-          # Remove entry from kustomization.yaml
-          KUSTOMIZATION="apps/dcim/overlays/pr/kustomization.yaml"
-          if [ -f "$KUSTOMIZATION" ]; then
-            sed -i "\|pr-${PR_NUMBER}/resources.yaml|d" "$KUSTOMIZATION"
-          fi
-
-      - name: Commit and push
-        run: |
-          cd flux-repo
-          git add -A
-          if git diff --cached --quiet; then
-            echo "No changes to commit"
-          else
-            git commit -m "teardown: PR #${PR_NUMBER} environment"
-            git push
-          fi
-
-      - name: Update PR comment
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          header: pr-environment
-          message: |
-            ## PR Environment - Torn Down
-
-            The environment for this PR has been removed.
+  # teardown:
+  #   needs: gate
+  #   if: needs.gate.outputs.should_teardown == 'true'
+  #   runs-on: ubuntu-24.04
+  #   permissions:
+  #     pull-requests: write
+  #   steps:
+  #     - name: Clone Flux repo
+  #       run: |
+  #         git clone --depth 1 "https://oauth2:${{ secrets.GITLAB_TOKEN }}@${{ vars.GITLAB_REPO_HOST }}/${{ vars.GITLAB_REPO_PATH }}.git" flux-repo
+  #         cd flux-repo
+  #         git config user.name "github-actions[bot]"
+  #         git config user.email "github-actions[bot]@users.noreply.github.com"
+  #
+  #     - name: Remove PR overlay
+  #       run: |
+  #         cd flux-repo
+  #         PR_DIR="apps/dcim/overlays/pr/pr-${PR_NUMBER}"
+  #
+  #         # Remove PR directory
+  #         rm -rf "$PR_DIR"
+  #
+  #         # Remove entry from kustomization.yaml
+  #         KUSTOMIZATION="apps/dcim/overlays/pr/kustomization.yaml"
+  #         if [ -f "$KUSTOMIZATION" ]; then
+  #           sed -i "\|pr-${PR_NUMBER}/resources.yaml|d" "$KUSTOMIZATION"
+  #         fi
+  #
+  #     - name: Commit and push
+  #       run: |
+  #         cd flux-repo
+  #         git add -A
+  #         if git diff --cached --quiet; then
+  #           echo "No changes to commit"
+  #         else
+  #           git commit -m "teardown: PR #${PR_NUMBER} environment"
+  #           git push
+  #         fi
+  #
+  #     - name: Update PR comment
+  #       uses: marocchino/sticky-pull-request-comment@v2
+  #       with:
+  #         header: pr-environment
+  #         message: |
+  #           ## PR Environment - Torn Down
+  #
+  #           The environment for this PR has been removed.
