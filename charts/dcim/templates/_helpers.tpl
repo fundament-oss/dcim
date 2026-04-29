@@ -1,6 +1,6 @@
 {{/*
 Selector labels for a component.
-Usage: include "dcim.selectorLabels" (dict "root" $ "name" "dcim-api")
+Usage: include "dcim.selectorLabels" (dict "root" $ "name" "api")
 */}}
 {{- define "dcim.selectorLabels" -}}
 app.kubernetes.io/name: {{ .name }}
@@ -9,7 +9,7 @@ app.kubernetes.io/instance: {{ .root.Release.Name }}-{{ .name }}
 
 {{/*
 Common labels applied to all resources.
-Usage: include "dcim.labels" (dict "root" $ "name" "dcim-api" "component" "backend")
+Usage: include "dcim.labels" (dict "root" $ "name" "api" "component" "backend")
 */}}
 {{- define "dcim.labels" -}}
 {{ include "dcim.selectorLabels" . }}

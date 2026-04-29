@@ -48,7 +48,7 @@ func main() {
 	}
 
 	go func() {
-		slog.Info("starting dcim-api", "addr", cfg.ListenAddr)
+		slog.Info("starting api", "addr", cfg.ListenAddr)
 		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			slog.Error("server error", "err", err)
 			os.Exit(1)

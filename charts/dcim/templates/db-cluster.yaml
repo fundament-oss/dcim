@@ -27,7 +27,7 @@ spec:
       - name: dcim_api
         login: true
         passwordSecret:
-          name: db-dcim-api
+          name: db-api
       - name: dcim_operator
         login: true
         superuser: true
