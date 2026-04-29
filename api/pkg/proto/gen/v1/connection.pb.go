@@ -23,7 +23,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// PhysicalConnection records a cable between two placement ports (dcim.physical_connection).
+// PhysicalConnection records a cable between two placement ports (core.physical_connections).
 type PhysicalConnection struct {
 	state                          protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Id                  string                 `protobuf:"bytes,10,opt,name=id"`

@@ -1,12 +1,16 @@
 package dcim
 
 import (
+	"context"
 	"log/slog"
 	"net/http"
 
 	"connectrpc.com/connect"
 	"connectrpc.com/grpcreflect"
+	"connectrpc.com/validate"
 	"github.com/fundament-oss/dcim/api/pkg/proto/gen/v1/dcimv1connect"
+	"github.com/fundament-oss/fundament/common/connectrecovery"
+	"github.com/svrana/go-connect-middleware/interceptors/logging"
 )
 
 type Server struct {
@@ -21,7 +25,18 @@ func New(logger *slog.Logger) *Server {
 
 	mux := http.NewServeMux()
 
-	interceptors := connect.WithInterceptors()
+	loggingInterceptor := logging.UnaryServerInterceptor(
+		logging.LoggerFunc(func(ctx context.Context, level logging.Level, msg string, fields ...any) {
+			logger.Log(ctx, slog.Level(level), msg, fields...)
+		}),
+		logging.WithLogOnEvents(logging.FinishCall),
+	)
+
+	interceptors := connect.WithInterceptors(
+		connectrecovery.NewInterceptor(logger),
+		loggingInterceptor,
+		validate.NewInterceptor(),
+	)
 
 	mux.Handle(dcimv1connect.NewSiteServiceHandler(s, interceptors))
 	mux.Handle(dcimv1connect.NewRoomServiceHandler(s, interceptors))

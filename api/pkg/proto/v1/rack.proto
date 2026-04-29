@@ -10,7 +10,7 @@ option features.(pb.go).api_level = API_OPAQUE;
 option features.field_presence = IMPLICIT;
 option go_package = "github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1";
 
-// Rack is a physical equipment rack within a rack row (dcim.rack).
+// Rack is a physical equipment rack within a rack row (core.racks).
 message Rack {
   string                    id              = 10;
   string                    row_id          = 20;

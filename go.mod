@@ -3,14 +3,25 @@ module github.com/fundament-oss/dcim
 go 1.26.2
 
 require (
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20260415201107-50325440f8f2.1
+	connectrpc.com/connect v1.19.2
+	connectrpc.com/grpcreflect v1.3.0
+	connectrpc.com/validate v0.6.0
 	github.com/caarlos0/env/v11 v11.4.0
+	github.com/fundament-oss/fundament v0.0.0-20260429081117-501946814370
+	github.com/svrana/go-connect-middleware v0.0.0-20240215015008-5a7d29fe9fed
 	golang.org/x/net v0.53.0
+	google.golang.org/protobuf v1.36.11
 )
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20260415201107-50325440f8f2.1 // indirect
-	connectrpc.com/connect v1.19.2 // indirect
-	connectrpc.com/grpcreflect v1.3.0 // indirect
+	buf.build/go/protovalidate v1.1.3 // indirect
+	cel.dev/expr v0.25.1 // indirect
+	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
+	github.com/google/cel-go v0.27.0 // indirect
+	golang.org/x/exp v0.0.0-20260312153236-7ab1446f8b90 // indirect
 	golang.org/x/text v0.36.0 // indirect
-	google.golang.org/protobuf v1.36.11 // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20260311181403-84a4fc48630c // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20260311181403-84a4fc48630c // indirect
+	google.golang.org/grpc v1.79.3 // indirect
 )

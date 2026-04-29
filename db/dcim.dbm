@@ -17,7 +17,6 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </role>
 
 <role name="dcim_operator"
- superuser="true"
  bypassrls="true"
  sql-disabled="true">
 </role>
@@ -77,6 +76,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="name" not-null="true">
 		<type name="text" length="0"/>
 	</column>
+	<column name="floor">
+		<type name="text" length="0"/>
+	</column>
 	<column name="created" not-null="true" default-value="now()">
 		<type name="timestamptz" length="0"/>
 	</column>
@@ -105,10 +107,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="text" length="0"/>
 	</column>
 	<column name="position_x">
-		<type name="integer" length="0"/>
+		<type name="double precision" length="0"/>
 	</column>
 	<column name="position_y">
-		<type name="integer" length="0"/>
+		<type name="double precision" length="0"/>
 	</column>
 	<column name="created" not-null="true" default-value="now()">
 		<type name="timestamptz" length="0"/>
@@ -308,10 +310,16 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="purchase_date">
 		<type name="date" length="0"/>
 	</column>
+	<column name="purchase_order">
+		<type name="text" length="0"/>
+	</column>
 	<column name="warranty_expiry">
 		<type name="date" length="0"/>
 	</column>
 	<column name="status" not-null="true" default-value="'in_stock'">
+		<type name="text" length="0"/>
+	</column>
+	<column name="notes">
 		<type name="text" length="0"/>
 	</column>
 	<column name="created" not-null="true" default-value="now()">
@@ -323,10 +331,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<constraint name="assets_pk" type="pk-constr" table="core.assets">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
-	<constraint name="assets_uq_serial_number" type="uq-constr" nulls-not-distinct="true" table="core.assets">
+	<constraint name="assets_uq_serial_number" type="uq-constr" table="core.assets">
 		<columns names="serial_number,deleted" ref-type="src-columns"/>
 	</constraint>
-	<constraint name="assets_uq_asset_tag" type="uq-constr" nulls-not-distinct="true" table="core.assets">
+	<constraint name="assets_uq_asset_tag" type="uq-constr" table="core.assets">
 		<columns names="asset_tag,deleted" ref-type="src-columns"/>
 	</constraint>
 	<constraint name="assets_ck_status" type="ck-constr" table="core.assets">
@@ -347,7 +355,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="event_type" not-null="true">
 		<type name="text" length="0"/>
 	</column>
-	<column name="description">
+	<column name="details">
+		<type name="text" length="0"/>
+	</column>
+	<column name="performed_by">
 		<type name="text" length="0"/>
 	</column>
 	<column name="created" not-null="true" default-value="now()">
@@ -373,6 +384,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="version" not-null="true" default-value="1">
 		<type name="integer" length="0"/>
+	</column>
+	<column name="description">
+		<type name="text" length="0"/>
 	</column>
 	<column name="status" not-null="true" default-value="'draft'">
 		<type name="text" length="0"/>
@@ -404,7 +418,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="logical_design_id" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
-	<column name="name" not-null="true">
+	<column name="label" not-null="true">
 		<type name="text" length="0"/>
 	</column>
 	<column name="role" not-null="true">
@@ -412,6 +426,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</column>
 	<column name="device_catalog_id">
 		<type name="uuid" length="0"/>
+	</column>
+	<column name="requirements">
+		<type name="text" length="0"/>
+	</column>
+	<column name="notes">
+		<type name="text" length="0"/>
 	</column>
 	<column name="created" not-null="true" default-value="now()">
 		<type name="timestamptz" length="0"/>
@@ -422,8 +442,8 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<constraint name="logical_devices_pk" type="pk-constr" table="core.logical_devices">
 		<columns names="id" ref-type="src-columns"/>
 	</constraint>
-	<constraint name="logical_devices_uq_design_name" type="uq-constr" nulls-not-distinct="true" table="core.logical_devices">
-		<columns names="logical_design_id,name,deleted" ref-type="src-columns"/>
+	<constraint name="logical_devices_uq_design_label" type="uq-constr" nulls-not-distinct="true" table="core.logical_devices">
+		<columns names="logical_design_id,label,deleted" ref-type="src-columns"/>
 	</constraint>
 	<constraint name="logical_devices_ck_role" type="ck-constr" table="core.logical_devices">
 			<expression> <![CDATA[role IN ('compute','tor','spine','core','pdu','patch_panel','storage','firewall','load_balancer','console_server','cable_manager','adapter')]]> </expression>
@@ -443,10 +463,22 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="a_logical_device_id" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
+	<column name="a_port_role">
+		<type name="text" length="0"/>
+	</column>
 	<column name="b_logical_device_id" not-null="true">
 		<type name="uuid" length="0"/>
 	</column>
+	<column name="b_port_role">
+		<type name="text" length="0"/>
+	</column>
 	<column name="connection_type" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="requirements">
+		<type name="text" length="0"/>
+	</column>
+	<column name="label">
 		<type name="text" length="0"/>
 	</column>
 	<column name="created" not-null="true" default-value="now()">
@@ -518,6 +550,12 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="logical_device_id">
 		<type name="uuid" length="0"/>
 	</column>
+	<column name="external_ref">
+		<type name="text" length="0"/>
+	</column>
+	<column name="notes">
+		<type name="text" length="0"/>
+	</column>
 	<column name="created" not-null="true" default-value="now()">
 		<type name="timestamptz" length="0"/>
 	</column>
@@ -531,7 +569,10 @@ CAUTION: Do not modify this file unless you know what you are doing.
 			<expression> <![CDATA[slot_type IS NULL OR slot_type IN ('unit','power','zero_u')]]> </expression>
 	</constraint>
 	<constraint name="placements_ck_exclusive_arc" type="ck-constr" table="core.placements">
-			<expression> <![CDATA[(rack_id IS NOT NULL AND start_unit IS NOT NULL AND slot_type IS NOT NULL AND parent_placement_id IS NULL AND port_definition_id IS NULL) OR (rack_id IS NULL AND start_unit IS NULL AND slot_type IS NULL AND parent_placement_id IS NOT NULL AND port_definition_id IS NOT NULL)]]> </expression>
+			<expression> <![CDATA[(rack_id IS NOT NULL AND slot_type IS NOT NULL AND parent_placement_id IS NULL AND port_definition_id IS NULL) OR (rack_id IS NULL AND start_unit IS NULL AND slot_type IS NULL AND parent_placement_id IS NOT NULL AND port_definition_id IS NOT NULL)]]> </expression>
+	</constraint>
+	<constraint name="placements_ck_unit_start" type="ck-constr" table="core.placements">
+			<expression> <![CDATA[slot_type != 'unit' OR start_unit IS NOT NULL]]> </expression>
 	</constraint>
 </table>
 
@@ -579,6 +620,9 @@ CAUTION: Do not modify this file unless you know what you are doing.
 		<type name="uuid" length="0"/>
 	</column>
 	<column name="body" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="created_by">
 		<type name="text" length="0"/>
 	</column>
 	<column name="device_catalog_id">

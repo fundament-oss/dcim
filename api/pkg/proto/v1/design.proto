@@ -12,7 +12,7 @@ option go_package = "github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1";
 
 // ── Enums ─────────────────────────────────────────────────────────────────────
 
-// LogicalDesignStatus aligns with dcim.logical_design status check constraint.
+// LogicalDesignStatus aligns with core.logical_designs status check constraint.
 enum LogicalDesignStatus {
   LOGICAL_DESIGN_STATUS_UNSPECIFIED = 0;
   LOGICAL_DESIGN_STATUS_DRAFT       = 10;
@@ -20,7 +20,7 @@ enum LogicalDesignStatus {
   LOGICAL_DESIGN_STATUS_ARCHIVED    = 30;
 }
 
-// LogicalDeviceRole aligns with dcim.logical_device role check constraint.
+// LogicalDeviceRole aligns with core.logical_devices role check constraint.
 enum LogicalDeviceRole {
   LOGICAL_DEVICE_ROLE_UNSPECIFIED    = 0;
   LOGICAL_DEVICE_ROLE_COMPUTE        = 10;
@@ -37,7 +37,7 @@ enum LogicalDeviceRole {
   LOGICAL_DEVICE_ROLE_ADAPTER        = 120;
 }
 
-// LogicalConnectionType aligns with dcim.logical_connection connection_type check constraint.
+// LogicalConnectionType aligns with core.logical_connections connection_type check constraint.
 enum LogicalConnectionType {
   LOGICAL_CONNECTION_TYPE_UNSPECIFIED = 0;
   LOGICAL_CONNECTION_TYPE_NETWORK     = 10;
@@ -47,7 +47,7 @@ enum LogicalConnectionType {
 
 // ── Messages ──────────────────────────────────────────────────────────────────
 
-// LogicalDesign is a versioned topology schema (dcim.logical_design).
+// LogicalDesign is a versioned topology schema (core.logical_designs).
 // Only one design per name may have status ACTIVE at a time.
 message LogicalDesign {
   string                    id          = 10;
@@ -59,7 +59,7 @@ message LogicalDesign {
   google.protobuf.Timestamp deleted     = 70 [features.field_presence = EXPLICIT];
 }
 
-// LogicalDevice is an abstract role within a design (dcim.logical_device).
+// LogicalDevice is an abstract role within a design (core.logical_devices).
 // When device_catalog_id is absent, the device is generic and requirements
 // describes what kind of device is needed (e.g. {"cpu_cores": "32", "ram_gb": "256"}).
 message LogicalDevice {
@@ -74,7 +74,7 @@ message LogicalDevice {
   google.protobuf.Timestamp deleted           = 90 [features.field_presence = EXPLICIT];
 }
 
-// LogicalConnection is an intended link between two logical devices (dcim.logical_connection).
+// LogicalConnection is an intended link between two logical devices (core.logical_connections).
 message LogicalConnection {
   string                    id               = 10;
   string                    design_id        = 20;

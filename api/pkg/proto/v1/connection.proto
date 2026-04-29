@@ -10,7 +10,7 @@ option features.(pb.go).api_level = API_OPAQUE;
 option features.field_presence = IMPLICIT;
 option go_package = "github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1";
 
-// PhysicalConnection records a cable between two placement ports (dcim.physical_connection).
+// PhysicalConnection records a cable between two placement ports (core.physical_connections).
 message PhysicalConnection {
   string                    id                    = 10;
   string                    source_placement_id   = 20;

@@ -10,7 +10,7 @@ option features.(pb.go).api_level = API_OPAQUE;
 option features.field_presence = IMPLICIT;
 option go_package = "github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1";
 
-// Site is a physical data center location (dcim.site).
+// Site is a physical data center location (core.sites).
 message Site {
   string                    id      = 10;
   string                    name    = 20;
@@ -19,7 +19,7 @@ message Site {
   google.protobuf.Timestamp deleted = 50 [features.field_presence = EXPLICIT];
 }
 
-// Room is a hall or room within a site (dcim.room).
+// Room is a hall or room within a site (core.rooms).
 message Room {
   string                    id      = 10;
   string                    site_id = 20;
@@ -29,7 +29,7 @@ message Room {
   google.protobuf.Timestamp deleted = 60 [features.field_presence = EXPLICIT];
 }
 
-// RackRow is a row of racks within a room (dcim.rack_row).
+// RackRow is a row of racks within a room (core.rack_rows).
 // position_x and position_y enable cable length estimation between racks.
 message RackRow {
   string                    id         = 10;

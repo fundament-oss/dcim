@@ -24,7 +24,7 @@ message SubComponentLocation {
   string parent_port_name    = 20;
 }
 
-// Placement maps an asset to a physical location (dcim.placement).
+// Placement maps an asset to a physical location (core.placements).
 message Placement {
   string                    id                = 10;
   string                    asset_id          = 20;
@@ -34,9 +34,10 @@ message Placement {
   }
   // Optional link to the logical design.
   string                    logical_device_id = 50 [features.field_presence = EXPLICIT];
-  string                    notes             = 60;
-  google.protobuf.Timestamp created           = 70;
-  google.protobuf.Timestamp deleted           = 80 [features.field_presence = EXPLICIT];
+  string                    external_ref      = 60 [features.field_presence = EXPLICIT];
+  string                    notes             = 70;
+  google.protobuf.Timestamp created           = 80;
+  google.protobuf.Timestamp deleted           = 90 [features.field_presence = EXPLICIT];
 }
 
 service PlacementService {

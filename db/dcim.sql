@@ -35,6 +35,7 @@ CREATE TABLE core.rooms (
 	id uuid NOT NULL DEFAULT uuidv7(),
 	site_id uuid NOT NULL,
 	name text NOT NULL,
+	floor text,
 	created timestamptz NOT NULL DEFAULT now(),
 	deleted timestamptz,
 	CONSTRAINT rooms_pk PRIMARY KEY (id),
@@ -50,8 +51,8 @@ CREATE TABLE core.rack_rows (
 	id uuid NOT NULL DEFAULT uuidv7(),
 	room_id uuid NOT NULL,
 	name text NOT NULL,
-	position_x integer,
-	position_y integer,
+	position_x double precision,
+	position_y double precision,
 	created timestamptz NOT NULL DEFAULT now(),
 	deleted timestamptz,
 	CONSTRAINT rack_rows_pk PRIMARY KEY (id),
@@ -134,6 +135,7 @@ CREATE TABLE core.port_compatibilities (
 	created timestamptz NOT NULL DEFAULT now(),
 	deleted timestamptz,
 	CONSTRAINT port_compatibilities_pk PRIMARY KEY (id),
+	CONSTRAINT port_compatibilities_uq_port_category_catalog UNIQUE NULLS NOT DISTINCT (port_definition_id,compatible_category,compatible_catalog_id,deleted),
 	CONSTRAINT port_compatibilities_ck_compatible_category CHECK (compatible_category IN ('server','switch','pdu','patch_panel','sfp','nic','cpu','dimm','disk','cable','adapter','power_supply','cable_manager','console_server'))
 );
 -- ddl-end --
@@ -148,13 +150,15 @@ CREATE TABLE core.assets (
 	serial_number text,
 	asset_tag text,
 	purchase_date date,
+	purchase_order text,
 	warranty_expiry date,
 	status text NOT NULL DEFAULT 'in_stock',
+	notes text,
 	created timestamptz NOT NULL DEFAULT now(),
 	deleted timestamptz,
 	CONSTRAINT assets_pk PRIMARY KEY (id),
-	CONSTRAINT assets_uq_serial_number UNIQUE NULLS NOT DISTINCT (serial_number,deleted),
-	CONSTRAINT assets_uq_asset_tag UNIQUE NULLS NOT DISTINCT (asset_tag,deleted),
+	CONSTRAINT assets_uq_serial_number UNIQUE (serial_number,deleted),
+	CONSTRAINT assets_uq_asset_tag UNIQUE (asset_tag,deleted),
 	CONSTRAINT assets_ck_status CHECK (status IN ('in_stock','deployed','rma','decommissioned','in_transit','reserved'))
 );
 -- ddl-end --
@@ -167,7 +171,8 @@ CREATE TABLE core.asset_events (
 	id uuid NOT NULL DEFAULT uuidv7(),
 	asset_id uuid NOT NULL,
 	event_type text NOT NULL,
-	description text,
+	details text,
+	performed_by text,
 	created timestamptz NOT NULL DEFAULT now(),
 	CONSTRAINT asset_events_pk PRIMARY KEY (id),
 	CONSTRAINT asset_events_ck_event_type CHECK (event_type IN ('received','deployed','moved','rma_sent','rma_received','decommissioned','reserved','note'))
@@ -182,6 +187,7 @@ CREATE TABLE core.logical_designs (
 	id uuid NOT NULL DEFAULT uuidv7(),
 	name text NOT NULL,
 	version integer NOT NULL DEFAULT 1,
+	description text,
 	status text NOT NULL DEFAULT 'draft',
 	created timestamptz NOT NULL DEFAULT now(),
 	deleted timestamptz,
@@ -198,13 +204,15 @@ ALTER TABLE core.logical_designs OWNER TO dcim_owner;
 CREATE TABLE core.logical_devices (
 	id uuid NOT NULL DEFAULT uuidv7(),
 	logical_design_id uuid NOT NULL,
-	name text NOT NULL,
+	label text NOT NULL,
 	role text NOT NULL,
 	device_catalog_id uuid,
+	requirements text,
+	notes text,
 	created timestamptz NOT NULL DEFAULT now(),
 	deleted timestamptz,
 	CONSTRAINT logical_devices_pk PRIMARY KEY (id),
-	CONSTRAINT logical_devices_uq_design_name UNIQUE NULLS NOT DISTINCT (logical_design_id,name,deleted),
+	CONSTRAINT logical_devices_uq_design_label UNIQUE NULLS NOT DISTINCT (logical_design_id,label,deleted),
 	CONSTRAINT logical_devices_ck_role CHECK (role IN ('compute','tor','spine','core','pdu','patch_panel','storage','firewall','load_balancer','console_server','cable_manager','adapter'))
 );
 -- ddl-end --
@@ -217,8 +225,12 @@ CREATE TABLE core.logical_connections (
 	id uuid NOT NULL DEFAULT uuidv7(),
 	logical_design_id uuid NOT NULL,
 	a_logical_device_id uuid NOT NULL,
+	a_port_role text,
 	b_logical_device_id uuid NOT NULL,
+	b_port_role text,
 	connection_type text NOT NULL,
+	requirements text,
+	label text,
 	created timestamptz NOT NULL DEFAULT now(),
 	deleted timestamptz,
 	CONSTRAINT logical_connections_pk PRIMARY KEY (id),
@@ -237,7 +249,8 @@ CREATE TABLE core.logical_device_layouts (
 	position_y numeric NOT NULL,
 	created timestamptz NOT NULL DEFAULT now(),
 	updated timestamptz NOT NULL DEFAULT now(),
-	CONSTRAINT logical_device_layouts_pk PRIMARY KEY (id)
+	CONSTRAINT logical_device_layouts_pk PRIMARY KEY (id),
+	CONSTRAINT logical_device_layouts_uq_device UNIQUE (logical_device_id)
 );
 -- ddl-end --
 ALTER TABLE core.logical_device_layouts OWNER TO dcim_owner;
@@ -254,11 +267,14 @@ CREATE TABLE core.placements (
 	parent_placement_id uuid,
 	port_definition_id uuid,
 	logical_device_id uuid,
+	external_ref text,
+	notes text,
 	created timestamptz NOT NULL DEFAULT now(),
 	deleted timestamptz,
 	CONSTRAINT placements_pk PRIMARY KEY (id),
 	CONSTRAINT placements_ck_slot_type CHECK (slot_type IS NULL OR slot_type IN ('unit','power','zero_u')),
-	CONSTRAINT placements_ck_exclusive_arc CHECK ((rack_id IS NOT NULL AND start_unit IS NOT NULL AND slot_type IS NOT NULL AND parent_placement_id IS NULL AND port_definition_id IS NULL) OR (rack_id IS NULL AND start_unit IS NULL AND slot_type IS NULL AND parent_placement_id IS NOT NULL AND port_definition_id IS NOT NULL))
+	CONSTRAINT placements_ck_exclusive_arc CHECK ((rack_id IS NOT NULL AND slot_type IS NOT NULL AND parent_placement_id IS NULL AND port_definition_id IS NULL) OR (rack_id IS NULL AND start_unit IS NULL AND slot_type IS NULL AND parent_placement_id IS NOT NULL AND port_definition_id IS NOT NULL)),
+	CONSTRAINT placements_ck_unit_start CHECK (slot_type != 'unit' OR start_unit IS NOT NULL)
 );
 -- ddl-end --
 ALTER TABLE core.placements OWNER TO dcim_owner;
@@ -276,7 +292,8 @@ CREATE TABLE core.physical_connections (
 	logical_connection_id uuid,
 	created timestamptz NOT NULL DEFAULT now(),
 	deleted timestamptz,
-	CONSTRAINT physical_connections_pk PRIMARY KEY (id)
+	CONSTRAINT physical_connections_pk PRIMARY KEY (id),
+	CONSTRAINT physical_connections_uq_endpoints UNIQUE NULLS NOT DISTINCT (a_placement_id,a_port_definition_id,b_placement_id,b_port_definition_id,deleted)
 );
 -- ddl-end --
 ALTER TABLE core.physical_connections OWNER TO dcim_owner;
@@ -287,6 +304,7 @@ ALTER TABLE core.physical_connections OWNER TO dcim_owner;
 CREATE TABLE core.notes (
 	id uuid NOT NULL DEFAULT uuidv7(),
 	body text NOT NULL,
+	created_by text,
 	device_catalog_id uuid,
 	port_definition_id uuid,
 	asset_id uuid,
@@ -566,5 +584,24 @@ ALTER TABLE core.notes ADD CONSTRAINT notes_fk_logical_connection FOREIGN KEY (l
 REFERENCES core.logical_connections (id) MATCH SIMPLE
 ON DELETE NO ACTION ON UPDATE NO ACTION;
 -- ddl-end --
+
+-- ── FK indexes ───────────────────────────────────────────────────────────────
+
+CREATE INDEX rooms_ix_site ON core.rooms (site_id);
+CREATE INDEX rack_rows_ix_room ON core.rack_rows (room_id);
+CREATE INDEX racks_ix_rack_row ON core.racks (rack_row_id);
+CREATE INDEX port_definitions_ix_device_catalog ON core.port_definitions (device_catalog_id);
+CREATE INDEX port_compatibilities_ix_port_definition ON core.port_compatibilities (port_definition_id);
+CREATE INDEX assets_ix_device_catalog ON core.assets (device_catalog_id);
+CREATE INDEX asset_events_ix_asset ON core.asset_events (asset_id);
+CREATE INDEX logical_devices_ix_design ON core.logical_devices (logical_design_id);
+CREATE INDEX logical_connections_ix_design ON core.logical_connections (logical_design_id);
+CREATE INDEX logical_connections_ix_a_device ON core.logical_connections (a_logical_device_id);
+CREATE INDEX logical_connections_ix_b_device ON core.logical_connections (b_logical_device_id);
+CREATE INDEX placements_ix_asset ON core.placements (asset_id);
+CREATE INDEX placements_ix_rack ON core.placements (rack_id);
+CREATE INDEX placements_ix_parent ON core.placements (parent_placement_id);
+CREATE INDEX physical_connections_ix_a_placement ON core.physical_connections (a_placement_id);
+CREATE INDEX physical_connections_ix_b_placement ON core.physical_connections (b_placement_id);
 
 

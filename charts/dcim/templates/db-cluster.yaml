@@ -30,7 +30,6 @@ spec:
           name: db-api
       - name: dcim_operator
         login: true
-        superuser: true
         bypassrls: true
         passwordSecret:
           name: db-dcim-operator

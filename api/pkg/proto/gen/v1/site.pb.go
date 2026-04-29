@@ -23,7 +23,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Site is a physical data center location (dcim.site).
+// Site is a physical data center location (core.sites).
 type Site struct {
 	state              protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Id      string                 `protobuf:"bytes,10,opt,name=id"`
@@ -159,7 +159,7 @@ func (b0 Site_builder) Build() *Site {
 	return m0
 }
 
-// Room is a hall or room within a site (dcim.room).
+// Room is a hall or room within a site (core.rooms).
 type Room struct {
 	state              protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Id      string                 `protobuf:"bytes,10,opt,name=id"`
@@ -309,7 +309,7 @@ func (b0 Room_builder) Build() *Room {
 	return m0
 }
 
-// RackRow is a row of racks within a room (dcim.rack_row).
+// RackRow is a row of racks within a room (core.rack_rows).
 // position_x and position_y enable cable length estimation between racks.
 type RackRow struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
