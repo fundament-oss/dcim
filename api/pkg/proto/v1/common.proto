@@ -9,7 +9,7 @@ option features.(pb.go).api_level = API_OPAQUE;
 option features.field_presence = IMPLICIT;
 option go_package = "github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1";
 
-// AssetCategory aligns with dcim.device_catalog category check constraint.
+// AssetCategory aligns with core.device_catalogs category check constraint.
 enum AssetCategory {
   ASSET_CATEGORY_UNSPECIFIED    = 0;
   ASSET_CATEGORY_SERVER         = 10;
@@ -28,7 +28,7 @@ enum AssetCategory {
   ASSET_CATEGORY_CONSOLE_SERVER = 140;
 }
 
-// AssetStatus aligns with dcim.asset status check constraint.
+// AssetStatus aligns with core.assets status check constraint.
 enum AssetStatus {
   ASSET_STATUS_UNSPECIFIED    = 0;
   ASSET_STATUS_IN_STOCK       = 10;
@@ -40,7 +40,7 @@ enum AssetStatus {
   ASSET_STATUS_RESERVED       = 70;
 }
 
-// AssetEventType aligns with dcim.asset_event event_type check constraint.
+// AssetEventType aligns with core.asset_events event_type check constraint.
 enum AssetEventType {
   ASSET_EVENT_TYPE_UNSPECIFIED    = 0;
   ASSET_EVENT_TYPE_RECEIVED       = 10;
@@ -53,7 +53,7 @@ enum AssetEventType {
   ASSET_EVENT_TYPE_NOTE           = 80;
 }
 
-// RackSlotType aligns with dcim.placement rack_slot_type check constraint.
+// RackSlotType aligns with core.placements slot_type check constraint.
 enum RackSlotType {
   RACK_SLOT_TYPE_UNSPECIFIED = 0;
   RACK_SLOT_TYPE_UNIT        = 10;
@@ -61,7 +61,7 @@ enum RackSlotType {
   RACK_SLOT_TYPE_ZERO_U      = 30;
 }
 
-// PortType aligns with dcim.port_definition port_type check constraint.
+// PortType aligns with core.port_definitions port_type check constraint.
 enum PortType {
   PORT_TYPE_UNSPECIFIED = 0;
   PORT_TYPE_NETWORK     = 10;
@@ -72,7 +72,7 @@ enum PortType {
   PORT_TYPE_CONSOLE     = 60;
 }
 
-// PortDirection aligns with dcim.port_definition direction check constraint.
+// PortDirection aligns with core.port_definitions direction check constraint.
 enum PortDirection {
   PORT_DIRECTION_UNSPECIFIED = 0;
   PORT_DIRECTION_IN          = 10;

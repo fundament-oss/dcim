@@ -181,16 +181,17 @@ func (b0 SubComponentLocation_builder) Build() *SubComponentLocation {
 	return m0
 }
 
-// Placement maps an asset to a physical location (dcim.placement).
+// Placement maps an asset to a physical location (core.placements).
 type Placement struct {
 	state                      protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Id              string                 `protobuf:"bytes,10,opt,name=id"`
 	xxx_hidden_AssetId         string                 `protobuf:"bytes,20,opt,name=asset_id,json=assetId"`
 	xxx_hidden_Location        isPlacement_Location   `protobuf_oneof:"location"`
 	xxx_hidden_LogicalDeviceId *string                `protobuf:"bytes,50,opt,name=logical_device_id,json=logicalDeviceId"`
-	xxx_hidden_Notes           string                 `protobuf:"bytes,60,opt,name=notes"`
-	xxx_hidden_Created         *timestamppb.Timestamp `protobuf:"bytes,70,opt,name=created"`
-	xxx_hidden_Deleted         *timestamppb.Timestamp `protobuf:"bytes,80,opt,name=deleted"`
+	xxx_hidden_ExternalRef     *string                `protobuf:"bytes,60,opt,name=external_ref,json=externalRef"`
+	xxx_hidden_Notes           string                 `protobuf:"bytes,70,opt,name=notes"`
+	xxx_hidden_Created         *timestamppb.Timestamp `protobuf:"bytes,80,opt,name=created"`
+	xxx_hidden_Deleted         *timestamppb.Timestamp `protobuf:"bytes,90,opt,name=deleted"`
 	XXX_raceDetectHookData     protoimpl.RaceDetectHookData
 	XXX_presence               [1]uint32
 	unknownFields              protoimpl.UnknownFields
@@ -264,6 +265,16 @@ func (x *Placement) GetLogicalDeviceId() string {
 	return ""
 }
 
+func (x *Placement) GetExternalRef() string {
+	if x != nil {
+		if x.xxx_hidden_ExternalRef != nil {
+			return *x.xxx_hidden_ExternalRef
+		}
+		return ""
+	}
+	return ""
+}
+
 func (x *Placement) GetNotes() string {
 	if x != nil {
 		return x.xxx_hidden_Notes
@@ -311,7 +322,12 @@ func (x *Placement) SetSubComponent(v *SubComponentLocation) {
 
 func (x *Placement) SetLogicalDeviceId(v string) {
 	x.xxx_hidden_LogicalDeviceId = &v
-	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 7)
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 3, 8)
+}
+
+func (x *Placement) SetExternalRef(v string) {
+	x.xxx_hidden_ExternalRef = &v
+	protoimpl.X.SetPresent(&(x.XXX_presence[0]), 4, 8)
 }
 
 func (x *Placement) SetNotes(v string) {
@@ -356,6 +372,13 @@ func (x *Placement) HasLogicalDeviceId() bool {
 	return protoimpl.X.Present(&(x.XXX_presence[0]), 3)
 }
 
+func (x *Placement) HasExternalRef() bool {
+	if x == nil {
+		return false
+	}
+	return protoimpl.X.Present(&(x.XXX_presence[0]), 4)
+}
+
 func (x *Placement) HasCreated() bool {
 	if x == nil {
 		return false
@@ -389,6 +412,11 @@ func (x *Placement) ClearSubComponent() {
 func (x *Placement) ClearLogicalDeviceId() {
 	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 3)
 	x.xxx_hidden_LogicalDeviceId = nil
+}
+
+func (x *Placement) ClearExternalRef() {
+	protoimpl.X.ClearPresent(&(x.XXX_presence[0]), 4)
+	x.xxx_hidden_ExternalRef = nil
 }
 
 func (x *Placement) ClearCreated() {
@@ -428,6 +456,7 @@ type Placement_builder struct {
 	// -- end of xxx_hidden_Location
 	// Optional link to the logical design.
 	LogicalDeviceId *string
+	ExternalRef     *string
 	Notes           string
 	Created         *timestamppb.Timestamp
 	Deleted         *timestamppb.Timestamp
@@ -446,8 +475,12 @@ func (b0 Placement_builder) Build() *Placement {
 		x.xxx_hidden_Location = &placement_SubComponent{b.SubComponent}
 	}
 	if b.LogicalDeviceId != nil {
-		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 7)
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 3, 8)
 		x.xxx_hidden_LogicalDeviceId = b.LogicalDeviceId
+	}
+	if b.ExternalRef != nil {
+		protoimpl.X.SetPresentNonAtomic(&(x.XXX_presence[0]), 4, 8)
+		x.xxx_hidden_ExternalRef = b.ExternalRef
 	}
 	x.xxx_hidden_Notes = b.Notes
 	x.xxx_hidden_Created = b.Created
@@ -1574,17 +1607,18 @@ const file_v1_placement_proto_rawDesc = "" +
 	"\x14SubComponentLocation\x12.\n" +
 	"\x13parent_placement_id\x18\n" +
 	" \x01(\tR\x11parentPlacementId\x12(\n" +
-	"\x10parent_port_name\x18\x14 \x01(\tR\x0eparentPortName\"\xf1\x02\n" +
+	"\x10parent_port_name\x18\x14 \x01(\tR\x0eparentPortName\"\x9b\x03\n" +
 	"\tPlacement\x12\x0e\n" +
 	"\x02id\x18\n" +
 	" \x01(\tR\x02id\x12\x19\n" +
 	"\basset_id\x18\x14 \x01(\tR\aassetId\x12+\n" +
 	"\x04rack\x18\x1e \x01(\v2\x15.dcim.v1.RackLocationH\x00R\x04rack\x12D\n" +
 	"\rsub_component\x18( \x01(\v2\x1d.dcim.v1.SubComponentLocationH\x00R\fsubComponent\x121\n" +
-	"\x11logical_device_id\x182 \x01(\tB\x05\xaa\x01\x02\b\x01R\x0flogicalDeviceId\x12\x14\n" +
-	"\x05notes\x18< \x01(\tR\x05notes\x124\n" +
-	"\acreated\x18F \x01(\v2\x1a.google.protobuf.TimestampR\acreated\x12;\n" +
-	"\adeleted\x18P \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\adeletedB\n" +
+	"\x11logical_device_id\x182 \x01(\tB\x05\xaa\x01\x02\b\x01R\x0flogicalDeviceId\x12(\n" +
+	"\fexternal_ref\x18< \x01(\tB\x05\xaa\x01\x02\b\x01R\vexternalRef\x12\x14\n" +
+	"\x05notes\x18F \x01(\tR\x05notes\x124\n" +
+	"\acreated\x18P \x01(\v2\x1a.google.protobuf.TimestampR\acreated\x12;\n" +
+	"\adeleted\x18Z \x01(\v2\x1a.google.protobuf.TimestampB\x05\xaa\x01\x02\b\x01R\adeletedB\n" +
 	"\n" +
 	"\blocation\"\x8c\x02\n" +
 	"\x16CreatePlacementRequest\x12#\n" +

@@ -23,7 +23,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Note is a polymorphic comment attached to any DCIM entity (dcim.note).
+// Note is a polymorphic comment attached to any DCIM entity (core.notes).
 // There is no FK on entity_id — integrity is enforced at the application layer.
 type Note struct {
 	state                 protoimpl.MessageState `protogen:"opaque.v1"`

@@ -12,7 +12,7 @@ option features.(pb.go).api_level = API_OPAQUE;
 option features.field_presence = IMPLICIT;
 option go_package = "github.com/fundament-oss/dcim/api/pkg/proto/gen/v1;dcimv1";
 
-// DeviceCatalog is a device type definition (dcim.device_catalog).
+// DeviceCatalog is a device type definition (core.device_catalogs).
 message DeviceCatalog {
   string              id           = 10;
   string              manufacturer = 20;
@@ -29,7 +29,7 @@ message DeviceCatalog {
   google.protobuf.Timestamp deleted = 120 [features.field_presence = EXPLICIT];
 }
 
-// PortDefinition describes a port or slot on a device catalog entry (dcim.port_definition).
+// PortDefinition describes a port or slot on a device catalog entry (core.port_definitions).
 message PortDefinition {
   string        id                = 10;
   string        device_catalog_id = 20;
@@ -44,7 +44,7 @@ message PortDefinition {
   int32         ordinal           = 90;
 }
 
-// PortCompatibility records that a sub-component catalog entry fits a port (dcim.port_compatibility).
+// PortCompatibility records that a sub-component catalog entry fits a port (core.port_compatibilities).
 message PortCompatibility {
   string port_definition_id    = 10;
   string compatible_catalog_id = 20;

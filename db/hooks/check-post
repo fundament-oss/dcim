@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Generate dbconst files from fundament.dcim
+./_generate-dbconst-constraints
+./_generate-dbconst-enums
+./_generate-dbconst-hints

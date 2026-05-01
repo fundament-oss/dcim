@@ -1,4 +1,4 @@
 {
   "age": "7d",
-  "ignore": ["buf.build/*"]
+  "ignore": ["buf.build/*", "github.com/fundament-oss/*"]
 }

@@ -1,0 +1,1091 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="1.2.3" use-changelog="false" max-obj-count="44"
+	 gen-disabled-objs-code="false" show-sys-schemas-rects="true"
+	 last-position="-651,696" last-zoom="0.4" scene-rect="-1628,0,5628,3500.72"
+	 default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<role name="dcim_api"
+ sql-disabled="true">
+</role>
+
+<role name="dcim_operator"
+ bypassrls="true"
+ sql-disabled="true">
+</role>
+
+<role name="dcim_owner"
+ sql-disabled="true">
+</role>
+
+<database name="dcim" is-template="false" allow-conns="true" sql-disabled="true">
+</database>
+
+<schema name="public" layers="0" rect-visible="true" fill-color="#e1e1e1" name-color="#000000" sql-disabled="true">
+	<role name="postgres"/>
+</schema>
+
+<schema name="core" layers="0" rect-visible="true" fill-color="#e1e1e1" name-color="#31363b">
+	<role name="dcim_owner"/>
+</schema>
+
+<table name="sites" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="2720" y="920"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="address">
+		<type name="text" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="deleted">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="sites_pk" type="pk-constr" table="core.sites">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="sites_uq_name" type="uq-constr" nulls-not-distinct="true" table="core.sites">
+		<columns names="name,deleted" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="rooms" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="2260" y="920"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="site_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="floor">
+		<type name="text" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="deleted">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="rooms_pk" type="pk-constr" table="core.rooms">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="rooms_uq_site_name" type="uq-constr" nulls-not-distinct="true" table="core.rooms">
+		<columns names="site_id,name,deleted" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="rack_rows" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="1740" y="920"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="room_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="position_x">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="position_y">
+		<type name="double precision" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="deleted">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="rack_rows_pk" type="pk-constr" table="core.rack_rows">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="rack_rows_uq_room_name" type="uq-constr" nulls-not-distinct="true" table="core.rack_rows">
+		<columns names="room_id,name,deleted" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="racks" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="1240" y="920"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="rack_row_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="total_units" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="position_in_row" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="deleted">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="racks_pk" type="pk-constr" table="core.racks">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="racks_uq_rack_row_name" type="uq-constr" nulls-not-distinct="true" table="core.racks">
+		<columns names="rack_row_id,name,deleted" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="device_catalogs" layers="0" collapse-mode="2" max-obj-count="14" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="-240" y="2880"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="manufacturer" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="model" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="part_number">
+		<type name="text" length="0"/>
+	</column>
+	<column name="category" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="form_factor">
+		<type name="text" length="0"/>
+	</column>
+	<column name="rack_units">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="weight_kg">
+		<type name="numeric" length="0"/>
+	</column>
+	<column name="power_draw_w">
+		<type name="numeric" length="0"/>
+	</column>
+	<column name="specs">
+		<type name="jsonb" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="deleted">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="device_catalogs_pk" type="pk-constr" table="core.device_catalogs">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="device_catalogs_uq_manufacturer_model" type="uq-constr" nulls-not-distinct="true" table="core.device_catalogs">
+		<columns names="manufacturer,model,deleted" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="device_catalogs_ck_category" type="ck-constr" table="core.device_catalogs">
+			<expression> <![CDATA[category IN ('server','switch','pdu','patch_panel','sfp','nic','cpu','dimm','disk','cable','adapter','power_supply','cable_manager','console_server')]]> </expression>
+	</constraint>
+</table>
+
+<table name="port_definitions" layers="0" collapse-mode="2" max-obj-count="13" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="-600" y="1860"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="device_catalog_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="port_type" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="media_type">
+		<type name="text" length="0"/>
+	</column>
+	<column name="speed">
+		<type name="text" length="0"/>
+	</column>
+	<column name="max_power_w">
+		<type name="numeric" length="0"/>
+	</column>
+	<column name="direction" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="ordinal" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="deleted">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="port_definitions_pk" type="pk-constr" table="core.port_definitions">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="port_definitions_uq_catalog_name" type="uq-constr" nulls-not-distinct="true" table="core.port_definitions">
+		<columns names="device_catalog_id,name,deleted" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="port_definitions_ck_port_type" type="ck-constr" table="core.port_definitions">
+			<expression> <![CDATA[port_type IN ('network','power_in','power_out','slot','bay','console')]]> </expression>
+	</constraint>
+	<constraint name="port_definitions_ck_direction" type="ck-constr" table="core.port_definitions">
+			<expression> <![CDATA[direction IN ('in','out','bidir')]]> </expression>
+	</constraint>
+</table>
+
+<table name="port_compatibilities" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="-1380" y="1860"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="port_definition_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="compatible_category" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="compatible_catalog_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="deleted">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="port_compatibilities_pk" type="pk-constr" table="core.port_compatibilities">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="port_compatibilities_ck_compatible_category" type="ck-constr" table="core.port_compatibilities">
+			<expression> <![CDATA[compatible_category IN ('server','switch','pdu','patch_panel','sfp','nic','cpu','dimm','disk','cable','adapter','power_supply','cable_manager','console_server')]]> </expression>
+	</constraint>
+</table>
+
+<table name="assets" layers="0" collapse-mode="2" max-obj-count="10" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="-800" y="2880"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="device_catalog_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="serial_number">
+		<type name="text" length="0"/>
+	</column>
+	<column name="asset_tag">
+		<type name="text" length="0"/>
+	</column>
+	<column name="purchase_date">
+		<type name="date" length="0"/>
+	</column>
+	<column name="purchase_order">
+		<type name="text" length="0"/>
+	</column>
+	<column name="warranty_expiry">
+		<type name="date" length="0"/>
+	</column>
+	<column name="status" not-null="true" default-value="'in_stock'">
+		<type name="text" length="0"/>
+	</column>
+	<column name="notes">
+		<type name="text" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="deleted">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="assets_pk" type="pk-constr" table="core.assets">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="assets_uq_serial_number" type="uq-constr" table="core.assets">
+		<columns names="serial_number,deleted" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="assets_uq_asset_tag" type="uq-constr" table="core.assets">
+		<columns names="asset_tag,deleted" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="assets_ck_status" type="ck-constr" table="core.assets">
+			<expression> <![CDATA[status IN ('in_stock','deployed','rma','decommissioned','in_transit','reserved')]]> </expression>
+	</constraint>
+</table>
+
+<table name="asset_events" layers="0" collapse-mode="2" max-obj-count="6" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="-1360" y="2860"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="asset_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="event_type" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="details">
+		<type name="text" length="0"/>
+	</column>
+	<column name="performed_by">
+		<type name="text" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="asset_events_pk" type="pk-constr" table="core.asset_events">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="asset_events_ck_event_type" type="ck-constr" table="core.asset_events">
+			<expression> <![CDATA[event_type IN ('received','deployed','moved','rma_sent','rma_received','decommissioned','reserved','note')]]> </expression>
+	</constraint>
+</table>
+
+<table name="logical_designs" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="3320" y="2800"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="version" not-null="true" default-value="1">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="description">
+		<type name="text" length="0"/>
+	</column>
+	<column name="status" not-null="true" default-value="'draft'">
+		<type name="text" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="deleted">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="logical_designs_pk" type="pk-constr" table="core.logical_designs">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="logical_designs_uq_name" type="uq-constr" nulls-not-distinct="true" table="core.logical_designs">
+		<columns names="name,deleted" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="logical_designs_ck_status" type="ck-constr" table="core.logical_designs">
+			<expression> <![CDATA[status IN ('draft','active','archived')]]> </expression>
+	</constraint>
+</table>
+
+<table name="logical_devices" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="2280" y="2900"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="logical_design_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="label" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="role" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="device_catalog_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="requirements">
+		<type name="text" length="0"/>
+	</column>
+	<column name="notes">
+		<type name="text" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="deleted">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="logical_devices_pk" type="pk-constr" table="core.logical_devices">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="logical_devices_uq_design_label" type="uq-constr" nulls-not-distinct="true" table="core.logical_devices">
+		<columns names="logical_design_id,label,deleted" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="logical_devices_ck_role" type="ck-constr" table="core.logical_devices">
+			<expression> <![CDATA[role IN ('compute','tor','spine','core','pdu','patch_panel','storage','firewall','load_balancer','console_server','cable_manager','adapter')]]> </expression>
+	</constraint>
+</table>
+
+<table name="logical_connections" layers="0" collapse-mode="2" max-obj-count="8" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="1260" y="2840"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="logical_design_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="a_logical_device_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="a_port_role">
+		<type name="text" length="0"/>
+	</column>
+	<column name="b_logical_device_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="b_port_role">
+		<type name="text" length="0"/>
+	</column>
+	<column name="connection_type" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="requirements">
+		<type name="text" length="0"/>
+	</column>
+	<column name="label">
+		<type name="text" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="deleted">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="logical_connections_pk" type="pk-constr" table="core.logical_connections">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="logical_connections_ck_connection_type" type="ck-constr" table="core.logical_connections">
+			<expression> <![CDATA[connection_type IN ('network','power','console')]]> </expression>
+	</constraint>
+</table>
+
+<table name="logical_device_layouts" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="3320" y="3100"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="logical_device_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="position_x" not-null="true">
+		<type name="numeric" length="0"/>
+	</column>
+	<column name="position_y" not-null="true">
+		<type name="numeric" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="updated" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="logical_device_layouts_pk" type="pk-constr" table="core.logical_device_layouts">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="placements" layers="0" collapse-mode="2" max-obj-count="12" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="540" y="1300"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="asset_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="rack_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="start_unit">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="slot_type">
+		<type name="text" length="0"/>
+	</column>
+	<column name="parent_placement_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="port_definition_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="logical_device_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="external_ref">
+		<type name="text" length="0"/>
+	</column>
+	<column name="notes">
+		<type name="text" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="deleted">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="placements_pk" type="pk-constr" table="core.placements">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="placements_ck_slot_type" type="ck-constr" table="core.placements">
+			<expression> <![CDATA[slot_type IS NULL OR slot_type IN ('unit','power','zero_u')]]> </expression>
+	</constraint>
+	<constraint name="placements_ck_exclusive_arc" type="ck-constr" table="core.placements">
+			<expression> <![CDATA[(rack_id IS NOT NULL AND slot_type IS NOT NULL AND parent_placement_id IS NULL AND port_definition_id IS NULL) OR (rack_id IS NULL AND start_unit IS NULL AND slot_type IS NULL AND parent_placement_id IS NOT NULL AND port_definition_id IS NOT NULL)]]> </expression>
+	</constraint>
+	<constraint name="placements_ck_unit_start" type="ck-constr" table="core.placements">
+			<expression> <![CDATA[slot_type != 'unit' OR start_unit IS NOT NULL]]> </expression>
+	</constraint>
+</table>
+
+<table name="physical_connections" layers="0" collapse-mode="2" max-obj-count="10" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="480" y="2220"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="a_placement_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="a_port_definition_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="b_placement_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="b_port_definition_id" not-null="true">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="cable_asset_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="logical_connection_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="deleted">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="physical_connections_pk" type="pk-constr" table="core.physical_connections">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="notes" layers="0" collapse-mode="2" max-obj-count="19" z-value="0">
+	<schema name="core"/>
+	<role name="dcim_owner"/>
+	<position x="2800" y="1920"/>
+	<column name="id" not-null="true" default-value="uuidv7()">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="body" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="created_by">
+		<type name="text" length="0"/>
+	</column>
+	<column name="device_catalog_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="port_definition_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="asset_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="site_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="room_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="rack_row_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="rack_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="placement_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="physical_connection_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="logical_design_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="logical_device_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="logical_connection_id">
+		<type name="uuid" length="0"/>
+	</column>
+	<column name="created" not-null="true" default-value="now()">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<column name="deleted">
+		<type name="timestamptz" length="0"/>
+	</column>
+	<constraint name="notes_pk" type="pk-constr" table="core.notes">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="notes_ck_single_ref" type="ck-constr" table="core.notes">
+			<expression> <![CDATA[num_nonnulls(device_catalog_id, port_definition_id, asset_id, site_id, room_id, rack_row_id, rack_id, placement_id, physical_connection_id, logical_design_id, logical_device_id, logical_connection_id) = 1]]> </expression>
+	</constraint>
+</table>
+
+<constraint name="rooms_fk_site" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.sites" table="core.rooms">
+	<columns names="site_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="rack_rows_fk_room" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.rooms" table="core.rack_rows">
+	<columns names="room_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="racks_fk_rack_row" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.rack_rows" table="core.racks">
+	<columns names="rack_row_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="port_definitions_fk_device_catalog" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.device_catalogs" table="core.port_definitions">
+	<columns names="device_catalog_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="port_compatibilities_fk_port_definition" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.port_definitions" table="core.port_compatibilities">
+	<columns names="port_definition_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="port_compatibilities_fk_catalog" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.device_catalogs" table="core.port_compatibilities">
+	<columns names="compatible_catalog_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="assets_fk_device_catalog" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.device_catalogs" table="core.assets">
+	<columns names="device_catalog_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="asset_events_fk_asset" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.assets" table="core.asset_events">
+	<columns names="asset_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="logical_devices_fk_design" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.logical_designs" table="core.logical_devices">
+	<columns names="logical_design_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="logical_devices_fk_catalog" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.device_catalogs" table="core.logical_devices">
+	<columns names="device_catalog_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="logical_connections_fk_design" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.logical_designs" table="core.logical_connections">
+	<columns names="logical_design_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="logical_connections_fk_a_device" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.logical_devices" table="core.logical_connections">
+	<columns names="a_logical_device_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="logical_connections_fk_b_device" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.logical_devices" table="core.logical_connections">
+	<columns names="b_logical_device_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="logical_device_layouts_fk_device" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.logical_devices" table="core.logical_device_layouts">
+	<columns names="logical_device_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="placements_fk_asset" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.assets" table="core.placements">
+	<columns names="asset_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="placements_fk_rack" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.racks" table="core.placements">
+	<columns names="rack_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="placements_fk_parent" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.placements" table="core.placements">
+	<columns names="parent_placement_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="placements_fk_port_definition" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.port_definitions" table="core.placements">
+	<columns names="port_definition_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="placements_fk_logical_device" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.logical_devices" table="core.placements">
+	<columns names="logical_device_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="physical_connections_fk_a_placement" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.placements" table="core.physical_connections">
+	<columns names="a_placement_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="physical_connections_fk_a_port" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.port_definitions" table="core.physical_connections">
+	<columns names="a_port_definition_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="physical_connections_fk_b_placement" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.placements" table="core.physical_connections">
+	<columns names="b_placement_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="physical_connections_fk_b_port" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.port_definitions" table="core.physical_connections">
+	<columns names="b_port_definition_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="physical_connections_fk_cable_asset" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.assets" table="core.physical_connections">
+	<columns names="cable_asset_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="physical_connections_fk_logical_connection" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.logical_connections" table="core.physical_connections">
+	<columns names="logical_connection_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="notes_fk_device_catalog" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.device_catalogs" table="core.notes">
+	<columns names="device_catalog_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="notes_fk_port_definition" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.port_definitions" table="core.notes">
+	<columns names="port_definition_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="notes_fk_asset" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.assets" table="core.notes">
+	<columns names="asset_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="notes_fk_site" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.sites" table="core.notes">
+	<columns names="site_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="notes_fk_room" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.rooms" table="core.notes">
+	<columns names="room_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="notes_fk_rack_row" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.rack_rows" table="core.notes">
+	<columns names="rack_row_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="notes_fk_rack" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.racks" table="core.notes">
+	<columns names="rack_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="notes_fk_placement" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.placements" table="core.notes">
+	<columns names="placement_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="notes_fk_physical_connection" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.physical_connections" table="core.notes">
+	<columns names="physical_connection_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="notes_fk_logical_design" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.logical_designs" table="core.notes">
+	<columns names="logical_design_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="notes_fk_logical_device" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.logical_devices" table="core.notes">
+	<columns names="logical_device_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="notes_fk_logical_connection" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="core.logical_connections" table="core.notes">
+	<columns names="logical_connection_id" ref-type="src-columns"/>
+	<columns names="id" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_rooms_sites" type="relfk" layers="0"
+	 src-table="core.rooms"
+	 dst-table="core.sites" reference-fk="rooms_fk_site"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_rack_rows_rooms" type="relfk" layers="0"
+	 src-table="core.rack_rows"
+	 dst-table="core.rooms" reference-fk="rack_rows_fk_room"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_racks_rack_rows" type="relfk" layers="0"
+	 src-table="core.racks"
+	 dst-table="core.rack_rows" reference-fk="racks_fk_rack_row"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_port_definitions_device_catalogs" type="relfk" layers="0"
+	 src-table="core.port_definitions"
+	 dst-table="core.device_catalogs" reference-fk="port_definitions_fk_device_catalog"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_port_compatibilities_port_definitions" type="relfk" layers="0"
+	 src-table="core.port_compatibilities"
+	 dst-table="core.port_definitions" reference-fk="port_compatibilities_fk_port_definition"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_port_compatibilities_device_catalogs" type="relfk" layers="0"
+	 src-table="core.port_compatibilities"
+	 dst-table="core.device_catalogs" reference-fk="port_compatibilities_fk_catalog"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_assets_device_catalogs" type="relfk" layers="0"
+	 src-table="core.assets"
+	 dst-table="core.device_catalogs" reference-fk="assets_fk_device_catalog"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_asset_events_assets" type="relfk" layers="0"
+	 src-table="core.asset_events"
+	 dst-table="core.assets" reference-fk="asset_events_fk_asset"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_logical_devices_logical_designs" type="relfk" layers="0"
+	 src-table="core.logical_devices"
+	 dst-table="core.logical_designs" reference-fk="logical_devices_fk_design"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_logical_devices_device_catalogs" type="relfk" layers="0"
+	 src-table="core.logical_devices"
+	 dst-table="core.device_catalogs" reference-fk="logical_devices_fk_catalog"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_logical_connections_logical_designs" type="relfk" layers="0"
+	 src-table="core.logical_connections"
+	 dst-table="core.logical_designs" reference-fk="logical_connections_fk_design"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_logical_connections_a_logical_devices" type="relfk" layers="0"
+	 src-table="core.logical_connections"
+	 dst-table="core.logical_devices" reference-fk="logical_connections_fk_a_device"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_logical_connections_b_logical_devices" type="relfk" layers="0"
+	 src-table="core.logical_connections"
+	 dst-table="core.logical_devices" reference-fk="logical_connections_fk_b_device"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_logical_device_layouts_logical_devices" type="relfk" layers="0"
+	 src-table="core.logical_device_layouts"
+	 dst-table="core.logical_devices" reference-fk="logical_device_layouts_fk_device"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_placements_assets" type="relfk" layers="0"
+	 src-table="core.placements"
+	 dst-table="core.assets" reference-fk="placements_fk_asset"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_placements_racks" type="relfk" layers="0"
+	 src-table="core.placements"
+	 dst-table="core.racks" reference-fk="placements_fk_rack"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_placements_placements" type="relfk" layers="0"
+	 src-table="core.placements"
+	 dst-table="core.placements" reference-fk="placements_fk_parent"
+	 src-required="false" dst-required="false">
+	<line>
+		<position x="935.447" y="1439.57"/>
+	<position x="935.447" y="1278"/>
+	<position x="788.965" y="1278"/>
+	</line>
+</relationship>
+
+<relationship name="rel_placements_port_definitions" type="relfk" layers="0"
+	 src-table="core.placements"
+	 dst-table="core.port_definitions" reference-fk="placements_fk_port_definition"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_placements_logical_devices" type="relfk" layers="0"
+	 src-table="core.placements"
+	 dst-table="core.logical_devices" reference-fk="placements_fk_logical_device"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_physical_connections_a_placements" type="relfk" layers="0"
+	 src-table="core.physical_connections"
+	 dst-table="core.placements" reference-fk="physical_connections_fk_a_placement"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_physical_connections_a_port_definitions" type="relfk" layers="0"
+	 src-table="core.physical_connections"
+	 dst-table="core.port_definitions" reference-fk="physical_connections_fk_a_port"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_physical_connections_b_placements" type="relfk" layers="0"
+	 src-table="core.physical_connections"
+	 dst-table="core.placements" reference-fk="physical_connections_fk_b_placement"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_physical_connections_b_port_definitions" type="relfk" layers="0"
+	 src-table="core.physical_connections"
+	 dst-table="core.port_definitions" reference-fk="physical_connections_fk_b_port"
+	 src-required="false" dst-required="true"/>
+
+<relationship name="rel_physical_connections_cable_assets" type="relfk" layers="0"
+	 src-table="core.physical_connections"
+	 dst-table="core.assets" reference-fk="physical_connections_fk_cable_asset"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_physical_connections_logical_connections" type="relfk" layers="0"
+	 src-table="core.physical_connections"
+	 dst-table="core.logical_connections" reference-fk="physical_connections_fk_logical_connection"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_notes_device_catalogs" type="relfk" layers="0"
+	 src-table="core.notes"
+	 dst-table="core.device_catalogs" reference-fk="notes_fk_device_catalog"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_notes_port_definitions" type="relfk" layers="0"
+	 src-table="core.notes"
+	 dst-table="core.port_definitions" reference-fk="notes_fk_port_definition"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_notes_assets" type="relfk" layers="0"
+	 src-table="core.notes"
+	 dst-table="core.assets" reference-fk="notes_fk_asset"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_notes_sites" type="relfk" layers="0"
+	 src-table="core.notes"
+	 dst-table="core.sites" reference-fk="notes_fk_site"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_notes_rooms" type="relfk" layers="0"
+	 src-table="core.notes"
+	 dst-table="core.rooms" reference-fk="notes_fk_room"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_notes_rack_rows" type="relfk" layers="0"
+	 src-table="core.notes"
+	 dst-table="core.rack_rows" reference-fk="notes_fk_rack_row"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_notes_racks" type="relfk" layers="0"
+	 src-table="core.notes"
+	 dst-table="core.racks" reference-fk="notes_fk_rack"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_notes_placements" type="relfk" layers="0"
+	 src-table="core.notes"
+	 dst-table="core.placements" reference-fk="notes_fk_placement"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_notes_physical_connections" type="relfk" layers="0"
+	 src-table="core.notes"
+	 dst-table="core.physical_connections" reference-fk="notes_fk_physical_connection"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_notes_logical_designs" type="relfk" layers="0"
+	 src-table="core.notes"
+	 dst-table="core.logical_designs" reference-fk="notes_fk_logical_design"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_notes_logical_devices" type="relfk" layers="0"
+	 src-table="core.notes"
+	 dst-table="core.logical_devices" reference-fk="notes_fk_logical_device"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_notes_logical_connections" type="relfk" layers="0"
+	 src-table="core.notes"
+	 dst-table="core.logical_connections" reference-fk="notes_fk_logical_connection"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>

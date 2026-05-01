@@ -23,7 +23,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// LogicalDesignStatus aligns with dcim.logical_design status check constraint.
+// LogicalDesignStatus aligns with core.logical_designs status check constraint.
 type LogicalDesignStatus int32
 
 const (
@@ -71,7 +71,7 @@ func (x LogicalDesignStatus) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// LogicalDeviceRole aligns with dcim.logical_device role check constraint.
+// LogicalDeviceRole aligns with core.logical_devices role check constraint.
 type LogicalDeviceRole int32
 
 const (
@@ -146,7 +146,7 @@ func (x LogicalDeviceRole) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// LogicalConnectionType aligns with dcim.logical_connection connection_type check constraint.
+// LogicalConnectionType aligns with core.logical_connections connection_type check constraint.
 type LogicalConnectionType int32
 
 const (
@@ -194,7 +194,7 @@ func (x LogicalConnectionType) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// LogicalDesign is a versioned topology schema (dcim.logical_design).
+// LogicalDesign is a versioned topology schema (core.logical_designs).
 // Only one design per name may have status ACTIVE at a time.
 type LogicalDesign struct {
 	state                  protoimpl.MessageState `protogen:"opaque.v1"`
@@ -359,7 +359,7 @@ func (b0 LogicalDesign_builder) Build() *LogicalDesign {
 	return m0
 }
 
-// LogicalDevice is an abstract role within a design (dcim.logical_device).
+// LogicalDevice is an abstract role within a design (core.logical_devices).
 // When device_catalog_id is absent, the device is generic and requirements
 // describes what kind of device is needed (e.g. {"cpu_cores": "32", "ram_gb": "256"}).
 type LogicalDevice struct {
@@ -593,7 +593,7 @@ func (b0 LogicalDevice_builder) Build() *LogicalDevice {
 	return m0
 }
 
-// LogicalConnection is an intended link between two logical devices (dcim.logical_connection).
+// LogicalConnection is an intended link between two logical devices (core.logical_connections).
 type LogicalConnection struct {
 	state                     protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Id             string                 `protobuf:"bytes,10,opt,name=id"`

@@ -76,7 +76,7 @@ func (x AssetSortField) Number() protoreflect.EnumNumber {
 	return protoreflect.EnumNumber(x)
 }
 
-// Asset is a physical inventory item (dcim.asset).
+// Asset is a physical inventory item (core.assets).
 // Physical location is tracked via Placement, not stored on the asset itself.
 type Asset struct {
 	state                      protoimpl.MessageState `protogen:"opaque.v1"`

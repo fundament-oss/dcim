@@ -17,8 +17,9 @@ import (
 )
 
 type config struct {
-	ListenAddr string `env:"LISTEN_ADDR" envDefault:":8080"`
-	LogLevel   string `env:"LOG_LEVEL" envDefault:"info"`
+	DatabaseURL string `env:"DATABASE_URL,required"`
+	ListenAddr  string `env:"LISTEN_ADDR" envDefault:":8080"`
+	LogLevel    string `env:"LOG_LEVEL" envDefault:"info"`
 }
 
 func main() {

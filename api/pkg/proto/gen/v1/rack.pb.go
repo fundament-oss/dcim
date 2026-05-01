@@ -23,7 +23,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// Rack is a physical equipment rack within a rack row (dcim.rack).
+// Rack is a physical equipment rack within a rack row (core.racks).
 type Rack struct {
 	state                    protoimpl.MessageState `protogen:"opaque.v1"`
 	xxx_hidden_Id            string                 `protobuf:"bytes,10,opt,name=id"`
