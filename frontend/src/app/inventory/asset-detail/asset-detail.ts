@@ -5,14 +5,12 @@ import {
   Asset,
   AssetCategory,
   AssetStatus,
-
   CatalogEntry,
   HistoryEntry,
   MOCK_ASSETS,
   MOCK_CATALOG,
   MOCK_HISTORY,
   MOCK_NOTES,
-  NoteComment,
   AssetNoteDetail,
 } from '../inventory';
 
