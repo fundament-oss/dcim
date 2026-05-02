@@ -1,0 +1,168 @@
+<!-- Top Navigation -->
+<nav class="sticky top-0 z-40 flex items-center justify-between border-b border-neutral-200 bg-white px-4 py-3">
+  <a href="#"
+    class="flex items-center gap-1.5 text-sm font-medium text-neutral-500 hover:text-neutral-900 transition-colors"
+    aria-label="Back to my tasks">
+    <nldd-icon name="arrow-left" class="w-4.5 h-4.5" aria-hidden="true"></nldd-icon>
+    <span class="hidden sm:inline">My Tasks</span>
+  </a>
+
+  <!-- Logo -->
+  <a routerLink="/" class="flex items-center leading-tight gap-2">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5.5 w-5.5 text-indigo-600 dark:text-indigo-400"
+      viewBox="0 0 24 24">
+      <path fill="currentColor"
+        d="M6 5h12a1 1 0 0 1 1 1a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1a1 1 0 0 1 1-1m15-3v2H3V2zm-6 6h2v14h-2zM7 8h2v14H7zm4 0h2v14h-2z" />
+    </svg>
+    <span class="text-sm font-semibold tracking-tight text-neutral-900">Fundament</span>
+  </a>
+
+  <div class="relative">
+    <button id="menuBtn"
+      class="rounded-lg p-1.5 text-neutral-500 hover:bg-neutral-25 hover:text-neutral-700 transition-colors"
+      aria-label="Task menu">
+      <nldd-icon name="list" class="w-5 h-5 block" aria-hidden="true"></nldd-icon>
+    </button>
+    <div id="menuDropdown"
+      class="absolute right-0 top-full mt-1 hidden w-64 rounded-xl border border-neutral-200 bg-white py-1 shadow-lg shadow-neutral-900/10">
+      <div class="border-b border-neutral-100 px-3 py-2 text-xs font-semibold tracking-wide text-neutral-400 uppercase">
+        Other Tasks
+      </div>
+      <a href="#"
+        class="flex items-center gap-2 px-3 py-2.5 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors">
+        <nldd-icon name="rectangle-stack" class="w-4 h-4 text-neutral-400"
+          aria-hidden="true"></nldd-icon>
+        Replace network switch — Rack 87
+      </a>
+      <a href="#"
+        class="flex items-center gap-2 px-3 py-2.5 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors">
+        <nldd-icon name="slash-circle" class="w-4 h-4 text-neutral-400"
+          aria-hidden="true"></nldd-icon>
+        Inspect PDU — Hall A
+      </a>
+      <a href="#"
+        class="flex items-center gap-2 px-3 py-2.5 text-sm text-neutral-700 hover:bg-neutral-50 transition-colors">
+        <nldd-icon name="exclamation-circle" class="w-4 h-4 text-neutral-400"
+          aria-hidden="true"></nldd-icon>
+        Check cooling unit — Row 5
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="mx-auto max-w-2xl px-4 pb-36 pt-6">
+
+  <!-- Task Header (populated by JS) -->
+  <div id="taskHeader" class="mb-6"></div>
+
+  <!-- Step Wizard Timeline -->
+  <div id="wizardTimeline" class="relative ml-4"></div>
+
+  <!-- Task Complete Screen (hidden initially) -->
+  <div id="completeScreen" class="hidden py-16 text-center">
+    <div
+      class="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50 ring-1 ring-emerald-200/60">
+      <nldd-icon name="check-mark-circle" style="width:32px;height:32px;color:#059669;" aria-hidden="true"></nldd-icon>
+    </div>
+    <h2 class="text-xl font-semibold text-neutral-900">Work order complete!</h2>
+    <p class="mt-2 text-sm text-neutral-500">
+      All tasks for DC Amsterdam-West have been finished.
+    </p>
+    <a href="#">
+      <nldd-button variant="neutral-filled" text="Back to My Tasks" start-icon="arrow-left"
+        class="mt-6 inline-flex"></nldd-button>
+    </a>
+  </div>
+</main>
+
+<!-- Sticky Bottom Bar -->
+<div id="bottomBar"
+  class="fixed bottom-0 left-0 right-0 z-40 border-t border-neutral-200 bg-white shadow-[0_-1px_8px_rgba(0,0,0,0.04)]">
+  <div class="mx-auto max-w-2xl">
+    <!-- Progress Bar -->
+    <div class="flex items-center gap-3 px-4 pt-3">
+      <div class="h-1 flex-1 overflow-hidden rounded-full bg-neutral-100" role="progressbar" id="progressBar"
+        aria-valuemin="0" aria-valuemax="10" aria-valuenow="0" aria-label="Task progress: 0 of 10 steps completed">
+        <div id="progressFill" class="h-full rounded-full bg-accent-500 transition-all duration-300" class="w-0">
+        </div>
+      </div>
+      <span id="progressLabel" class="text-xs font-medium tabular-nums text-neutral-400">0/10</span>
+    </div>
+    <!-- Action Row -->
+    <div class="flex items-center justify-between px-3 pb-3 pt-2">
+      <nldd-button id="prevBtn" variant="neutral-tinted" size="sm" text="Previous" start-icon="chevron-left"
+        aria-label="Previous step"></nldd-button>
+      <div class="flex items-center gap-1">
+        <nldd-button id="photoBtn" variant="neutral-tinted" size="sm" text="Photo" start-icon="square-arrow-up"
+          aria-label="Take photo for current step"></nldd-button>
+        <nldd-button id="noteBtn" variant="neutral-tinted" size="sm" text="Note" start-icon="pencil-on-square"
+          aria-label="Add note for current step"></nldd-button>
+      </div>
+      <nldd-button id="doneBtn" variant="accent-filled" size="sm" text="Done" end-icon="check-mark"></nldd-button>
+    </div>
+  </div>
+</div>
+
+<!-- Photo Modal -->
+<div id="photoModal"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-neutral-900/50 p-4 backdrop-blur-sm" role="dialog"
+  aria-modal="true" aria-label="Take photo">
+  <div class="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl shadow-neutral-900/20 ring-1 ring-neutral-200/80">
+    <div class="flex items-center gap-2 text-base font-semibold text-neutral-900">
+      <nldd-icon name="square-arrow-up" class="w-4.5 h-4.5 text-accent-600"
+        aria-hidden="true"></nldd-icon>
+      Take Photo
+    </div>
+    <p id="photoStepLabel" class="mt-1 text-sm text-neutral-400">
+      Step 1: Review task details
+    </p>
+    <div class="mt-4">
+      <label
+        class="flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-neutral-200 bg-neutral-50 px-4 py-8 transition hover:border-accent-400 hover:bg-accent-50/30">
+        <nldd-icon name="square-plus-on-square" class="w-8 h-8 text-neutral-400"
+          class="mb-2" aria-hidden="true"></nldd-icon>
+        <span class="text-sm font-medium text-neutral-500">Tap to take photo</span>
+        <input type="file" accept="image/*" capture="environment" class="hidden" id="photoInput" />
+      </label>
+      <div id="photoPreview" class="mt-3 hidden">
+        <img id="photoPreviewImg" class="h-32 w-full rounded-xl object-cover" alt="Captured photo preview" />
+      </div>
+    </div>
+    <div class="mt-5 flex justify-end gap-2">
+      <nldd-button id="photoCancelBtn" variant="neutral-tinted" text="Cancel" size="sm"></nldd-button>
+      <nldd-button id="photoSaveBtn" variant="accent-filled" text="Save" size="sm"></nldd-button>
+    </div>
+  </div>
+</div>
+
+<!-- Notes Modal -->
+<div id="noteModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-neutral-900/50 p-4 backdrop-blur-sm"
+  role="dialog" aria-modal="true" aria-label="Add note">
+  <div class="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl shadow-neutral-900/20 ring-1 ring-neutral-200/80">
+    <div class="flex items-center gap-2 text-base font-semibold text-neutral-900">
+      <nldd-icon name="pencil-on-square" class="w-4.5 h-4.5 text-accent-600"
+        aria-hidden="true"></nldd-icon>
+      Add Note
+    </div>
+    <p id="noteStepLabel" class="mt-1 text-sm text-neutral-400">
+      Step 1: Review task details
+    </p>
+    <textarea id="noteTextarea" rows="4" placeholder="Add your observations…"
+      class="mt-4 w-full resize-none rounded-xl border border-neutral-200 bg-neutral-50 px-3 py-2.5 text-sm text-neutral-900 placeholder-neutral-400 focus:border-accent-500 focus:bg-white focus:ring-2 focus:ring-accent-500/20 focus:outline-none transition"></textarea>
+    <div class="mt-5 flex justify-end gap-2">
+      <nldd-button id="noteCancelBtn" variant="neutral-tinted" text="Cancel" size="sm"></nldd-button>
+      <nldd-button id="noteSaveBtn" variant="accent-filled" text="Save" size="sm"></nldd-button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"
+  class="pointer-events-none fixed bottom-28 left-1/2 z-50 -translate-x-1/2 opacity-0 transition-opacity duration-300">
+  <div
+    class="flex items-center gap-2 rounded-full bg-neutral-900 px-4 py-2 text-sm font-medium text-white shadow-xl ring-1 ring-neutral-700">
+    <nldd-icon name="check-mark" style="width:14px;height:14px;color:#34d399;" aria-hidden="true"></nldd-icon>
+    <span id="toastText">Saved</span>
+  </div>
+</div>

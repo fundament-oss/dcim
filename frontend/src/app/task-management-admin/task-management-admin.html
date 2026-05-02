@@ -1,0 +1,336 @@
+<!-- ══════════════════════════════════════════════════════════════
+     PAGE HEADER (subbar)
+     ══════════════════════════════════════════════════════════════ -->
+<div class="shrink-0 border-b border-slate-200 bg-white px-6 py-3 flex items-center gap-4">
+  <div class="flex-1 min-w-0">
+    <h1 class="text-lg font-semibold text-slate-900 leading-tight m-0">Tasks</h1>
+  </div>
+  <div class="flex items-center gap-2 shrink-0">
+    <nldd-button variant="secondary" text="Export CSV" start-icon="arrow-down-in-bucket" size="sm"></nldd-button>
+    <nldd-button id="addTaskFab" variant="accent-filled" text="New task" start-icon="plus-small" size="sm"></nldd-button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     SUB-NAV
+     ══════════════════════════════════════════════════════════════ -->
+<div class="shrink-0 border-b border-slate-200 bg-white px-6">
+  <nav class="flex h-10 items-center gap-0.5" aria-label="Tasks navigation">
+    <a href="#"
+      class="flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-1.5 text-sm font-medium text-slate-900"
+      aria-current="page">
+      <nldd-icon name="check-mark-circle" class="w-4 h-4" aria-hidden="true"></nldd-icon>Tasks
+    </a>
+    <a href="#"
+      class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition-colors">
+      <nldd-icon name="person-2" class="w-4 h-4" aria-hidden="true"></nldd-icon>Technicians
+    </a>
+    <a href="#"
+      class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition-colors">
+      <nldd-icon name="chart-x-y-axis-line" class="w-4 h-4" aria-hidden="true"></nldd-icon>Reports
+    </a>
+    <a href="#"
+      class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-700 transition-colors">
+      <nldd-icon name="gear" class="w-4 h-4" aria-hidden="true"></nldd-icon>Settings
+    </a>
+  </nav>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     TOOLBAR
+     ══════════════════════════════════════════════════════════════ -->
+<div class="shrink-0 border-b border-slate-200 bg-white px-6 py-2.5">
+  <div class="flex items-center gap-2.5">
+
+    <!-- Search -->
+    <nldd-search-field
+      id="taskSearch"
+      placeholder="Search tasks…"
+      accessible-label="Search tasks"
+      size="sm"
+      style="--nldd-text-field-width: 240px;">
+    </nldd-search-field>
+
+    <!-- Divider -->
+    <div class="hidden sm:block h-4 w-px bg-slate-200 shrink-0"></div>
+
+    <!-- Filter chips (desktop) -->
+    <div class="hidden sm:flex items-center gap-1.5">
+      <select id="filterStatus" aria-label="Filter by status">
+        <option value="">Status</option>
+        <option value="ready">Ready</option>
+        <option value="in-progress">In Progress</option>
+        <option value="review">Review</option>
+        <option value="blocked">Blocked</option>
+        <option value="done">Done</option>
+      </select>
+      <select id="filterPriority" aria-label="Filter by priority">
+        <option value="">Priority</option>
+        <option value="critical">Critical</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+      <select id="filterAssignee" aria-label="Filter by assignee">
+        <option value="">Assignee</option>
+      </select>
+      <select id="filterLocation" aria-label="Filter by location">
+        <option value="">Location</option>
+      </select>
+    </div>
+
+    <!-- Spacer -->
+    <div class="flex-1"></div>
+
+    <!-- Bulk actions -->
+    <div id="bulkBar" class="hidden items-center gap-2">
+      <span id="bulkCount" class="text-xs font-medium text-slate-600"></span>
+      <nldd-button variant="neutral-transparent" text="Status" start-icon="pencil" size="sm"></nldd-button>
+      <nldd-button variant="neutral-transparent" text="Assign" start-icon="person" size="sm"></nldd-button>
+      <nldd-button variant="neutral-transparent" start-icon="trash" size="sm" accessible-label="Delete selected" class="text-danger-700"></nldd-button>
+      <div class="h-4 w-px bg-slate-200"></div>
+    </div>
+
+    <!-- View toggle -->
+    <nldd-segmented-control id="viewToggle" value="list" size="sm" type="radio" variant="icon">
+      <nldd-segmented-control-item value="list" icon="list" text="List view"></nldd-segmented-control-item>
+      <nldd-segmented-control-item value="kanban" icon="rectangle-stack" text="Kanban view"></nldd-segmented-control-item>
+    </nldd-segmented-control>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MAIN CONTENT
+     ══════════════════════════════════════════════════════════════ -->
+<main class="flex-1 overflow-y-auto px-6 pb-6">
+
+  <!-- ── LIST VIEW ── -->
+  <div id="listView">
+    <table class="w-full border-collapse">
+      <thead>
+        <tr class="border-b border-slate-100">
+          <th class="w-10 px-3 py-2.5 text-left">
+            <nldd-checkbox id="selectAll" accessible-label="Select all tasks"></nldd-checkbox>
+          </th>
+          <th class="w-20 py-2.5 px-2 text-left text-xs font-medium text-slate-400 uppercase tracking-wide">ID</th>
+          <th class="py-2.5 px-2 text-left text-xs font-medium text-slate-400 uppercase tracking-wide">Task</th>
+          <th class="w-32 py-2.5 px-2 text-left text-xs font-medium text-slate-400 uppercase tracking-wide">Status</th>
+          <th class="w-24 py-2.5 px-2 text-left text-xs font-medium text-slate-400 uppercase tracking-wide">Priority</th>
+          <th class="w-28 py-2.5 px-2 text-left text-xs font-medium text-slate-400 uppercase tracking-wide">Category</th>
+          <th class="w-12 py-2.5 px-2 text-center text-xs font-medium text-slate-400 uppercase tracking-wide">Who</th>
+          <th class="w-28 py-2.5 px-2 text-left text-xs font-medium text-slate-400 uppercase tracking-wide">Due</th>
+        </tr>
+      </thead>
+      <tbody id="taskList">
+        <!-- Rows rendered by JS -->
+      </tbody>
+    </table>
+
+    <!-- Count row -->
+    <div class="py-3 text-xs text-slate-400">
+      <span id="taskCount">8 tasks</span>
+    </div>
+  </div>
+
+  <!-- ── KANBAN VIEW ── -->
+  <div id="kanbanView" class="hidden pt-5">
+    <div id="kanbanBoard" class="flex gap-3 overflow-x-auto pb-6 snap-x snap-mandatory sm:snap-none">
+      <!-- Columns rendered by JS -->
+    </div>
+  </div>
+</main>
+
+<!-- ══════════════════════════════════════════════════════════════
+     TASK DETAIL SHEET
+     ══════════════════════════════════════════════════════════════ -->
+<nldd-sheet id="detailSheet" accessible-label="Task details" placement="right" width="520px">
+  <div class="flex flex-col h-full">
+
+    <!-- Sheet header -->
+    <div class="flex items-start justify-between border-b border-slate-100 px-6 pt-6 pb-5 shrink-0">
+      <div class="flex-1 min-w-0 pr-4">
+        <h2 id="detailTitle" class="text-base font-semibold text-slate-900 leading-snug"></h2>
+        <div class="mt-2.5 flex flex-wrap items-center gap-2">
+          <span id="detailStatus"
+            class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium"></span>
+          <span id="detailPriority"
+            class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium"></span>
+          <span id="detailCategory"
+            class="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-500"></span>
+        </div>
+      </div>
+      <button id="detailCloseBtn"
+        class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors shrink-0"
+        aria-label="Close">
+        <nldd-icon name="dismiss" class="w-4.5 h-4.5 block"></nldd-icon>
+      </button>
+    </div>
+
+    <!-- Sheet body -->
+    <div class="flex-1 overflow-y-auto px-6 py-5 space-y-5">
+
+      <!-- Properties -->
+      <div class="grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
+        <div>
+          <p class="text-xs font-medium text-slate-400 mb-1.5">Assignee</p>
+          <div id="detailAssignee" class="flex items-center gap-2 text-slate-700 font-medium"></div>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-slate-400 mb-1.5">Due date</p>
+          <p id="detailDue" class="text-slate-700"></p>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-slate-400 mb-1.5">Location</p>
+          <p id="detailLocation" class="text-slate-700"></p>
+        </div>
+        <div>
+          <p class="text-xs font-medium text-slate-400 mb-1.5">Created</p>
+          <p id="detailCreated" class="text-slate-700"></p>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="rounded-xl bg-slate-50 px-4 py-3.5">
+        <p class="text-xs font-medium text-slate-400 mb-2">Description</p>
+        <p id="detailDescription" class="text-sm leading-relaxed text-slate-600"></p>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-2">
+        <nldd-button id="detailEditBtn" variant="secondary" text="Edit" start-icon="pencil" size="sm"></nldd-button>
+        <nldd-button id="detailTechLink" variant="neutral-tinted" text="Technician view" start-icon="eye" size="sm" href="/task-management-technician"></nldd-button>
+      </div>
+
+      <!-- Notes -->
+      <div>
+        <p class="text-xs font-medium text-slate-400 mb-3">
+          Notes <span id="detailNoteCount" class="text-slate-300 ml-0.5"></span>
+        </p>
+        <div id="detailNotes" class="space-y-3"></div>
+
+        <!-- Add note -->
+        <div class="mt-4 flex gap-2.5">
+          <div
+            class="h-8 w-8 shrink-0 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs font-semibold select-none">
+            A</div>
+          <div class="flex-1 relative">
+            <nldd-text-field
+              id="newNoteInput"
+              placeholder="Add a note…"
+              accessible-label="Add a note"
+              size="sm"
+              class="w-full">
+            </nldd-text-field>
+            <button id="sendNoteBtn"
+              class="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-indigo-600 transition-colors"
+              aria-label="Send note">
+              <nldd-icon name="arrow-right" class="w-4 h-4 block"></nldd-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nldd-sheet>
+
+<!-- ══════════════════════════════════════════════════════════════
+     ADD / EDIT TASK MODAL
+     ══════════════════════════════════════════════════════════════ -->
+<div id="editModal"
+  class="fixed inset-0 z-50 hidden items-start justify-center bg-slate-900/50 p-4 pt-10 backdrop-blur-sm overflow-y-auto"
+  role="dialog" aria-modal="true">
+  <div class="w-full max-w-lg rounded-2xl bg-white shadow-2xl shadow-slate-900/20 my-4 ring-1 ring-slate-200/80">
+
+    <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+      <h2 id="editModalTitle" class="text-base font-semibold text-slate-900">Add Task</h2>
+      <button id="editCloseBtn"
+        class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+        aria-label="Close">
+        <nldd-icon name="dismiss" class="w-4.5 h-4.5 block"></nldd-icon>
+      </button>
+    </div>
+
+    <div class="px-6 py-5 space-y-4">
+      <div>
+        <label class="block text-xs font-medium text-slate-500 mb-1.5" for="editTitle">Title</label>
+        <nldd-text-field id="editTitle" placeholder="E.g. Replace broken harddisk" accessible-label="Title" class="w-full"></nldd-text-field>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-slate-500 mb-1.5">Description</label>
+        <textarea id="editDescription" rows="3" placeholder="Describe the task…"
+          class="w-full resize-none rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition"></textarea>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-500 mb-1.5" for="editStatus">Status</label>
+          <select id="editStatus"
+            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition">
+            <option>Ready</option>
+            <option>In Progress</option>
+            <option>Review</option>
+            <option>Blocked</option>
+            <option>Done</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-500 mb-1.5" for="editPriority">Priority</label>
+          <select id="editPriority"
+            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition">
+            <option>Critical</option>
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-medium text-slate-500 mb-1.5" for="editCategory">Category</label>
+          <select id="editCategory"
+            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition">
+            <option>Hardware</option>
+            <option>Network</option>
+            <option>Cooling</option>
+            <option>Power</option>
+            <option>Security</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-slate-500 mb-1.5" for="editDue">Due date</label>
+          <input id="editDue" type="date"
+            class="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition" />
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-slate-500 mb-1.5" for="editLocation">Location</label>
+        <nldd-text-field id="editLocation" placeholder="E.g. DC Amsterdam-West · Rack 123" accessible-label="Location" class="w-full"></nldd-text-field>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-slate-500 mb-1.5">Assignee</label>
+        <div id="assigneeSelector">
+          <div class="grid grid-cols-1 gap-1.5 max-h-48 overflow-y-auto">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center justify-end gap-2 border-t border-slate-100 px-6 py-4">
+      <nldd-button id="editCancelBtn" variant="neutral-transparent" text="Cancel" size="sm"></nldd-button>
+      <nldd-button id="editSaveBtn" variant="accent-filled" text="Save task" size="sm"></nldd-button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════
+     TOAST
+     ══════════════════════════════════════════════════════════════ -->
+<div id="toast"
+  class="pointer-events-none fixed bottom-24 left-1/2 z-50 -translate-x-1/2 opacity-0 transition-opacity duration-300">
+  <div
+    class="flex items-center gap-2 rounded-full bg-slate-900 px-4 py-2 text-sm font-medium text-white shadow-xl ring-1 ring-slate-700">
+    <nldd-icon name="check-mark" style="width:14px;height:14px;color:#34d399;"></nldd-icon>
+    <span id="toastText">Saved</span>
+  </div>
+</div>
