@@ -1,11 +1,8 @@
 version: v2
 modules:
-  - path: proto
-    name: buf.build/fundament-oss/fundament-dcim
+  - path: ../api/pkg/proto
 deps:
   - buf.build/bufbuild/protovalidate
-  - buf.build/googleapis/googleapis
-  - buf.build/protocolbuffers/wellknowntypes
 lint:
   use:
     - DEFAULT

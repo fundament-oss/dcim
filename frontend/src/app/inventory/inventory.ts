@@ -5,10 +5,14 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   effect,
   ElementRef,
+  inject,
   signal,
   viewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
+import InventoryApiService from './inventory-api.service';
+import connectErrorMessage from '../../connect/error';
 
 export type AssetStatus =
   | 'needs-repair'
@@ -2049,6 +2053,8 @@ interface FlatRow {
   },
 })
 export default class InventoryComponent {
+  private readonly inventoryApi = inject(InventoryApiService);
+
   readonly ITEMS_PER_PAGE = 50;
 
   // ── Mutable asset list ─────────────────────────────────────────────────────
@@ -2311,13 +2317,24 @@ export default class InventoryComponent {
       notes: (this.fAssetNotes()?.nativeElement as HTMLInputElement)?.value ?? '',
       parentId: form.parentId,
     };
-    // TODO(api): form.id ? AssetService.UpdateAsset(UpdateAssetRequest) : AssetService.CreateAsset(CreateAssetRequest)
     if (form.id) {
-      this.mutableAssets.update((list) => list.map((a) => (a.id === form.id ? updated : a)));
+      firstValueFrom(this.inventoryApi.updateAsset(updated))
+        .then(() => {
+          this.mutableAssets.update((list) => list.map((a) => (a.id === form.id ? updated : a)));
+          this.editAsset.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     } else {
-      this.mutableAssets.update((list) => [...list, updated]);
+      firstValueFrom(this.inventoryApi.createAsset(updated))
+        .then((res) => {
+          const created = { ...updated, id: res.asset?.id ?? updated.id };
+          this.mutableAssets.update((list) => [...list, created]);
+          this.editAsset.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     }
-    this.editAsset.set(null);
   }
 
   openDeleteAsset(asset: Asset, event: Event): void {
@@ -2333,11 +2350,15 @@ export default class InventoryComponent {
   confirmDeleteAsset(): void {
     const target = this.deleteAsset();
     if (!target) return;
-    // TODO(api): AssetService.DeleteAsset(DeleteAssetRequest)
-    this.mutableAssets.update((list) =>
-      list.filter((a) => a.id !== target.id && a.parentId !== target.id),
-    );
-    this.deleteAsset.set(null);
+    firstValueFrom(this.inventoryApi.deleteAsset(target.id))
+      .then(() => {
+        this.mutableAssets.update((list) =>
+          list.filter((a) => a.id !== target.id && a.parentId !== target.id),
+        );
+        this.deleteAsset.set(null);
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
   }
 
   toggleExpand(id: string, event: Event) {

@@ -4,12 +4,16 @@ import {
   computed,
   effect,
   inject,
+  OnInit,
   signal,
   viewChild,
   CUSTOM_ELEMENTS_SCHEMA,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import DcSelectorComponent from '../shared/dc-selector';
+import DatacenterApiService from './datacenter-api.service';
+import connectErrorMessage from '../../connect/error';
 import { RACKS } from '../racks/rack.model';
 import IsometricCanvasComponent from './isometric-canvas';
 import {
@@ -39,8 +43,10 @@ interface NativeElementRef {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   host: { class: 'flex flex-col bg-white text-slate-900' },
 })
-export default class DatacentersComponent {
+export default class DatacentersComponent implements OnInit {
   private readonly router = inject(Router);
+
+  private readonly dcApi = inject(DatacenterApiService);
 
   // ── Mutable DC list ────────────────────────────────────────────────────────
   readonly mutableDcs = signal([...DATACENTER_INFO]);
@@ -77,6 +83,21 @@ export default class DatacentersComponent {
       if (this.deleteTarget() !== null) el?.show?.();
       else el?.hide?.();
     });
+  }
+
+  ngOnInit(): void {
+    firstValueFrom(this.dcApi.listSites())
+      .then((res) => {
+        const apiDcs = res.sites.map((s) => DatacenterApiService.mapSite(s));
+        this.mutableDcs.update((list) =>
+          list.map((dc) => {
+            const api = apiDcs.find((a) => a.id === dc.id);
+            return api ? { ...dc, name: api.name, address: api.address } : dc;
+          }),
+        );
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
   }
 
   readonly currentDc = computed(
@@ -422,14 +443,25 @@ export default class DatacentersComponent {
       floorSqm: parseFloat(this.fFloorSqm()?.nativeElement.value ?? '0') || 0,
       pue: parseFloat(this.fPue()?.nativeElement.value ?? '0') || 0,
     };
-    // TODO(api): form.id ? SiteService.UpdateSite(UpdateSiteRequest) : SiteService.CreateSite(CreateSiteRequest)
     if (form.id) {
-      this.mutableDcs.update((list) => list.map((dc) => (dc.id === form.id ? updated : dc)));
+      firstValueFrom(this.dcApi.updateSite(form.id, updated.name, updated.address))
+        .then(() => {
+          this.mutableDcs.update((list) => list.map((dc) => (dc.id === form.id ? updated : dc)));
+          this.editForm.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     } else {
-      this.mutableDcs.update((list) => [...list, updated]);
-      this.selectedDcId.set(updated.id);
+      firstValueFrom(this.dcApi.createSite(updated.name, updated.address))
+        .then((res) => {
+          const created = { ...updated, id: res.site?.id ?? updated.id };
+          this.mutableDcs.update((list) => [...list, created]);
+          this.selectedDcId.set(created.id);
+          this.editForm.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     }
-    this.editForm.set(null);
   }
 
   openDeleteDc(dc: DatacenterInfo): void {
@@ -443,13 +475,17 @@ export default class DatacentersComponent {
   confirmDeleteDc(): void {
     const target = this.deleteTarget();
     if (!target) return;
-    // TODO(api): SiteService.DeleteSite(DeleteSiteRequest)
-    this.mutableDcs.update((list) => list.filter((dc) => dc.id !== target.id));
-    if (this.selectedDcId() === target.id) {
-      const remaining = this.mutableDcs();
-      this.selectedDcId.set(remaining[0]?.id ?? '');
-    }
-    this.deleteTarget.set(null);
+    firstValueFrom(this.dcApi.deleteSite(target.id))
+      .then(() => {
+        this.mutableDcs.update((list) => list.filter((dc) => dc.id !== target.id));
+        if (this.selectedDcId() === target.id) {
+          const remaining = this.mutableDcs();
+          this.selectedDcId.set(remaining[0]?.id ?? '');
+        }
+        this.deleteTarget.set(null);
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
   }
 
   // ── Actions ────────────────────────────────────────────────────────────────

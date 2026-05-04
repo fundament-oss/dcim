@@ -4,11 +4,16 @@ import {
   computed,
   CUSTOM_ELEMENTS_SCHEMA,
   effect,
+  inject,
+  OnInit,
   signal,
   viewChild,
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { AssetCategory, CatalogEntry, MOCK_ASSETS, MOCK_CATALOG } from '../inventory/inventory';
+import { firstValueFrom } from 'rxjs';
+import { AssetCategory, CatalogEntry, MOCK_ASSETS } from '../inventory/inventory';
+import CatalogApiService from './catalog-api.service';
+import connectErrorMessage from '../../connect/error';
 
 interface NativeElementRef {
   nativeElement: { value: string; show?: () => void; hide?: () => void };
@@ -30,7 +35,9 @@ interface CatalogRow {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   host: { class: 'flex flex-col min-h-screen bg-white' },
 })
-export default class CatalogComponent {
+export default class CatalogComponent implements OnInit {
+  private readonly catalogApi = inject(CatalogApiService);
+
   searchQuery = signal('');
 
   categoryFilter = signal<AssetCategory | 'all'>('all');
@@ -54,7 +61,7 @@ export default class CatalogComponent {
   ];
 
   // ── Mutable catalog list ───────────────────────────────────────────────────
-  readonly mutableCatalog = signal([...MOCK_CATALOG]);
+  readonly mutableCatalog = signal<CatalogEntry[]>([]);
 
   // ── CRUD state ─────────────────────────────────────────────────────────────
   editEntry = signal<Partial<CatalogEntry> | null>(null);
@@ -84,6 +91,17 @@ export default class CatalogComponent {
       if (this.deleteEntry() !== null) el?.show?.();
       else el?.hide?.();
     });
+  }
+
+  ngOnInit(): void {
+    firstValueFrom(this.catalogApi.listCatalog())
+      .then((res) =>
+        this.mutableCatalog.set(
+          res.entries.map((s) => CatalogApiService.mapCatalogEntry(s.entry!)),
+        ),
+      )
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
   }
 
   private readonly allRows = computed<CatalogRow[]>(() =>
@@ -181,20 +199,26 @@ export default class CatalogComponent {
     this.specRows().forEach((row) => {
       if (row.key.trim()) specs[row.key.trim()] = row.value;
     });
-    const updated: CatalogEntry = {
-      id: form.id || `CAT-${String(Date.now()).slice(-6)}`,
-      model,
-      manufacturer,
-      category,
-      specs,
-    };
-    // TODO(api): form.id ? CatalogService.UpdateDeviceCatalog(UpdateDeviceCatalogRequest) : CatalogService.CreateDeviceCatalog(CreateDeviceCatalogRequest)
+    const entry: CatalogEntry = { id: form.id || '', model, manufacturer, category, specs };
     if (form.id) {
-      this.mutableCatalog.update((list) => list.map((e) => (e.id === form.id ? updated : e)));
+      firstValueFrom(this.catalogApi.updateCatalogEntry(entry))
+        .then((res) => {
+          const updated = CatalogApiService.mapCatalogEntry(res.entry!);
+          this.mutableCatalog.update((list) => list.map((e) => (e.id === form.id ? updated : e)));
+          this.editEntry.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     } else {
-      this.mutableCatalog.update((list) => [...list, updated]);
+      firstValueFrom(this.catalogApi.createCatalogEntry(entry))
+        .then((res) => {
+          const created = CatalogApiService.mapCatalogEntry(res.entry!);
+          this.mutableCatalog.update((list) => [...list, created]);
+          this.editEntry.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     }
-    this.editEntry.set(null);
   }
 
   openDeleteEntry(entry: CatalogEntry, event: Event): void {
@@ -210,9 +234,13 @@ export default class CatalogComponent {
   confirmDeleteEntry(): void {
     const target = this.deleteEntry();
     if (!target) return;
-    // TODO(api): CatalogService.DeleteDeviceCatalog(DeleteDeviceCatalogRequest)
-    this.mutableCatalog.update((list) => list.filter((e) => e.id !== target.id));
-    this.deleteEntry.set(null);
+    firstValueFrom(this.catalogApi.deleteCatalogEntry(target.id))
+      .then(() => {
+        this.mutableCatalog.update((list) => list.filter((e) => e.id !== target.id));
+        this.deleteEntry.set(null);
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
   }
 
   readonly categoryIcon = (category: AssetCategory): string => {
