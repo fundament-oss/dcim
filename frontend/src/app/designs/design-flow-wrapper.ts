@@ -33,7 +33,7 @@ export default class DesignFlowWrapperComponent implements AfterViewInit, OnChan
 
   readonly deviceSelected = output<string | null>();
 
-  readonly layoutChanged  = output<LogicalDeviceLayout[]>();
+  readonly layoutChanged = output<LogicalDeviceLayout[]>();
 
   private root: ReturnType<typeof ReactDOM.createRoot> | undefined;
 
@@ -52,12 +52,12 @@ export default class DesignFlowWrapperComponent implements AfterViewInit, OnChan
 
   private render() {
     const props: DesignFlowProps = {
-      devices:          this.devices,
-      connections:      this.connections,
-      layouts:          this.layouts,
+      devices: this.devices,
+      connections: this.connections,
+      layouts: this.layouts,
       selectedDeviceId: this.selectedDeviceId,
-      onSelectDevice:   (id) => this.deviceSelected.emit(id),
-      onLayoutChange:   (layouts) => this.layoutChanged.emit(layouts),
+      onSelectDevice: (id) => this.deviceSelected.emit(id),
+      onLayoutChange: (layouts) => this.layoutChanged.emit(layouts),
     };
     this.root!.render(React.createElement(DesignFlow, props));
   }

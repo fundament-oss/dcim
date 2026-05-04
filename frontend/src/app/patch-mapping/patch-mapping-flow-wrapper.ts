@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { PatchMappingFlow } from './patch-mapping-flow';

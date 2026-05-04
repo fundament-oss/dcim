@@ -18,7 +18,7 @@ export default class RackDiagramComponent {
   readonly rackSlots = computed((): RackSlot[] => {
     const rack = this.rack();
     const slotMap = new Map<number, RackDevice>();
-    rack.devices.forEach(dev => {
+    rack.devices.forEach((dev) => {
       for (let u = dev.uStart; u < dev.uStart + dev.uSize; u += 1) {
         slotMap.set(u, dev);
       }
@@ -38,19 +38,18 @@ export default class RackDiagramComponent {
     return slots;
   });
 
-  readonly deviceHeight = (device: RackDevice): number =>
-    device.uSize * 28 + (device.uSize - 1);
+  readonly deviceHeight = (device: RackDevice): number => device.uSize * 28 + (device.uSize - 1);
 
   static deviceSlotClasses(device: RackDevice): string {
     if (device.type === 'switch') return 'bg-[#ffb612] border-[#e6a310] text-stone-900';
-    if (device.type === 'patch')  return 'bg-[#a90061] border-[#8a004e] text-white';
-    if (device.type === 'pdu')    return 'bg-[#42145f] border-[#33104a] text-white';
+    if (device.type === 'patch') return 'bg-[#a90061] border-[#8a004e] text-white';
+    if (device.type === 'pdu') return 'bg-[#42145f] border-[#33104a] text-white';
     const map: Record<DeviceState, string> = {
       allocated: 'bg-indigo-700 border-indigo-800 text-white',
-      free:      'rack-slot-free',
-      offline:   'bg-red-700 border-red-800 text-white',
-      locked:    'bg-[#42145f] border-[#33104a] text-white',
-      reserved:  'bg-[#8fcae7] border-[#74b8d8] text-stone-900',
+      free: 'rack-slot-free',
+      offline: 'bg-red-700 border-red-800 text-white',
+      locked: 'bg-[#42145f] border-[#33104a] text-white',
+      reserved: 'bg-[#8fcae7] border-[#74b8d8] text-stone-900',
     };
     return map[device.state];
   }

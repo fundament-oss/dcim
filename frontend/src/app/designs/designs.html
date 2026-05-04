@@ -3,8 +3,13 @@
      ══════════════════════════════════════════════════════════════ -->
 <div class="shrink-0 border-b border-slate-200 bg-white px-6 py-3 flex items-center gap-4">
   <h1 class="text-lg font-semibold text-slate-900 leading-tight m-0 flex-1">Logical Designs</h1>
-  <nldd-button variant="accent-filled" text="New design" start-icon="plus-small" size="sm"
-    (click)="openNewDesign()"></nldd-button>
+  <nldd-button
+    variant="accent-filled"
+    text="New design"
+    start-icon="plus-small"
+    size="sm"
+    (click)="openNewDesign()"
+  ></nldd-button>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════
@@ -19,7 +24,8 @@
       [value]="searchQuery()"
       (input)="searchQuery.set($any($event.target).value)"
       class="block w-full"
-      size="sm">
+      size="sm"
+    >
     </nldd-search-field>
   </div>
 
@@ -28,25 +34,45 @@
     <button
       (click)="statusFilter.set('all')"
       class="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-500"
-      [class]="statusFilter() === 'all' ? 'bg-accent-50 text-accent-700' : 'text-slate-500 hover:bg-slate-100'">
+      [class]="
+        statusFilter() === 'all'
+          ? 'bg-accent-50 text-accent-700'
+          : 'text-slate-500 hover:bg-slate-100'
+      "
+    >
       All ({{ counts().all }})
     </button>
     <button
       (click)="statusFilter.set('draft')"
       class="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-500"
-      [class]="statusFilter() === 'draft' ? 'bg-accent-50 text-accent-700' : 'text-slate-500 hover:bg-slate-100'">
+      [class]="
+        statusFilter() === 'draft'
+          ? 'bg-accent-50 text-accent-700'
+          : 'text-slate-500 hover:bg-slate-100'
+      "
+    >
       Draft ({{ counts().draft }})
     </button>
     <button
       (click)="statusFilter.set('active')"
       class="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-500"
-      [class]="statusFilter() === 'active' ? 'bg-accent-50 text-accent-700' : 'text-slate-500 hover:bg-slate-100'">
+      [class]="
+        statusFilter() === 'active'
+          ? 'bg-accent-50 text-accent-700'
+          : 'text-slate-500 hover:bg-slate-100'
+      "
+    >
       Active ({{ counts().active }})
     </button>
     <button
       (click)="statusFilter.set('archived')"
       class="px-3 py-1.5 rounded-lg text-xs font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-accent-500"
-      [class]="statusFilter() === 'archived' ? 'bg-accent-50 text-accent-700' : 'text-slate-500 hover:bg-slate-100'">
+      [class]="
+        statusFilter() === 'archived'
+          ? 'bg-accent-50 text-accent-700'
+          : 'text-slate-500 hover:bg-slate-100'
+      "
+    >
       Archived ({{ counts().archived }})
     </button>
   </div>
@@ -56,10 +82,12 @@
      TABLE
      ══════════════════════════════════════════════════════════════ -->
 <main class="flex-1 overflow-y-auto px-6 py-6" aria-label="Logical designs">
-
   <div role="table" aria-label="Logical designs">
     <!-- Headers -->
-    <div role="row" class="flex items-center gap-4 border-b border-slate-100 py-2.5 text-xs font-medium text-slate-400 uppercase tracking-wide">
+    <div
+      role="row"
+      class="flex items-center gap-4 border-b border-slate-100 py-2.5 text-xs font-medium text-slate-400 uppercase tracking-wide"
+    >
       <span role="columnheader" class="flex-1">Name</span>
       <span role="columnheader" class="w-24">Version</span>
       <span role="columnheader" class="w-24">Status</span>
@@ -68,13 +96,16 @@
     </div>
 
     @for (design of filtered(); track design.id) {
-      <div role="row"
-        class="flex items-center gap-4 border-b border-slate-100 py-3 hover:bg-slate-50 transition-colors group">
-
+      <div
+        role="row"
+        class="flex items-center gap-4 border-b border-slate-100 py-3 hover:bg-slate-50 transition-colors group"
+      >
         <!-- Name -->
         <div role="cell" class="flex-1 min-w-0">
-          <a [routerLink]="['/designs', design.id]"
-            class="text-sm font-medium text-slate-900 hover:text-accent-700 transition-colors truncate block">
+          <a
+            [routerLink]="['/designs', design.id]"
+            class="text-sm font-medium text-slate-900 hover:text-accent-700 transition-colors truncate block"
+          >
             {{ design.name }}
           </a>
         </div>
@@ -86,8 +117,10 @@
 
         <!-- Status badge -->
         <div role="cell" class="w-24">
-          <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"
-            [class]="statusBadgeClass(design.status)">
+          <span
+            class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium"
+            [class]="statusBadgeClass(design.status)"
+          >
             {{ statusLabel(design.status) }}
           </span>
         </div>
@@ -98,25 +131,43 @@
         </div>
 
         <!-- Actions -->
-        <div role="cell" class="w-28 flex items-center gap-1 justify-end opacity-0 group-hover:opacity-100 transition-opacity">
+        <div
+          role="cell"
+          class="w-28 flex items-center gap-1 justify-end opacity-0 group-hover:opacity-100 transition-opacity"
+        >
           <a [routerLink]="['/designs', design.id]">
-            <nldd-icon-button icon="arrow-right" variant="neutral-transparent" size="xs"
-              text="Open design"></nldd-icon-button>
+            <nldd-icon-button
+              icon="arrow-right"
+              variant="neutral-transparent"
+              size="xs"
+              text="Open design"
+            ></nldd-icon-button>
           </a>
           @if (design.status !== 'archived') {
-            <nldd-icon-button icon="inbox" variant="neutral-transparent" size="xs"
-              text="Archive design" (click)="archiveDesign(design)"></nldd-icon-button>
+            <nldd-icon-button
+              icon="inbox"
+              variant="neutral-transparent"
+              size="xs"
+              text="Archive design"
+              (click)="archiveDesign(design)"
+            ></nldd-icon-button>
           }
-          <nldd-icon-button icon="trash" variant="neutral-transparent" size="xs"
-            text="Delete design" (click)="openDeleteDesign(design)"></nldd-icon-button>
+          <nldd-icon-button
+            icon="trash"
+            variant="neutral-transparent"
+            size="xs"
+            text="Delete design"
+            (click)="openDeleteDesign(design)"
+          ></nldd-icon-button>
         </div>
-
       </div>
     }
 
     @if (filtered().length === 0) {
       <div class="flex flex-col items-center justify-center py-16 text-center">
-        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-400 mb-3">
+        <div
+          class="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-100 text-slate-400 mb-3"
+        >
           <nldd-icon name="pencil-on-square" class="w-6 h-6" aria-hidden="true"></nldd-icon>
         </div>
         <p class="text-sm font-medium text-slate-600">No designs found</p>
@@ -124,7 +175,6 @@
       </div>
     }
   </div>
-
 </main>
 
 <!-- ══════════════════════════════════════════════════════════════
@@ -134,12 +184,21 @@
   <div class="flex flex-col h-full">
     <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 shrink-0">
       <h2 class="text-base font-semibold text-slate-900">New design</h2>
-      <nldd-icon-button icon="dismiss" variant="neutral-transparent" size="sm"
-        text="Close" (click)="closeDesignForm()"></nldd-icon-button>
+      <nldd-icon-button
+        icon="dismiss"
+        variant="neutral-transparent"
+        size="sm"
+        text="Close"
+        (click)="closeDesignForm()"
+      ></nldd-icon-button>
     </div>
     <div class="flex-1 overflow-y-auto px-6 py-5 flex flex-col gap-4">
       <nldd-form-field label="Design name">
-        <nldd-text-field #fDesignName value="" placeholder="e.g. AMS-01 Compute Cluster v2"></nldd-text-field>
+        <nldd-text-field
+          #fDesignName
+          value=""
+          placeholder="e.g. AMS-01 Compute Cluster v2"
+        ></nldd-text-field>
       </nldd-form-field>
       <p class="text-xs text-slate-400">Version will be set to 1 and status to Draft.</p>
     </div>
@@ -153,10 +212,22 @@
 <!-- ══════════════════════════════════════════════════════════════
      DELETE DESIGN MODAL
      ══════════════════════════════════════════════════════════════ -->
-<nldd-modal-dialog #deleteModal
+<nldd-modal-dialog
+  #deleteModal
   [attr.text]="'Delete \'' + (deleteDesign()?.name ?? '') + '\'?'"
   supporting-text="All devices and connections in this design will be permanently removed."
-  accessible-label="Confirm design deletion">
-  <nldd-button slot="actions" variant="neutral-tinted" text="Cancel" (click)="cancelDeleteDesign()"></nldd-button>
-  <nldd-button slot="actions" variant="destructive" text="Delete" (click)="confirmDeleteDesign()"></nldd-button>
+  accessible-label="Confirm design deletion"
+>
+  <nldd-button
+    slot="actions"
+    variant="neutral-tinted"
+    text="Cancel"
+    (click)="cancelDeleteDesign()"
+  ></nldd-button>
+  <nldd-button
+    slot="actions"
+    variant="destructive"
+    text="Delete"
+    (click)="confirmDeleteDesign()"
+  ></nldd-button>
 </nldd-modal-dialog>

@@ -39,7 +39,7 @@ export default class DatacenterDetailComponent {
   // TODO(api): SiteService.GetSite(GetSiteRequest)
   readonly dc = computed<DatacenterInfo | undefined>(() => {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
-    return DATACENTER_INFO.find(d => d.id === id);
+    return DATACENTER_INFO.find((d) => d.id === id);
   });
 
   // ── Rooms ──────────────────────────────────────────────────────────────────
@@ -49,7 +49,7 @@ export default class DatacenterDetailComponent {
 
   readonly dcRooms = computed(() => {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
-    return this.mutableRooms().filter(r => r.siteId === id);
+    return this.mutableRooms().filter((r) => r.siteId === id);
   });
 
   // ── Rack rows ──────────────────────────────────────────────────────────────
@@ -58,64 +58,68 @@ export default class DatacenterDetailComponent {
   readonly mutableRackRows = signal([...MOCK_RACK_ROWS]);
 
   rackRowsForRoom(roomId: string): RackRow[] {
-    return this.mutableRackRows().filter(rr => rr.roomId === roomId);
+    return this.mutableRackRows().filter((rr) => rr.roomId === roomId);
   }
 
   // ── Racks in this DC ───────────────────────────────────────────────────────
 
   readonly dcRacks = computed(() => {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
-    return RACKS.filter(r => r.dcId === id);
+    return RACKS.filter((r) => r.dcId === id);
   });
 
   // ── Room CRUD ──────────────────────────────────────────────────────────────
 
-  editRoom    = signal<Partial<Room> | null>(null);
+  editRoom = signal<Partial<Room> | null>(null);
 
-  deleteRoom  = signal<Room | null>(null);
+  deleteRoom = signal<Room | null>(null);
 
-  private readonly roomSheetEl   = viewChild<NativeElementRef>('roomSheet');
+  private readonly roomSheetEl = viewChild<NativeElementRef>('roomSheet');
 
-  private readonly roomModalEl   = viewChild<NativeElementRef>('roomModal');
+  private readonly roomModalEl = viewChild<NativeElementRef>('roomModal');
 
-  private readonly fRoomName     = viewChild<NativeElementRef>('fRoomName');
+  private readonly fRoomName = viewChild<NativeElementRef>('fRoomName');
 
-  private readonly fRoomFloor    = viewChild<NativeElementRef>('fRoomFloor');
+  private readonly fRoomFloor = viewChild<NativeElementRef>('fRoomFloor');
 
   // ── RackRow CRUD ───────────────────────────────────────────────────────────
 
-  editRackRow   = signal<Partial<RackRow> | null>(null);
+  editRackRow = signal<Partial<RackRow> | null>(null);
 
   deleteRackRow = signal<RackRow | null>(null);
 
-  activeRoomId  = signal<string>('');
+  activeRoomId = signal<string>('');
 
-  private readonly rowSheetEl  = viewChild<NativeElementRef>('rowSheet');
+  private readonly rowSheetEl = viewChild<NativeElementRef>('rowSheet');
 
-  private readonly rowModalEl  = viewChild<NativeElementRef>('rowModal');
+  private readonly rowModalEl = viewChild<NativeElementRef>('rowModal');
 
-  private readonly fRowName    = viewChild<NativeElementRef>('fRowName');
+  private readonly fRowName = viewChild<NativeElementRef>('fRowName');
 
-  private readonly fRowX       = viewChild<NativeElementRef>('fRowX');
+  private readonly fRowX = viewChild<NativeElementRef>('fRowX');
 
-  private readonly fRowY       = viewChild<NativeElementRef>('fRowY');
+  private readonly fRowY = viewChild<NativeElementRef>('fRowY');
 
   constructor() {
     effect(() => {
       const el = this.roomSheetEl()?.nativeElement;
-      if (this.editRoom() !== null) el?.show?.(); else el?.hide?.();
+      if (this.editRoom() !== null) el?.show?.();
+      else el?.hide?.();
     });
     effect(() => {
       const el = this.roomModalEl()?.nativeElement;
-      if (this.deleteRoom() !== null) el?.show?.(); else el?.hide?.();
+      if (this.deleteRoom() !== null) el?.show?.();
+      else el?.hide?.();
     });
     effect(() => {
       const el = this.rowSheetEl()?.nativeElement;
-      if (this.editRackRow() !== null) el?.show?.(); else el?.hide?.();
+      if (this.editRackRow() !== null) el?.show?.();
+      else el?.hide?.();
     });
     effect(() => {
       const el = this.rowModalEl()?.nativeElement;
-      if (this.deleteRackRow() !== null) el?.show?.(); else el?.hide?.();
+      if (this.deleteRackRow() !== null) el?.show?.();
+      else el?.hide?.();
     });
   }
 
@@ -137,19 +141,19 @@ export default class DatacenterDetailComponent {
   saveRoom(): void {
     const form = this.editRoom();
     if (!form) return;
-    const name  = this.fRoomName()?.nativeElement.value ?? '';
+    const name = this.fRoomName()?.nativeElement.value ?? '';
     const floor = parseInt(this.fRoomFloor()?.nativeElement.value ?? '1', 10) || 1;
     const updated: Room = {
-      id:     form.id || `room-${  Date.now()}`,
+      id: form.id || `room-${Date.now()}`,
       siteId: form.siteId!,
       name,
       floor,
     };
     // TODO(api): form.id ? RoomService.UpdateRoom(UpdateRoomRequest) : RoomService.CreateRoom(CreateRoomRequest)
     if (form.id) {
-      this.mutableRooms.update(list => list.map(r => r.id === form.id ? updated : r));
+      this.mutableRooms.update((list) => list.map((r) => (r.id === form.id ? updated : r)));
     } else {
-      this.mutableRooms.update(list => [...list, updated]);
+      this.mutableRooms.update((list) => [...list, updated]);
     }
     this.editRoom.set(null);
   }
@@ -166,8 +170,8 @@ export default class DatacenterDetailComponent {
     const target = this.deleteRoom();
     if (!target) return;
     // TODO(api): RoomService.DeleteRoom(DeleteRoomRequest)
-    this.mutableRooms.update(list => list.filter(r => r.id !== target.id));
-    this.mutableRackRows.update(list => list.filter(rr => rr.roomId !== target.id));
+    this.mutableRooms.update((list) => list.filter((r) => r.id !== target.id));
+    this.mutableRackRows.update((list) => list.filter((rr) => rr.roomId !== target.id));
     this.deleteRoom.set(null);
   }
 
@@ -194,17 +198,17 @@ export default class DatacenterDetailComponent {
     const posX = parseInt(this.fRowX()?.nativeElement.value ?? '1', 10) || 1;
     const posY = parseInt(this.fRowY()?.nativeElement.value ?? '1', 10) || 1;
     const updated: RackRow = {
-      id:        form.id || `rr-${  Date.now()}`,
-      roomId:    form.roomId!,
+      id: form.id || `rr-${Date.now()}`,
+      roomId: form.roomId!,
       name,
       positionX: posX,
       positionY: posY,
     };
     // TODO(api): form.id ? RackRowService.UpdateRackRow(UpdateRackRowRequest) : RackRowService.CreateRackRow(CreateRackRowRequest)
     if (form.id) {
-      this.mutableRackRows.update(list => list.map(rr => rr.id === form.id ? updated : rr));
+      this.mutableRackRows.update((list) => list.map((rr) => (rr.id === form.id ? updated : rr)));
     } else {
-      this.mutableRackRows.update(list => [...list, updated]);
+      this.mutableRackRows.update((list) => [...list, updated]);
     }
     this.editRackRow.set(null);
   }
@@ -221,7 +225,7 @@ export default class DatacenterDetailComponent {
     const target = this.deleteRackRow();
     if (!target) return;
     // TODO(api): RackRowService.DeleteRackRow(DeleteRackRowRequest)
-    this.mutableRackRows.update(list => list.filter(rr => rr.id !== target.id));
+    this.mutableRackRows.update((list) => list.filter((rr) => rr.id !== target.id));
     this.deleteRackRow.set(null);
   }
 }

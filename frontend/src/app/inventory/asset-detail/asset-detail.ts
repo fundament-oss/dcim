@@ -1,5 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, inject, signal } from '@angular/core';
-import { RouterLink, ActivatedRoute, Router  } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  CUSTOM_ELEMENTS_SCHEMA,
+  inject,
+  signal,
+} from '@angular/core';
+import { RouterLink, ActivatedRoute, Router } from '@angular/router';
 import {
   Asset,
   AssetCategory,
@@ -23,16 +30,86 @@ interface AssetExtraDetail {
 }
 
 const MOCK_EXTRA_DETAILS: Record<string, AssetExtraDetail> = {
-  'AST-001': { serial: 'SN-DELL-R750-00A12X', manufacturer: 'Dell Technologies', purchaseDate: '2024-03-15', purchaseCost: '€ 18.450', warrantyExpires: '2027-03-15', supportContract: 'ProSupport Plus 3yr' },
-  'AST-002': { serial: 'SN-CSC-9300-B05YZ', manufacturer: 'Cisco Systems', purchaseDate: '2023-11-20', purchaseCost: '€ 9.200', warrantyExpires: '2026-11-20', supportContract: 'SmartNet 3yr' },
-  'AST-003': { serial: 'SN-NTAP-A800-C08AB', manufacturer: 'NetApp', purchaseDate: '2025-01-08', purchaseCost: '€ 124.000', warrantyExpires: '2028-01-08', supportContract: 'SupportEdge Premium 3yr' },
-  'AST-004': { serial: 'SN-HPE-DL380-D14CC', manufacturer: 'Hewlett Packard Enterprise', purchaseDate: '2022-07-10', purchaseCost: '€ 14.700', warrantyExpires: '2025-07-10', supportContract: 'HPE Foundation Care 3yr' },
-  'AST-007': { serial: 'SN-DELL-R650-A13QR', manufacturer: 'Dell Technologies', purchaseDate: '2024-06-01', purchaseCost: '€ 11.800', warrantyExpires: '2027-06-01', supportContract: 'ProSupport Plus 3yr' },
-  'AST-008': { serial: 'SN-PA-5250-F01MN', manufacturer: 'Palo Alto Networks', purchaseDate: '2023-09-05', purchaseCost: '€ 42.000', warrantyExpires: '2026-09-05', supportContract: 'Premium Support 3yr' },
-  'AST-009': { serial: 'SN-PURE-X70-C04KL', manufacturer: 'Pure Storage', purchaseDate: '2024-01-22', purchaseCost: '€ 87.500', warrantyExpires: '2027-01-22', supportContract: 'Evergreen//One' },
-  'AST-012': { serial: 'SN-ARIS-7050-B01PQ', manufacturer: 'Arista Networks', purchaseDate: '2023-04-14', purchaseCost: '€ 31.200', warrantyExpires: '2026-04-14', supportContract: 'Arista TAC 3yr' },
-  'AST-013': { serial: 'SN-LNV-SR650-A05RR', manufacturer: 'Lenovo', purchaseDate: '2021-12-03', purchaseCost: '€ 12.600', warrantyExpires: '2024-12-03', supportContract: 'Foundation Service 3yr' },
-  'AST-018': { serial: 'SN-FTN-FG600-F02ST', manufacturer: 'Fortinet', purchaseDate: '2023-08-17', purchaseCost: '€ 28.900', warrantyExpires: '2026-08-17', supportContract: 'FortiCare 360 3yr' },
+  'AST-001': {
+    serial: 'SN-DELL-R750-00A12X',
+    manufacturer: 'Dell Technologies',
+    purchaseDate: '2024-03-15',
+    purchaseCost: '€ 18.450',
+    warrantyExpires: '2027-03-15',
+    supportContract: 'ProSupport Plus 3yr',
+  },
+  'AST-002': {
+    serial: 'SN-CSC-9300-B05YZ',
+    manufacturer: 'Cisco Systems',
+    purchaseDate: '2023-11-20',
+    purchaseCost: '€ 9.200',
+    warrantyExpires: '2026-11-20',
+    supportContract: 'SmartNet 3yr',
+  },
+  'AST-003': {
+    serial: 'SN-NTAP-A800-C08AB',
+    manufacturer: 'NetApp',
+    purchaseDate: '2025-01-08',
+    purchaseCost: '€ 124.000',
+    warrantyExpires: '2028-01-08',
+    supportContract: 'SupportEdge Premium 3yr',
+  },
+  'AST-004': {
+    serial: 'SN-HPE-DL380-D14CC',
+    manufacturer: 'Hewlett Packard Enterprise',
+    purchaseDate: '2022-07-10',
+    purchaseCost: '€ 14.700',
+    warrantyExpires: '2025-07-10',
+    supportContract: 'HPE Foundation Care 3yr',
+  },
+  'AST-007': {
+    serial: 'SN-DELL-R650-A13QR',
+    manufacturer: 'Dell Technologies',
+    purchaseDate: '2024-06-01',
+    purchaseCost: '€ 11.800',
+    warrantyExpires: '2027-06-01',
+    supportContract: 'ProSupport Plus 3yr',
+  },
+  'AST-008': {
+    serial: 'SN-PA-5250-F01MN',
+    manufacturer: 'Palo Alto Networks',
+    purchaseDate: '2023-09-05',
+    purchaseCost: '€ 42.000',
+    warrantyExpires: '2026-09-05',
+    supportContract: 'Premium Support 3yr',
+  },
+  'AST-009': {
+    serial: 'SN-PURE-X70-C04KL',
+    manufacturer: 'Pure Storage',
+    purchaseDate: '2024-01-22',
+    purchaseCost: '€ 87.500',
+    warrantyExpires: '2027-01-22',
+    supportContract: 'Evergreen//One',
+  },
+  'AST-012': {
+    serial: 'SN-ARIS-7050-B01PQ',
+    manufacturer: 'Arista Networks',
+    purchaseDate: '2023-04-14',
+    purchaseCost: '€ 31.200',
+    warrantyExpires: '2026-04-14',
+    supportContract: 'Arista TAC 3yr',
+  },
+  'AST-013': {
+    serial: 'SN-LNV-SR650-A05RR',
+    manufacturer: 'Lenovo',
+    purchaseDate: '2021-12-03',
+    purchaseCost: '€ 12.600',
+    warrantyExpires: '2024-12-03',
+    supportContract: 'Foundation Service 3yr',
+  },
+  'AST-018': {
+    serial: 'SN-FTN-FG600-F02ST',
+    manufacturer: 'Fortinet',
+    purchaseDate: '2023-08-17',
+    purchaseCost: '€ 28.900',
+    warrantyExpires: '2026-08-17',
+    supportContract: 'FortiCare 360 3yr',
+  },
 };
 
 @Component({
@@ -51,33 +128,29 @@ export default class AssetDetailComponent {
   readonly assetId = computed(() => this.route.snapshot.paramMap.get('id') ?? '');
 
   readonly asset = computed<Asset | undefined>(() =>
-    MOCK_ASSETS.find(a => a.id === this.assetId()),
+    MOCK_ASSETS.find((a) => a.id === this.assetId()),
   );
 
   readonly parentAsset = computed<Asset | undefined>(() => {
     const parentId = this.asset()?.parentId;
-    return parentId ? MOCK_ASSETS.find(a => a.id === parentId) : undefined;
+    return parentId ? MOCK_ASSETS.find((a) => a.id === parentId) : undefined;
   });
 
   readonly childAssets = computed<Asset[]>(() =>
-    MOCK_ASSETS.filter(a => a.parentId === this.assetId()),
+    MOCK_ASSETS.filter((a) => a.parentId === this.assetId()),
   );
 
-  readonly assetHistory = computed<HistoryEntry[]>(() =>
-    MOCK_HISTORY[this.assetId()] ?? [],
-  );
+  readonly assetHistory = computed<HistoryEntry[]>(() => MOCK_HISTORY[this.assetId()] ?? []);
 
   readonly catalogEntry = computed<CatalogEntry | undefined>(() =>
-    MOCK_CATALOG.find(e => e.model === this.asset()?.model),
+    MOCK_CATALOG.find((e) => e.model === this.asset()?.model),
   );
 
-  readonly extraDetail = computed<AssetExtraDetail | undefined>(() =>
-    MOCK_EXTRA_DETAILS[this.assetId()],
+  readonly extraDetail = computed<AssetExtraDetail | undefined>(
+    () => MOCK_EXTRA_DETAILS[this.assetId()],
   );
 
-  readonly noteDetail = computed<AssetNoteDetail | undefined>(() =>
-    MOCK_NOTES[this.assetId()],
-  );
+  readonly noteDetail = computed<AssetNoteDetail | undefined>(() => MOCK_NOTES[this.assetId()]);
 
   readonly newNoteText = signal('');
 
@@ -165,7 +238,7 @@ export default class AssetDetailComponent {
     const icons: Record<HistoryEntry['action'], string> = {
       'status-change': 'tag',
       'location-change': 'info-circle',
-      'maintenance': 'gear',
+      maintenance: 'gear',
     };
     return icons[action];
   };
@@ -174,18 +247,28 @@ export default class AssetDetailComponent {
     const classes: Record<HistoryEntry['action'], string> = {
       'status-change': 'bg-indigo-50 text-indigo-500',
       'location-change': 'bg-sky-50 text-sky-500',
-      'maintenance': 'bg-amber-50 text-amber-500',
+      maintenance: 'bg-amber-50 text-amber-500',
     };
     return classes[action];
   };
 
   readonly categoryIcon = (category: AssetCategory): string => {
     const map: Partial<Record<AssetCategory, string>> = {
-      Server: 'cylinder-split', Switch: 'list', Storage: 'rectangle-stack',
-      Power: 'lock-closed', Firewall: 'shield-check-mark', Cooling: 'cloud',
-      KVM: 'puzzle-piece', Other: 'ellipsis', Memory: 'folder-stack',
-      Disk: 'cylinder-split', NIC: 'puzzle-piece', PSU: 'lock-closed',
-      CPU: 'gear', GPU: 'gear', Transceiver: 'puzzle-piece',
+      Server: 'cylinder-split',
+      Switch: 'list',
+      Storage: 'rectangle-stack',
+      Power: 'lock-closed',
+      Firewall: 'shield-check-mark',
+      Cooling: 'cloud',
+      KVM: 'puzzle-piece',
+      Other: 'ellipsis',
+      Memory: 'folder-stack',
+      Disk: 'cylinder-split',
+      NIC: 'puzzle-piece',
+      PSU: 'lock-closed',
+      CPU: 'gear',
+      GPU: 'gear',
+      Transceiver: 'puzzle-piece',
     };
     return map[category] ?? 'rectangle-stack';
   };

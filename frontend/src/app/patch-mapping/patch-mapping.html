@@ -6,13 +6,26 @@
     <h1 class="text-lg font-semibold text-slate-900 leading-tight m-0">Patch Mapping</h1>
   </div>
   <div class="flex items-center gap-2 shrink-0">
-    <nldd-button variant="secondary" text="Connections"
+    <nldd-button
+      variant="secondary"
+      text="Connections"
       [attr.start-icon]="connectionsVisible() ? 'eye-slash' : 'eye'"
       size="sm"
-      (click)="connectionsVisible.set(!connectionsVisible())"></nldd-button>
-    <nldd-button variant="secondary" text="Export" start-icon="arrow-down-in-bucket" size="sm"></nldd-button>
-    <nldd-button variant="accent-filled" text="Add connection" start-icon="plus-small" size="sm"
-      (click)="openAddConnection()"></nldd-button>
+      (click)="connectionsVisible.set(!connectionsVisible())"
+    ></nldd-button>
+    <nldd-button
+      variant="secondary"
+      text="Export"
+      start-icon="arrow-down-in-bucket"
+      size="sm"
+    ></nldd-button>
+    <nldd-button
+      variant="accent-filled"
+      text="Add connection"
+      start-icon="plus-small"
+      size="sm"
+      (click)="openAddConnection()"
+    ></nldd-button>
   </div>
 </div>
 
@@ -27,7 +40,6 @@
      FLOW CANVAS + OPTIONAL CONNECTIONS PANEL
      ══════════════════════════════════════════════════════════════ -->
 <div class="flex flex-1 min-h-0">
-
   <!-- Canvas -->
   <div class="flex-1 min-w-0">
     <app-patch-mapping-flow class="block w-full h-full" />
@@ -35,11 +47,21 @@
 
   <!-- Connection list panel -->
   @if (connectionsVisible()) {
-    <aside class="w-80 shrink-0 border-l border-slate-200 bg-white flex flex-col overflow-hidden" aria-label="Physical connections">
+    <aside
+      class="w-80 shrink-0 border-l border-slate-200 bg-white flex flex-col overflow-hidden"
+      aria-label="Physical connections"
+    >
       <div class="px-4 py-3 border-b border-slate-100 flex items-center justify-between shrink-0">
-        <h2 class="text-sm font-semibold text-slate-900">Connections ({{ dcConnections().length }})</h2>
-        <nldd-icon-button icon="dismiss" variant="neutral-transparent" size="sm"
-          text="Close" (click)="connectionsVisible.set(false)"></nldd-icon-button>
+        <h2 class="text-sm font-semibold text-slate-900">
+          Connections ({{ dcConnections().length }})
+        </h2>
+        <nldd-icon-button
+          icon="dismiss"
+          variant="neutral-transparent"
+          size="sm"
+          text="Close"
+          (click)="connectionsVisible.set(false)"
+        ></nldd-icon-button>
       </div>
       <div class="flex-1 overflow-y-auto divide-y divide-slate-100">
         @for (conn of dcConnections(); track conn.id) {
@@ -48,18 +70,34 @@
               <div class="min-w-0 flex-1">
                 <div class="flex items-center gap-1.5 text-xs font-medium text-slate-800 truncate">
                   <span class="font-mono">{{ conn.sourceDeviceLabel }}</span>
-                  <nldd-icon name="arrow-right" style="width:10px;height:10px;color:#94a3b8;flex-shrink:0;" aria-hidden="true"></nldd-icon>
+                  <nldd-icon
+                    name="arrow-right"
+                    style="width: 10px; height: 10px; color: #94a3b8; flex-shrink: 0"
+                    aria-hidden="true"
+                  ></nldd-icon>
                   <span class="font-mono">{{ conn.targetDeviceLabel }}</span>
                 </div>
                 <p class="text-xs text-slate-400 mt-0.5 font-mono">
                   {{ conn.sourcePortName }} → {{ conn.targetPortName }}
                 </p>
               </div>
-              <div class="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                <nldd-icon-button icon="pencil-on-square" variant="neutral-transparent" size="xs"
-                  text="Edit connection" (click)="openEditConnection(conn)"></nldd-icon-button>
-                <nldd-icon-button icon="trash" variant="neutral-transparent" size="xs"
-                  text="Delete connection" (click)="openDeleteConnection(conn)"></nldd-icon-button>
+              <div
+                class="flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+              >
+                <nldd-icon-button
+                  icon="pencil-on-square"
+                  variant="neutral-transparent"
+                  size="xs"
+                  text="Edit connection"
+                  (click)="openEditConnection(conn)"
+                ></nldd-icon-button>
+                <nldd-icon-button
+                  icon="trash"
+                  variant="neutral-transparent"
+                  size="xs"
+                  text="Delete connection"
+                  (click)="openDeleteConnection(conn)"
+                ></nldd-icon-button>
               </div>
             </div>
           </div>
@@ -73,7 +111,6 @@
       </div>
     </aside>
   }
-
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════
@@ -85,39 +122,56 @@
       <h2 class="text-base font-semibold text-slate-900">
         {{ editConnection()?.id ? 'Edit Connection' : 'New Connection' }}
       </h2>
-      <nldd-icon-button icon="dismiss" variant="neutral-transparent" size="sm"
-        text="Close" (click)="closeConnForm()"></nldd-icon-button>
+      <nldd-icon-button
+        icon="dismiss"
+        variant="neutral-transparent"
+        size="sm"
+        text="Close"
+        (click)="closeConnForm()"
+      ></nldd-icon-button>
     </div>
     <div class="flex-1 overflow-y-auto px-6 py-5 flex flex-col gap-4">
       <div class="grid grid-cols-2 gap-3">
         <nldd-form-field label="Source device">
-          <nldd-text-field #fSrcDevice
+          <nldd-text-field
+            #fSrcDevice
             [attr.value]="editConnection()?.sourceDeviceLabel ?? ''"
-            placeholder="e.g. Switch L"></nldd-text-field>
+            placeholder="e.g. Switch L"
+          ></nldd-text-field>
         </nldd-form-field>
         <nldd-form-field label="Source port">
-          <nldd-text-field #fSrcPort
+          <nldd-text-field
+            #fSrcPort
             [attr.value]="editConnection()?.sourcePortName ?? ''"
-            placeholder="e.g. ge-0/0/1"></nldd-text-field>
+            placeholder="e.g. ge-0/0/1"
+          ></nldd-text-field>
         </nldd-form-field>
       </div>
       <div class="grid grid-cols-2 gap-3">
         <nldd-form-field label="Target device">
-          <nldd-text-field #fTgtDevice
+          <nldd-text-field
+            #fTgtDevice
             [attr.value]="editConnection()?.targetDeviceLabel ?? ''"
-            placeholder="e.g. Server L1"></nldd-text-field>
+            placeholder="e.g. Server L1"
+          ></nldd-text-field>
         </nldd-form-field>
         <nldd-form-field label="Target port">
-          <nldd-text-field #fTgtPort
+          <nldd-text-field
+            #fTgtPort
             [attr.value]="editConnection()?.targetPortName ?? ''"
-            placeholder="e.g. eth0"></nldd-text-field>
+            placeholder="e.g. eth0"
+          ></nldd-text-field>
         </nldd-form-field>
       </div>
     </div>
     <div class="shrink-0 px-6 py-4 border-t border-slate-200 flex items-center justify-between">
       @if (editConnection()?.id) {
-        <nldd-button variant="destructive" text="Delete" start-icon="trash"
-          (click)="openDeleteConnection($any(editConnection()))"></nldd-button>
+        <nldd-button
+          variant="destructive"
+          text="Delete"
+          start-icon="trash"
+          (click)="openDeleteConnection($any(editConnection()))"
+        ></nldd-button>
       } @else {
         <span></span>
       }
@@ -132,10 +186,28 @@
 <!-- ══════════════════════════════════════════════════════════════
      DELETE CONNECTION MODAL
      ══════════════════════════════════════════════════════════════ -->
-<nldd-modal-dialog #deleteModal
-  [attr.text]="'Delete connection ' + (deleteConnection()?.sourceDeviceLabel ?? '') + ' → ' + (deleteConnection()?.targetDeviceLabel ?? '') + '?'"
+<nldd-modal-dialog
+  #deleteModal
+  [attr.text]="
+    'Delete connection ' +
+    (deleteConnection()?.sourceDeviceLabel ?? '') +
+    ' → ' +
+    (deleteConnection()?.targetDeviceLabel ?? '') +
+    '?'
+  "
   supporting-text="This action cannot be undone."
-  accessible-label="Confirm connection deletion">
-  <nldd-button slot="actions" variant="neutral-tinted" text="Cancel" (click)="cancelDeleteConnection()"></nldd-button>
-  <nldd-button slot="actions" variant="destructive" text="Delete" (click)="confirmDeleteConnection()"></nldd-button>
+  accessible-label="Confirm connection deletion"
+>
+  <nldd-button
+    slot="actions"
+    variant="neutral-tinted"
+    text="Cancel"
+    (click)="cancelDeleteConnection()"
+  ></nldd-button>
+  <nldd-button
+    slot="actions"
+    variant="destructive"
+    text="Delete"
+    (click)="confirmDeleteConnection()"
+  ></nldd-button>
 </nldd-modal-dialog>

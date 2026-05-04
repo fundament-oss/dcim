@@ -72,7 +72,9 @@ function DeviceNode({ data }: NodeProps<DeviceNodeData>) {
       ))}
 
       <div style={labelRowStyle}>
-        <span style={typeIconStyle}>{data.type === 'server' ? 'SRV' : data.type === 'switch' ? 'SW' : 'PP'}</span>
+        <span style={typeIconStyle}>
+          {data.type === 'server' ? 'SRV' : data.type === 'switch' ? 'SW' : 'PP'}
+        </span>
         <span>{data.label}</span>
       </div>
 
@@ -126,7 +128,6 @@ function RackNode({ data }: NodeProps<{ label: string }>) {
 // --- Node Types ---
 
 const nodeTypes = { device: DeviceNode, rack: RackNode };
-
 
 // --- Initial Nodes ---
 
@@ -223,16 +224,64 @@ const initialNodes: Node[] = [
 
 const initialEdges: Edge[] = [
   // Intra-rack left
-  { id: 'e-sl1-swl', source: 'server-l1', sourceHandle: 'right-0', target: 'switch-l', targetHandle: 'left-0' },
-  { id: 'e-sl2-swl', source: 'server-l2', sourceHandle: 'right-0', target: 'switch-l', targetHandle: 'left-1' },
-  { id: 'e-swl-ppl', source: 'switch-l', sourceHandle: 'right-0', target: 'pp-l', targetHandle: 'left-0' },
+  {
+    id: 'e-sl1-swl',
+    source: 'server-l1',
+    sourceHandle: 'right-0',
+    target: 'switch-l',
+    targetHandle: 'left-0',
+  },
+  {
+    id: 'e-sl2-swl',
+    source: 'server-l2',
+    sourceHandle: 'right-0',
+    target: 'switch-l',
+    targetHandle: 'left-1',
+  },
+  {
+    id: 'e-swl-ppl',
+    source: 'switch-l',
+    sourceHandle: 'right-0',
+    target: 'pp-l',
+    targetHandle: 'left-0',
+  },
   // Intra-rack right
-  { id: 'e-sr1-swr', source: 'server-r1', sourceHandle: 'left-0', target: 'switch-r', targetHandle: 'right-0' },
-  { id: 'e-sr2-swr', source: 'server-r2', sourceHandle: 'left-0', target: 'switch-r', targetHandle: 'right-1' },
-  { id: 'e-swr-ppr', source: 'switch-r', sourceHandle: 'left-0', target: 'pp-r', targetHandle: 'right-0' },
+  {
+    id: 'e-sr1-swr',
+    source: 'server-r1',
+    sourceHandle: 'left-0',
+    target: 'switch-r',
+    targetHandle: 'right-0',
+  },
+  {
+    id: 'e-sr2-swr',
+    source: 'server-r2',
+    sourceHandle: 'left-0',
+    target: 'switch-r',
+    targetHandle: 'right-1',
+  },
+  {
+    id: 'e-swr-ppr',
+    source: 'switch-r',
+    sourceHandle: 'left-0',
+    target: 'pp-r',
+    targetHandle: 'right-0',
+  },
   // Cross-rack cables
-  { id: 'e-ppl-ppr', source: 'pp-l', sourceHandle: 'right-0', target: 'pp-r', targetHandle: 'left-0' },
-  { id: 'e-sl1-sr1', source: 'server-l1', sourceHandle: 'right-1', target: 'server-r1', targetHandle: 'left-1' },
+  {
+    id: 'e-ppl-ppr',
+    source: 'pp-l',
+    sourceHandle: 'right-0',
+    target: 'pp-r',
+    targetHandle: 'left-0',
+  },
+  {
+    id: 'e-sl1-sr1',
+    source: 'server-l1',
+    sourceHandle: 'right-1',
+    target: 'server-r1',
+    targetHandle: 'left-1',
+  },
 ];
 
 // --- Main Component ---

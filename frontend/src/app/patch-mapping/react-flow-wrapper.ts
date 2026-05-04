@@ -1,4 +1,16 @@
-import { Component, EventEmitter, Input, Output, ViewEncapsulation, AfterViewInit, OnDestroy, ElementRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewEncapsulation,
+  AfterViewInit,
+  OnDestroy,
+  ElementRef,
+  ViewChild,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import {
@@ -80,9 +92,13 @@ export default class ReactFlowComponent implements AfterViewInit, OnDestroy, OnC
 
   @Output() edgeDoubleClick = new EventEmitter<[MouseEvent, Edge]>();
 
-  @Output() edgeUpdateStart = new EventEmitter<[MouseEvent, Edge<Record<string, unknown>>, HandleType]>();
+  @Output() edgeUpdateStart = new EventEmitter<
+    [MouseEvent, Edge<Record<string, unknown>>, HandleType]
+  >();
 
-  @Output() edgeUpdateEnd = new EventEmitter<[MouseEvent, Edge<Record<string, unknown>>, HandleType]>();
+  @Output() edgeUpdateEnd = new EventEmitter<
+    [MouseEvent, Edge<Record<string, unknown>>, HandleType]
+  >();
 
   @Output() nodesChange = new EventEmitter<[NodeChange[]]>();
 
@@ -102,7 +118,9 @@ export default class ReactFlowComponent implements AfterViewInit, OnDestroy, OnC
 
   @Output() selectionEnd = new EventEmitter<[MouseEvent]>();
 
-  @Output() selectionContextMenu = new EventEmitter<[MouseEvent, Node<Record<string, unknown>, string | undefined>[]]>();
+  @Output() selectionContextMenu = new EventEmitter<
+    [MouseEvent, Node<Record<string, unknown>, string | undefined>[]]
+  >();
 
   @Output() connect = new EventEmitter<[Connection]>();
 
@@ -114,7 +132,9 @@ export default class ReactFlowComponent implements AfterViewInit, OnDestroy, OnC
 
   @Output() clickConnectEnd = new EventEmitter<[MouseEvent]>();
 
-  @Output() init = new EventEmitter<[ReactFlowInstance<Record<string, unknown>, Record<string, unknown>>]>();
+  @Output() init = new EventEmitter<
+    [ReactFlowInstance<Record<string, unknown>, Record<string, unknown>>]
+  >();
 
   @Output() move = new EventEmitter<[MouseEvent, Viewport]>();
 
@@ -320,50 +340,87 @@ export default class ReactFlowComponent implements AfterViewInit, OnDestroy, OnC
       autoPanOnNodeDrag: this.autoPanOnNodeDrag,
       autoPanOnConnect: this.autoPanOnConnect,
       connectionRadius: this.connectionRadius,
-      onNodeClick: (event: React.MouseEvent, node: Node) => this.nodeClick.emit([event as unknown as MouseEvent, node]),
-      onNodeDoubleClick: (event: React.MouseEvent, node: Node) => this.nodeDoubleClick.emit([event as unknown as MouseEvent, node]),
-      onNodeMouseEnter: (event: React.MouseEvent, node: Node) => this.nodeMouseEnter.emit([event as unknown as MouseEvent, node]),
-      onNodeMouseMove: (event: React.MouseEvent, node: Node) => this.nodeMouseMove.emit([event as unknown as MouseEvent, node]),
-      onNodeMouseLeave: (event: React.MouseEvent, node: Node) => this.nodeMouseLeave.emit([event as unknown as MouseEvent, node]),
-      onNodeContextMenu: (event: React.MouseEvent, node: Node) => this.nodeContextMenu.emit([event as unknown as MouseEvent, node]),
-      onNodeDragStart: (event: React.MouseEvent, node: Node, nodes: Node[]) => this.nodeDragStart.emit([event as unknown as MouseEvent, node, nodes]),
-      onNodeDrag: (event: React.MouseEvent, node: Node, nodes: Node[]) => this.nodeDrag.emit([event as unknown as MouseEvent, node, nodes]),
-      onNodeDragStop: (event: React.MouseEvent, node: Node, nodes: Node[]) => this.nodeDragStop.emit([event as unknown as MouseEvent, node, nodes]),
-      onEdgeClick: (event: React.MouseEvent, edge: Edge) => this.edgeClick.emit([event as unknown as MouseEvent, edge]),
-      onEdgeUpdate: (oldEdge: Edge<Record<string, unknown>>, newConnection: Connection) => this.edgeUpdate.emit([oldEdge, newConnection]),
-      onEdgeContextMenu: (event: React.MouseEvent, edge: Edge) => this.edgeContextMenu.emit([event as unknown as MouseEvent, edge]),
-      onEdgeMouseEnter: (event: React.MouseEvent, edge: Edge) => this.edgeMouseEnter.emit([event as unknown as MouseEvent, edge]),
-      onEdgeMouseMove: (event: React.MouseEvent, edge: Edge) => this.edgeMouseMove.emit([event as unknown as MouseEvent, edge]),
-      onEdgeMouseLeave: (event: React.MouseEvent, edge: Edge) => this.edgeMouseLeave.emit([event as unknown as MouseEvent, edge]),
-      onEdgeDoubleClick: (event: React.MouseEvent, edge: Edge) => this.edgeDoubleClick.emit([event as unknown as MouseEvent, edge]),
-      onEdgeUpdateStart: (event: React.MouseEvent, edge: Edge, handleType: HandleType) => this.edgeUpdateStart.emit([event as unknown as MouseEvent, edge, handleType]),
-      onEdgeUpdateEnd: (event: React.MouseEvent, edge: Edge, handleType: HandleType) => this.edgeUpdateEnd.emit([event as unknown as MouseEvent, edge, handleType]),
+      onNodeClick: (event: React.MouseEvent, node: Node) =>
+        this.nodeClick.emit([event as unknown as MouseEvent, node]),
+      onNodeDoubleClick: (event: React.MouseEvent, node: Node) =>
+        this.nodeDoubleClick.emit([event as unknown as MouseEvent, node]),
+      onNodeMouseEnter: (event: React.MouseEvent, node: Node) =>
+        this.nodeMouseEnter.emit([event as unknown as MouseEvent, node]),
+      onNodeMouseMove: (event: React.MouseEvent, node: Node) =>
+        this.nodeMouseMove.emit([event as unknown as MouseEvent, node]),
+      onNodeMouseLeave: (event: React.MouseEvent, node: Node) =>
+        this.nodeMouseLeave.emit([event as unknown as MouseEvent, node]),
+      onNodeContextMenu: (event: React.MouseEvent, node: Node) =>
+        this.nodeContextMenu.emit([event as unknown as MouseEvent, node]),
+      onNodeDragStart: (event: React.MouseEvent, node: Node, nodes: Node[]) =>
+        this.nodeDragStart.emit([event as unknown as MouseEvent, node, nodes]),
+      onNodeDrag: (event: React.MouseEvent, node: Node, nodes: Node[]) =>
+        this.nodeDrag.emit([event as unknown as MouseEvent, node, nodes]),
+      onNodeDragStop: (event: React.MouseEvent, node: Node, nodes: Node[]) =>
+        this.nodeDragStop.emit([event as unknown as MouseEvent, node, nodes]),
+      onEdgeClick: (event: React.MouseEvent, edge: Edge) =>
+        this.edgeClick.emit([event as unknown as MouseEvent, edge]),
+      onEdgeUpdate: (oldEdge: Edge<Record<string, unknown>>, newConnection: Connection) =>
+        this.edgeUpdate.emit([oldEdge, newConnection]),
+      onEdgeContextMenu: (event: React.MouseEvent, edge: Edge) =>
+        this.edgeContextMenu.emit([event as unknown as MouseEvent, edge]),
+      onEdgeMouseEnter: (event: React.MouseEvent, edge: Edge) =>
+        this.edgeMouseEnter.emit([event as unknown as MouseEvent, edge]),
+      onEdgeMouseMove: (event: React.MouseEvent, edge: Edge) =>
+        this.edgeMouseMove.emit([event as unknown as MouseEvent, edge]),
+      onEdgeMouseLeave: (event: React.MouseEvent, edge: Edge) =>
+        this.edgeMouseLeave.emit([event as unknown as MouseEvent, edge]),
+      onEdgeDoubleClick: (event: React.MouseEvent, edge: Edge) =>
+        this.edgeDoubleClick.emit([event as unknown as MouseEvent, edge]),
+      onEdgeUpdateStart: (event: React.MouseEvent, edge: Edge, handleType: HandleType) =>
+        this.edgeUpdateStart.emit([event as unknown as MouseEvent, edge, handleType]),
+      onEdgeUpdateEnd: (event: React.MouseEvent, edge: Edge, handleType: HandleType) =>
+        this.edgeUpdateEnd.emit([event as unknown as MouseEvent, edge, handleType]),
       onNodesChange: (nodeChanges: NodeChange[]) => this.nodesChange.emit([nodeChanges]),
       onEdgesChange: (edgeChanges: EdgeChange[]) => this.edgesChange.emit([edgeChanges]),
       onNodesDelete: (nodes: Node[]) => this.nodesDelete.emit([nodes]),
       onEdgesDelete: (edges: Edge[]) => this.edgesDelete.emit([edges]),
-      onSelectionDragStart: (event: React.MouseEvent, nodes: Node[]) => this.selectionDragStart.emit([event as unknown as MouseEvent, nodes]),
-      onSelectionDrag: (event: React.MouseEvent, nodes: Node[]) => this.selectionDrag.emit([event as unknown as MouseEvent, nodes]),
-      onSelectionDragStop: (event: React.MouseEvent, nodes: Node[]) => this.selectionDragStop.emit([event as unknown as MouseEvent, nodes]),
-      onSelectionStart: (event: React.MouseEvent) => this.selectionStart.emit([event as unknown as MouseEvent]),
-      onSelectionEnd: (event: React.MouseEvent) => this.selectionEnd.emit([event as unknown as MouseEvent]),
-      onSelectionContextMenu: (event: React.MouseEvent, nodes: Node[]) => this.selectionContextMenu.emit([event as unknown as MouseEvent, nodes]),
+      onSelectionDragStart: (event: React.MouseEvent, nodes: Node[]) =>
+        this.selectionDragStart.emit([event as unknown as MouseEvent, nodes]),
+      onSelectionDrag: (event: React.MouseEvent, nodes: Node[]) =>
+        this.selectionDrag.emit([event as unknown as MouseEvent, nodes]),
+      onSelectionDragStop: (event: React.MouseEvent, nodes: Node[]) =>
+        this.selectionDragStop.emit([event as unknown as MouseEvent, nodes]),
+      onSelectionStart: (event: React.MouseEvent) =>
+        this.selectionStart.emit([event as unknown as MouseEvent]),
+      onSelectionEnd: (event: React.MouseEvent) =>
+        this.selectionEnd.emit([event as unknown as MouseEvent]),
+      onSelectionContextMenu: (event: React.MouseEvent, nodes: Node[]) =>
+        this.selectionContextMenu.emit([event as unknown as MouseEvent, nodes]),
       onConnect: (connection: Connection) => this.connect.emit([connection]),
-      onConnectStart: (event: React.MouseEvent, params: OnConnectStartParams) => this.connectStart.emit([event as unknown as MouseEvent, params]),
-      onConnectEnd: (event: React.MouseEvent) => this.connectEnd.emit([event as unknown as MouseEvent]),
-      onClickConnectStart: (event: React.MouseEvent, params: OnConnectStartParams) => this.clickConnectStart.emit([event as unknown as MouseEvent, params]),
-      onClickConnectEnd: (event: React.MouseEvent) => this.clickConnectEnd.emit([event as unknown as MouseEvent]),
+      onConnectStart: (event: React.MouseEvent, params: OnConnectStartParams) =>
+        this.connectStart.emit([event as unknown as MouseEvent, params]),
+      onConnectEnd: (event: React.MouseEvent) =>
+        this.connectEnd.emit([event as unknown as MouseEvent]),
+      onClickConnectStart: (event: React.MouseEvent, params: OnConnectStartParams) =>
+        this.clickConnectStart.emit([event as unknown as MouseEvent, params]),
+      onClickConnectEnd: (event: React.MouseEvent) =>
+        this.clickConnectEnd.emit([event as unknown as MouseEvent]),
       onInit: (instance: ReactFlowInstance) => this.init.emit([instance]),
-      onMove: (event: React.MouseEvent, viewport: Viewport) => this.move.emit([event as unknown as MouseEvent, viewport]),
-      onMoveStart: (event: React.MouseEvent, viewport: Viewport) => this.moveStart.emit([event as unknown as MouseEvent, viewport]),
-      onMoveEnd: (event: React.MouseEvent, viewport: Viewport) => this.moveEnd.emit([event as unknown as MouseEvent, viewport]),
+      onMove: (event: React.MouseEvent, viewport: Viewport) =>
+        this.move.emit([event as unknown as MouseEvent, viewport]),
+      onMoveStart: (event: React.MouseEvent, viewport: Viewport) =>
+        this.moveStart.emit([event as unknown as MouseEvent, viewport]),
+      onMoveEnd: (event: React.MouseEvent, viewport: Viewport) =>
+        this.moveEnd.emit([event as unknown as MouseEvent, viewport]),
       onSelectionChange: (params: OnSelectionChangeParams) => this.selectionChange.emit([params]),
-      onPaneScroll: (event: React.WheelEvent) => this.paneScroll.emit([event as unknown as WheelEvent]),
-      onPaneClick: (event: React.MouseEvent) => this.paneClick.emit([event as unknown as MouseEvent]),
-      onPaneContextMenu: (event: React.MouseEvent) => this.paneContextMenu.emit([event as unknown as MouseEvent]),
-      onPaneMouseEnter: (event: React.MouseEvent) => this.paneMouseEnter.emit([event as unknown as MouseEvent]),
-      onPaneMouseMove: (event: React.MouseEvent) => this.paneMouseMove.emit([event as unknown as MouseEvent]),
-      onPaneMouseLeave: (event: React.MouseEvent) => this.paneMouseLeave.emit([event as unknown as MouseEvent]),
+      onPaneScroll: (event: React.WheelEvent) =>
+        this.paneScroll.emit([event as unknown as WheelEvent]),
+      onPaneClick: (event: React.MouseEvent) =>
+        this.paneClick.emit([event as unknown as MouseEvent]),
+      onPaneContextMenu: (event: React.MouseEvent) =>
+        this.paneContextMenu.emit([event as unknown as MouseEvent]),
+      onPaneMouseEnter: (event: React.MouseEvent) =>
+        this.paneMouseEnter.emit([event as unknown as MouseEvent]),
+      onPaneMouseMove: (event: React.MouseEvent) =>
+        this.paneMouseMove.emit([event as unknown as MouseEvent]),
+      onPaneMouseLeave: (event: React.MouseEvent) =>
+        this.paneMouseLeave.emit([event as unknown as MouseEvent]),
       onError: (err: OnError) => this.flowError.emit(err),
     };
   }

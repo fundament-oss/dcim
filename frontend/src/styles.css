@@ -1,6 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
-@import "tailwindcss";
+@import 'tailwindcss';
 @import '@nldd/design-system/styles';
 
 /* Make the CSS color-scheme follow the app's .dark class so that Overheid web
@@ -145,8 +145,11 @@ select {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3e%3cpath fill='currentColor' d='M12 5.828 7.4 10.4 6 9l6-6 6 6-1.4 1.4zm0 12.344L7.4 13.6 6 15l6 6 6-6-1.4-1.4z'%3e%3c/path%3e%3c/svg%3e");
 }
 
-input[type="radio"] { appearance: none; -webkit-appearance: none; }
-input[type="radio"]:checked {
+input[type='radio'] {
+  appearance: none;
+  -webkit-appearance: none;
+}
+input[type='radio']:checked {
   background-color: rgb(79 70 229);
   border-color: rgb(79 70 229);
   background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3ccircle cx='8' cy='8' r='3'/%3e%3c/svg%3e");

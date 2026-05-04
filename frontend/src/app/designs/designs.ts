@@ -1,10 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, signal, viewChild } from '@angular/core';
-import { RouterLink } from '@angular/router';
 import {
-  LogicalDesign,
-  LogicalDesignStatus,
-  MOCK_DESIGNS,
-} from './design.model';
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  CUSTOM_ELEMENTS_SCHEMA,
+  effect,
+  signal,
+  viewChild,
+} from '@angular/core';
+import { RouterLink } from '@angular/router';
+import { LogicalDesign, LogicalDesignStatus, MOCK_DESIGNS } from './design.model';
 
 interface NativeElementRef {
   nativeElement: { value: string; show?: () => void; hide?: () => void };
@@ -21,13 +25,13 @@ interface NativeElementRef {
 export default class DesignsComponent {
   statusFilter = signal<LogicalDesignStatus | 'all'>('all');
 
-  searchQuery  = signal('');
+  searchQuery = signal('');
 
   // ── Mutable designs list ───────────────────────────────────────────────────
   readonly mutableDesigns = signal([...MOCK_DESIGNS]);
 
   // ── CRUD state — null = closed, object = open ──────────────────────────────
-  editDesign   = signal<Partial<LogicalDesign> | null>(null);
+  editDesign = signal<Partial<LogicalDesign> | null>(null);
 
   deleteDesign = signal<LogicalDesign | null>(null);
 
@@ -35,23 +39,25 @@ export default class DesignsComponent {
 
   private readonly deleteModalEl = viewChild<NativeElementRef>('deleteModal');
 
-  private readonly fDesignName   = viewChild<NativeElementRef>('fDesignName');
+  private readonly fDesignName = viewChild<NativeElementRef>('fDesignName');
 
   constructor() {
     effect(() => {
       const el = this.designSheetEl()?.nativeElement;
-      if (this.editDesign() !== null) el?.show?.(); else el?.hide?.();
+      if (this.editDesign() !== null) el?.show?.();
+      else el?.hide?.();
     });
     effect(() => {
       const el = this.deleteModalEl()?.nativeElement;
-      if (this.deleteDesign() !== null) el?.show?.(); else el?.hide?.();
+      if (this.deleteDesign() !== null) el?.show?.();
+      else el?.hide?.();
     });
   }
 
   readonly filtered = computed(() => {
-    const q      = this.searchQuery().toLowerCase();
+    const q = this.searchQuery().toLowerCase();
     const status = this.statusFilter();
-    return this.mutableDesigns().filter(d => {
+    return this.mutableDesigns().filter((d) => {
       if (status !== 'all' && d.status !== status) return false;
       if (q && !d.name.toLowerCase().includes(q)) return false;
       return true;
@@ -61,10 +67,10 @@ export default class DesignsComponent {
   readonly counts = computed(() => {
     const all = this.mutableDesigns();
     return {
-      all:      all.length,
-      draft:    all.filter(d => d.status === 'draft').length,
-      active:   all.filter(d => d.status === 'active').length,
-      archived: all.filter(d => d.status === 'archived').length,
+      all: all.length,
+      draft: all.filter((d) => d.status === 'draft').length,
+      active: all.filter((d) => d.status === 'active').length,
+      archived: all.filter((d) => d.status === 'archived').length,
     };
   });
 
@@ -83,20 +89,22 @@ export default class DesignsComponent {
     if (!name?.trim()) return;
     // TODO(api): LogicalDesignService.CreateLogicalDesign(CreateLogicalDesignRequest)
     const design: LogicalDesign = {
-      id:      `design-${  Date.now()}`,
-      name:    name.trim(),
+      id: `design-${Date.now()}`,
+      name: name.trim(),
       version: 1,
-      status:  'draft',
+      status: 'draft',
       created: new Date().toISOString().slice(0, 10),
     };
-    this.mutableDesigns.update(list => [design, ...list]);
+    this.mutableDesigns.update((list) => [design, ...list]);
     this.editDesign.set(null);
   }
 
   archiveDesign(design: LogicalDesign): void {
     // TODO(api): LogicalDesignService.UpdateLogicalDesign({ id, status: 'archived' })
-    this.mutableDesigns.update(list =>
-      list.map(d => d.id === design.id ? { ...d, status: 'archived' as LogicalDesignStatus } : d),
+    this.mutableDesigns.update((list) =>
+      list.map((d) =>
+        d.id === design.id ? { ...d, status: 'archived' as LogicalDesignStatus } : d,
+      ),
     );
   }
 
@@ -112,14 +120,14 @@ export default class DesignsComponent {
     const target = this.deleteDesign();
     if (!target) return;
     // TODO(api): LogicalDesignService.DeleteLogicalDesign(DeleteLogicalDesignRequest)
-    this.mutableDesigns.update(list => list.filter(d => d.id !== target.id));
+    this.mutableDesigns.update((list) => list.filter((d) => d.id !== target.id));
     this.deleteDesign.set(null);
   }
 
   readonly statusBadgeClass = (status: LogicalDesignStatus): string => {
     const statusMap: Record<LogicalDesignStatus, string> = {
-      draft:    'bg-slate-100 text-slate-600',
-      active:   'bg-green-50 text-green-700',
+      draft: 'bg-slate-100 text-slate-600',
+      active: 'bg-green-50 text-green-700',
       archived: 'bg-amber-50 text-amber-700',
     };
     return statusMap[status];
@@ -127,13 +135,17 @@ export default class DesignsComponent {
 
   readonly statusLabel = (status: LogicalDesignStatus): string => {
     const statusMap: Record<LogicalDesignStatus, string> = {
-      draft:    'Draft',
-      active:   'Active',
+      draft: 'Draft',
+      active: 'Active',
       archived: 'Archived',
     };
     return statusMap[status];
   };
 
   readonly formatDate = (dateStr: string): string =>
-    new Date(dateStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    new Date(dateStr).toLocaleDateString('en-GB', {
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
 }

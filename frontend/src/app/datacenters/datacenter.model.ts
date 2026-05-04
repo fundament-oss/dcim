@@ -3,7 +3,7 @@ import { RACKS } from '../racks/rack.model';
 // ── Types ─────────────────────────────────────────────────────────────────────
 
 export type DatacenterStatus = 'operational' | 'degraded' | 'maintenance';
-export type RackOwnership   = 'own' | 'other-client';
+export type RackOwnership = 'own' | 'other-client';
 export type RackFloorStatus = 'operational' | 'issue';
 
 export interface DatacenterInfo {
@@ -146,35 +146,129 @@ function oc(dcId: string, row: string, col: number): RackFloorPosition {
 export const FLOOR_POSITIONS: RackFloorPosition[] = [
   // ── AMS-01 ─────────────────────────────────────────────────────────────────
   // Row A: 4 own racks (R03 has an issue) + 4 other-client
-  { dcId: 'ams-01', rackId: 'ams-01-r01', row: 'A', col: 1, ownership: 'own', floorStatus: 'operational' },
-  { dcId: 'ams-01', rackId: 'ams-01-r02', row: 'A', col: 2, ownership: 'own', floorStatus: 'operational' },
-  { dcId: 'ams-01', rackId: 'ams-01-r03', row: 'A', col: 3, ownership: 'own', floorStatus: 'issue' },
-  { dcId: 'ams-01', rackId: 'ams-01-r04', row: 'A', col: 4, ownership: 'own', floorStatus: 'operational' },
-  oc('ams-01', 'A', 5), oc('ams-01', 'A', 6), oc('ams-01', 'A', 7), oc('ams-01', 'A', 8),
+  {
+    dcId: 'ams-01',
+    rackId: 'ams-01-r01',
+    row: 'A',
+    col: 1,
+    ownership: 'own',
+    floorStatus: 'operational',
+  },
+  {
+    dcId: 'ams-01',
+    rackId: 'ams-01-r02',
+    row: 'A',
+    col: 2,
+    ownership: 'own',
+    floorStatus: 'operational',
+  },
+  {
+    dcId: 'ams-01',
+    rackId: 'ams-01-r03',
+    row: 'A',
+    col: 3,
+    ownership: 'own',
+    floorStatus: 'issue',
+  },
+  {
+    dcId: 'ams-01',
+    rackId: 'ams-01-r04',
+    row: 'A',
+    col: 4,
+    ownership: 'own',
+    floorStatus: 'operational',
+  },
+  oc('ams-01', 'A', 5),
+  oc('ams-01', 'A', 6),
+  oc('ams-01', 'A', 7),
+  oc('ams-01', 'A', 8),
   // Row B: all other-client
-  oc('ams-01', 'B', 1), oc('ams-01', 'B', 2), oc('ams-01', 'B', 3), oc('ams-01', 'B', 4),
-  oc('ams-01', 'B', 5), oc('ams-01', 'B', 6), oc('ams-01', 'B', 7), oc('ams-01', 'B', 8),
+  oc('ams-01', 'B', 1),
+  oc('ams-01', 'B', 2),
+  oc('ams-01', 'B', 3),
+  oc('ams-01', 'B', 4),
+  oc('ams-01', 'B', 5),
+  oc('ams-01', 'B', 6),
+  oc('ams-01', 'B', 7),
+  oc('ams-01', 'B', 8),
   // Row C: all other-client
-  oc('ams-01', 'C', 1), oc('ams-01', 'C', 2), oc('ams-01', 'C', 3), oc('ams-01', 'C', 4),
-  oc('ams-01', 'C', 5), oc('ams-01', 'C', 6), oc('ams-01', 'C', 7), oc('ams-01', 'C', 8),
+  oc('ams-01', 'C', 1),
+  oc('ams-01', 'C', 2),
+  oc('ams-01', 'C', 3),
+  oc('ams-01', 'C', 4),
+  oc('ams-01', 'C', 5),
+  oc('ams-01', 'C', 6),
+  oc('ams-01', 'C', 7),
+  oc('ams-01', 'C', 8),
   // Row D: all other-client
-  oc('ams-01', 'D', 1), oc('ams-01', 'D', 2), oc('ams-01', 'D', 3), oc('ams-01', 'D', 4),
-  oc('ams-01', 'D', 5), oc('ams-01', 'D', 6), oc('ams-01', 'D', 7), oc('ams-01', 'D', 8),
+  oc('ams-01', 'D', 1),
+  oc('ams-01', 'D', 2),
+  oc('ams-01', 'D', 3),
+  oc('ams-01', 'D', 4),
+  oc('ams-01', 'D', 5),
+  oc('ams-01', 'D', 6),
+  oc('ams-01', 'D', 7),
+  oc('ams-01', 'D', 8),
 
   // ── AMS-02 ─────────────────────────────────────────────────────────────────
   // Row A: 2 own + 4 other-client
-  { dcId: 'ams-02', rackId: 'ams-02-r01', row: 'A', col: 1, ownership: 'own', floorStatus: 'operational' },
-  { dcId: 'ams-02', rackId: 'ams-02-r02', row: 'A', col: 2, ownership: 'own', floorStatus: 'operational' },
-  oc('ams-02', 'A', 3), oc('ams-02', 'A', 4), oc('ams-02', 'A', 5), oc('ams-02', 'A', 6),
+  {
+    dcId: 'ams-02',
+    rackId: 'ams-02-r01',
+    row: 'A',
+    col: 1,
+    ownership: 'own',
+    floorStatus: 'operational',
+  },
+  {
+    dcId: 'ams-02',
+    rackId: 'ams-02-r02',
+    row: 'A',
+    col: 2,
+    ownership: 'own',
+    floorStatus: 'operational',
+  },
+  oc('ams-02', 'A', 3),
+  oc('ams-02', 'A', 4),
+  oc('ams-02', 'A', 5),
+  oc('ams-02', 'A', 6),
   // Row B: 1 own + 5 other-client
-  { dcId: 'ams-02', rackId: 'ams-02-r03', row: 'B', col: 1, ownership: 'own', floorStatus: 'operational' },
-  oc('ams-02', 'B', 2), oc('ams-02', 'B', 3), oc('ams-02', 'B', 4), oc('ams-02', 'B', 5), oc('ams-02', 'B', 6),
+  {
+    dcId: 'ams-02',
+    rackId: 'ams-02-r03',
+    row: 'B',
+    col: 1,
+    ownership: 'own',
+    floorStatus: 'operational',
+  },
+  oc('ams-02', 'B', 2),
+  oc('ams-02', 'B', 3),
+  oc('ams-02', 'B', 4),
+  oc('ams-02', 'B', 5),
+  oc('ams-02', 'B', 6),
 
   // ── FRA-01 ─────────────────────────────────────────────────────────────────
   // Row A: 2 own + 4 other-client
-  { dcId: 'fra-01', rackId: 'fra-01-r01', row: 'A', col: 1, ownership: 'own', floorStatus: 'operational' },
-  { dcId: 'fra-01', rackId: 'fra-01-r02', row: 'A', col: 2, ownership: 'own', floorStatus: 'operational' },
-  oc('fra-01', 'A', 3), oc('fra-01', 'A', 4), oc('fra-01', 'A', 5), oc('fra-01', 'A', 6),
+  {
+    dcId: 'fra-01',
+    rackId: 'fra-01-r01',
+    row: 'A',
+    col: 1,
+    ownership: 'own',
+    floorStatus: 'operational',
+  },
+  {
+    dcId: 'fra-01',
+    rackId: 'fra-01-r02',
+    row: 'A',
+    col: 2,
+    ownership: 'own',
+    floorStatus: 'operational',
+  },
+  oc('fra-01', 'A', 3),
+  oc('fra-01', 'A', 4),
+  oc('fra-01', 'A', 5),
+  oc('fra-01', 'A', 6),
 ];
 
 // TODO(api): RoomService.ListRooms({ site_id })
@@ -200,19 +294,19 @@ export const MOCK_RACK_ROWS: RackRow[] = [
 // ── Derived helpers ───────────────────────────────────────────────────────────
 
 export function rackFillPct(rackId: string): number {
-  const rack = RACKS.find(r => r.id === rackId);
+  const rack = RACKS.find((r) => r.id === rackId);
   if (!rack) return 0;
   const usedU = rack.devices.reduce((sum, d) => sum + d.uSize, 0);
   return Math.round((usedU / rack.totalU) * 100);
 }
 
 export function rackDeviceCount(rackId: string): number {
-  return RACKS.find(r => r.id === rackId)?.devices.length ?? 0;
+  return RACKS.find((r) => r.id === rackId)?.devices.length ?? 0;
 }
 
 export function rackPowerW(rackId: string): number {
   return (
-    RACKS.find(r => r.id === rackId)?.devices.reduce(
+    RACKS.find((r) => r.id === rackId)?.devices.reduce(
       (sum, d) => sum + (d.ipmi?.averageW ?? 0),
       0,
     ) ?? 0

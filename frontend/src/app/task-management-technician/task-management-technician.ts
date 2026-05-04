@@ -1,4 +1,9 @@
-import { Component, ChangeDetectionStrategy, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  AfterViewInit,
+  CUSTOM_ELEMENTS_SCHEMA,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 interface GatherItem {
@@ -50,7 +55,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
         steps: [
           {
             title: 'Navigate to data center Hall B',
-            description: 'Head to Hall B via the main corridor. Follow the blue floor markers. Your destination is Row 12, approximately halfway down the hall on the left side.',
+            description:
+              'Head to Hall B via the main corridor. Follow the blue floor markers. Your destination is Row 12, approximately halfway down the hall on the left side.',
             icon: 'info-circle',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="10" y="20" width="100" height="60" rx="6" stroke="#e2e8f0" stroke-width="1.5" fill="#f8fafc"/>
@@ -70,7 +76,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
           },
           {
             title: 'Enter the cold aisle',
-            description: 'Use your access badge on the card reader to enter the cold aisle between Row 12 and Row 13. The door will lock behind you automatically. Ensure the aisle containment doors are properly sealed after entry.',
+            description:
+              'Use your access badge on the card reader to enter the cold aisle between Row 12 and Row 13. The door will lock behind you automatically. Ensure the aisle containment doors are properly sealed after entry.',
             icon: 'arrow-right',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="25" y="15" width="35" height="65" rx="4" stroke="#6366f1" stroke-width="2" fill="#eef2ff"/>
@@ -86,7 +93,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
           },
           {
             title: 'Locate Rack 123',
-            description: 'Rack 123 is on the left side of the aisle, the 4th rack from the entrance. It has a label plate reading "R-123" at the top. Verify the rack number before proceeding.',
+            description:
+              'Rack 123 is on the left side of the aisle, the 4th rack from the entrance. It has a label plate reading "R-123" at the top. Verify the rack number before proceeding.',
             icon: 'database',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="10" y="15" width="18" height="70" rx="2" stroke="#cbd5e1" stroke-width="1" fill="#f8fafc"/>
@@ -106,7 +114,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
           },
           {
             title: 'Open the rack',
-            description: 'Enter access code 4591 on the rack\'s keypad lock. The lock indicator LED will turn green. Pull the handle to open the front door. Keep the door open during the procedure.',
+            description:
+              "Enter access code 4591 on the rack's keypad lock. The lock indicator LED will turn green. Pull the handle to open the front door. Keep the door open during the procedure.",
             icon: 'lock-open',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="35" y="20" width="50" height="55" rx="6" stroke="#6366f1" stroke-width="2" fill="#eef2ff"/>
@@ -124,7 +133,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
           },
           {
             title: 'Locate device "backup-srv-07" at U32',
-            description: 'Count rack units from the bottom. U32 is in the upper third of the rack. The server is labeled "backup-srv-07" on a pull-out tag on the left side. It\'s a 2U server with a dark gray bezel.',
+            description:
+              'Count rack units from the bottom. U32 is in the upper third of the rack. The server is labeled "backup-srv-07" on a pull-out tag on the left side. It\'s a 2U server with a dark gray bezel.',
             icon: 'search',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="30" y="8" width="60" height="84" rx="4" stroke="#cbd5e1" stroke-width="1.5" fill="white"/>
@@ -142,7 +152,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
           },
           {
             title: 'Remove failed harddisk (Bay 3, top-left)',
-            description: 'Put on your anti-static wrist strap and ground yourself. Locate Bay 3 at the top-left of the server\'s drive cage. Press the orange release latch and slide the caddy out gently. Place the failed drive in the anti-static bag.',
+            description:
+              "Put on your anti-static wrist strap and ground yourself. Locate Bay 3 at the top-left of the server's drive cage. Press the orange release latch and slide the caddy out gently. Place the failed drive in the anti-static bag.",
             icon: 'cylinder-split-slash',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="20" y="25" width="60" height="50" rx="4" stroke="#cbd5e1" stroke-width="1.5" fill="white"/>
@@ -161,7 +172,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
           },
           {
             title: 'Install replacement harddisk',
-            description: 'Take the new Seagate Exos X18 out of its packaging. Align the drive caddy with Bay 3 rails and slide it in firmly until it clicks into place. The activity LED should blink amber briefly, then turn solid green.',
+            description:
+              'Take the new Seagate Exos X18 out of its packaging. Align the drive caddy with Bay 3 rails and slide it in firmly until it clicks into place. The activity LED should blink amber briefly, then turn solid green.',
             icon: 'cylinder-split',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="20" y="25" width="60" height="50" rx="4" stroke="#cbd5e1" stroke-width="1.5" fill="white"/>
@@ -182,7 +194,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
           },
           {
             title: 'Verify & close up',
-            description: 'Wait 30 seconds for the RAID controller to detect the new drive. The status LED on Bay 3 should be solid green. Check the server\'s front LCD panel — it should show "Rebuild in progress" or "Drive OK". Close and lock the rack door.',
+            description:
+              'Wait 30 seconds for the RAID controller to detect the new drive. The status LED on Bay 3 should be solid green. Check the server\'s front LCD panel — it should show "Rebuild in progress" or "Drive OK". Close and lock the rack door.',
             icon: 'check-mark-circle',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="25" y="15" width="70" height="50" rx="6" stroke="#6366f1" stroke-width="2" fill="#eef2ff"/>
@@ -210,7 +223,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
         steps: [
           {
             title: 'Navigate to Rack 87',
-            description: 'Head to Row 9 in Hall B. Rack 87 is on the right side of the aisle, the 2nd rack from the entrance. The label plate reads "R-087".',
+            description:
+              'Head to Row 9 in Hall B. Rack 87 is on the right side of the aisle, the 2nd rack from the entrance. The label plate reads "R-087".',
             icon: 'info-circle',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="10" y="20" width="100" height="60" rx="6" stroke="#e2e8f0" stroke-width="1.5" fill="#f8fafc"/>
@@ -228,7 +242,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
           },
           {
             title: 'Open rack & locate switch at U18',
-            description: 'Enter code 7823 on the keypad. U18 holds a 1U Cisco switch labeled "sw-core-03". It has an amber status LED — this is the failed unit.',
+            description:
+              'Enter code 7823 on the keypad. U18 holds a 1U Cisco switch labeled "sw-core-03". It has an amber status LED — this is the failed unit.',
             icon: 'lock-open',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="30" y="8" width="60" height="84" rx="4" stroke="#cbd5e1" stroke-width="1.5" fill="white"/>
@@ -244,7 +259,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
           },
           {
             title: 'Remove failed switch',
-            description: 'Label all connected cables with the provided tags before disconnecting. Unscrew the rack ears (2 screws each side) and slide the switch forward. Place in the anti-static bag.',
+            description:
+              'Label all connected cables with the provided tags before disconnecting. Unscrew the rack ears (2 screws each side) and slide the switch forward. Place in the anti-static bag.',
             icon: 'cylinder-split-slash',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="20" y="35" width="60" height="14" rx="2" stroke="#ef4444" stroke-width="2" fill="#fef2f2" stroke-dasharray="4 2"/>
@@ -259,7 +275,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
           },
           {
             title: 'Install Cisco Catalyst 9200L',
-            description: 'Slide the new switch into U18. Secure with rack ear screws. Re-connect cables in the order matching your labels. The switch will power on and run POST diagnostics.',
+            description:
+              'Slide the new switch into U18. Secure with rack ear screws. Re-connect cables in the order matching your labels. The switch will power on and run POST diagnostics.',
             icon: 'list',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="20" y="35" width="60" height="14" rx="2" stroke="#22c55e" stroke-width="2" fill="#f0fdf4"/>
@@ -277,7 +294,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
           },
           {
             title: 'Verify connectivity & close rack',
-            description: 'Wait 2 minutes for the switch to boot. All port LEDs should turn green. Confirm "sw-core-03" is back online on the NOC dashboard. Close and lock the rack.',
+            description:
+              'Wait 2 minutes for the switch to boot. All port LEDs should turn green. Confirm "sw-core-03" is back online on the NOC dashboard. Close and lock the rack.',
             icon: 'check-mark-circle',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="25" y="15" width="70" height="50" rx="6" stroke="#6366f1" stroke-width="2" fill="#eef2ff"/>
@@ -300,7 +318,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
         steps: [
           {
             title: 'Navigate to PDU — Hall A, Row 3',
-            description: 'Head to Hall A via the main corridor. The PDU is a vertical unit mounted on the right side of Rack 42, Row 3. It\'s labeled "PDU-A-042".',
+            description:
+              'Head to Hall A via the main corridor. The PDU is a vertical unit mounted on the right side of Rack 42, Row 3. It\'s labeled "PDU-A-042".',
             icon: 'info-circle',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="10" y="20" width="100" height="60" rx="6" stroke="#e2e8f0" stroke-width="1.5" fill="#f8fafc"/>
@@ -318,7 +337,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
           },
           {
             title: 'Record power load readings',
-            description: 'Use the multimeter to measure input voltage on all three phases. Expected: 220–240V each. Note any circuit above 80% capacity on the PDU\'s LCD display.',
+            description:
+              "Use the multimeter to measure input voltage on all three phases. Expected: 220–240V each. Note any circuit above 80% capacity on the PDU's LCD display.",
             icon: 'exclamation-triangle',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="40" y="10" width="40" height="55" rx="4" stroke="#6366f1" stroke-width="2" fill="#eef2ff"/>
@@ -337,7 +357,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
           },
           {
             title: 'Inspect cable management & outlets',
-            description: 'Check for loose cables, damaged outlets, or signs of heat stress (discolouration, melting). Verify all outlet covers are in place on unused ports. Note any anomalies.',
+            description:
+              'Check for loose cables, damaged outlets, or signs of heat stress (discolouration, melting). Verify all outlet covers are in place on unused ports. Note any anomalies.',
             icon: 'info-circle',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="40" y="10" width="40" height="70" rx="4" stroke="#6366f1" stroke-width="2" fill="#eef2ff"/>
@@ -355,7 +376,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
           },
           {
             title: 'Document findings & close',
-            description: 'Record all readings and observations. If any circuit is above 80% load or anomalies were found, flag the issue in the system before leaving.',
+            description:
+              'Record all readings and observations. If any circuit is above 80% load or anomalies were found, flag the issue in the system before leaving.',
             icon: 'check-mark-circle',
             svg: `<svg viewBox="0 0 120 100" fill="none" xmlns="http://www.w3.org/2000/svg" class="h-40 w-full" aria-hidden="true">
               <rect x="35" y="10" width="50" height="65" rx="6" stroke="#6366f1" stroke-width="2" fill="#eef2ff"/>
@@ -389,32 +411,34 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
 
     function getCompletedCount(): number {
       let n = gatherCompleted ? 1 : 0;
-      completedTaskSteps.forEach(s => { n += s.size; });
+      completedTaskSteps.forEach((s) => {
+        n += s.size;
+      });
       return n;
     }
 
     // ── DOM refs ──
-    const timeline       = document.getElementById('wizardTimeline') as HTMLElement;
-    const prevBtn        = document.getElementById('prevBtn') as HTMLElement;
-    const doneBtn        = document.getElementById('doneBtn') as HTMLElement;
-    const progressFill   = document.getElementById('progressFill') as HTMLElement;
-    const progressLabel  = document.getElementById('progressLabel') as HTMLElement;
-    const progressBar    = document.getElementById('progressBar') as HTMLElement;
-    const bottomBar      = document.getElementById('bottomBar') as HTMLElement;
-    const taskHeader     = document.getElementById('taskHeader') as HTMLElement;
+    const timeline = document.getElementById('wizardTimeline') as HTMLElement;
+    const prevBtn = document.getElementById('prevBtn') as HTMLElement;
+    const doneBtn = document.getElementById('doneBtn') as HTMLElement;
+    const progressFill = document.getElementById('progressFill') as HTMLElement;
+    const progressLabel = document.getElementById('progressLabel') as HTMLElement;
+    const progressBar = document.getElementById('progressBar') as HTMLElement;
+    const bottomBar = document.getElementById('bottomBar') as HTMLElement;
+    const taskHeader = document.getElementById('taskHeader') as HTMLElement;
     const completeScreen = document.getElementById('completeScreen') as HTMLElement;
-    const photoModal     = document.getElementById('photoModal') as HTMLElement;
-    const noteModal      = document.getElementById('noteModal') as HTMLElement;
+    const photoModal = document.getElementById('photoModal') as HTMLElement;
+    const noteModal = document.getElementById('noteModal') as HTMLElement;
     const photoStepLabel = document.getElementById('photoStepLabel') as HTMLElement;
-    const noteStepLabel  = document.getElementById('noteStepLabel') as HTMLElement;
-    const toast          = document.getElementById('toast') as HTMLElement;
-    const toastText      = document.getElementById('toastText') as HTMLElement;
-    const menuBtn        = document.getElementById('menuBtn') as HTMLElement;
-    const menuDropdown   = document.getElementById('menuDropdown') as HTMLElement;
-    const photoInput     = document.getElementById('photoInput') as HTMLInputElement;
-    const photoPreview   = document.getElementById('photoPreview') as HTMLElement;
+    const noteStepLabel = document.getElementById('noteStepLabel') as HTMLElement;
+    const toast = document.getElementById('toast') as HTMLElement;
+    const toastText = document.getElementById('toastText') as HTMLElement;
+    const menuBtn = document.getElementById('menuBtn') as HTMLElement;
+    const menuDropdown = document.getElementById('menuDropdown') as HTMLElement;
+    const photoInput = document.getElementById('photoInput') as HTMLInputElement;
+    const photoPreview = document.getElementById('photoPreview') as HTMLElement;
     const photoPreviewImg = document.getElementById('photoPreviewImg') as HTMLImageElement;
-    const noteTextarea   = document.getElementById('noteTextarea') as HTMLTextAreaElement;
+    const noteTextarea = document.getElementById('noteTextarea') as HTMLTextAreaElement;
 
     // ── Helpers ──
     function priorityBadge(priority: Task['priority']): string {
@@ -433,16 +457,17 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
       let listItems: string[] = [];
       function flushList(): void {
         if (listItems.length) {
-          html += `<ul class="mt-1.5 list-disc pl-5 text-sm leading-relaxed text-slate-500 space-y-0.5">${listItems.map(t => `<li>${t}</li>`).join('')}</ul>`;
+          html += `<ul class="mt-1.5 list-disc pl-5 text-sm leading-relaxed text-slate-500 space-y-0.5">${listItems.map((t) => `<li>${t}</li>`).join('')}</ul>`;
           listItems = [];
         }
       }
-      lines.forEach(line => {
+      lines.forEach((line) => {
         if (line.startsWith('- ')) {
           listItems.push(line.slice(2));
         } else {
           flushList();
-          if (line.trim()) html += `<p class="mt-1.5 text-sm leading-relaxed text-slate-500">${line}</p>`;
+          if (line.trim())
+            html += `<p class="mt-1.5 text-sm leading-relaxed text-slate-500">${line}</p>`;
         }
       });
       flushList();
@@ -479,18 +504,22 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
     function renderProgress(): void {
       const completed = getCompletedCount();
       const pct = (completed / totalSteps) * 100;
-      progressFill.style.width = `${pct  }%`;
+      progressFill.style.width = `${pct}%`;
       progressLabel.textContent = `${completed}/${totalSteps}`;
       progressBar.setAttribute('aria-valuenow', String(completed));
       progressBar.setAttribute('aria-valuemax', String(totalSteps));
-      progressBar.setAttribute('aria-label', `Task progress: ${completed} of ${totalSteps} steps completed`);
+      progressBar.setAttribute(
+        'aria-label',
+        `Task progress: ${completed} of ${totalSteps} steps completed`,
+      );
     }
 
     // ── Render nav buttons ──
     function renderNavButtons(): void {
       prevBtn.toggleAttribute('disabled', phase === 'gather');
       const isLastTask = currentTaskIndex === tasks.length - 1;
-      const isLastStep = phase === 'task' && currentStepIndex === tasks[currentTaskIndex].steps.length - 1;
+      const isLastStep =
+        phase === 'task' && currentStepIndex === tasks[currentTaskIndex].steps.length - 1;
       if (phase === 'task' && isLastTask && isLastStep) {
         doneBtn.setAttribute('text', 'Complete');
         doneBtn.setAttribute('end-icon', 'check-mark-circle');
@@ -537,8 +566,11 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
       const isGatherActive = phase === 'gather';
       let gatherCircleCls: string;
       if (gatherCompleted) gatherCircleCls = 'bg-accent-600 text-white';
-      else if (isGatherActive) gatherCircleCls = 'border-2 border-accent-600 bg-white font-semibold text-accent-600 text-sm';
-      else gatherCircleCls = 'border-2 border-slate-300 bg-white text-sm font-medium text-slate-400';
+      else if (isGatherActive)
+        gatherCircleCls =
+          'border-2 border-accent-600 bg-white font-semibold text-accent-600 text-sm';
+      else
+        gatherCircleCls = 'border-2 border-slate-300 bg-white text-sm font-medium text-slate-400';
       const gatherCircleContent = gatherCompleted
         ? '<nldd-icon name="check-mark" class="w-3.5 h-3.5" aria-hidden="true"></nldd-icon>'
         : '1';
@@ -558,9 +590,10 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
         checklistHtml = `
           <p class="mt-1.5 text-sm leading-relaxed text-slate-500">Collect all items from the supply room before heading to the floor.</p>
           <div class="mt-3 space-y-1" role="list" aria-label="Items to gather">
-            ${gatherItems.map((item, i) => {
-              const checked = checkedItems.has(i);
-              return `
+            ${gatherItems
+              .map((item, i) => {
+                const checked = checkedItems.has(i);
+                return `
                 <div class="flex cursor-pointer items-center gap-3 rounded-lg px-2 py-1.5 transition hover:bg-slate-50" data-gather-row="${i}" role="listitem">
                   <nldd-checkbox ${checked ? 'checked' : ''} accessible-label="${item.label}" data-gather-item="${i}"></nldd-checkbox>
                   <div class="select-none" aria-hidden="true">
@@ -569,7 +602,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
                   </div>
                 </div>
               `;
-            }).join('')}
+              })
+              .join('')}
           </div>
           ${checkedCount > 0 ? `<p class="mt-2 text-xs text-slate-400">${checkedCount} of ${gatherItems.length} collected</p>` : ''}
         `;
@@ -601,7 +635,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
         const circleNum = taskIdx + 2;
         let circleCls: string;
         if (isDone) circleCls = 'bg-accent-600 text-white';
-        else if (isActive) circleCls = 'border-2 border-accent-600 bg-white font-semibold text-accent-600 text-sm';
+        else if (isActive)
+          circleCls = 'border-2 border-accent-600 bg-white font-semibold text-accent-600 text-sm';
         else circleCls = 'border-2 border-slate-300 bg-white text-sm font-medium text-slate-400';
         const circleContent = isDone
           ? '<nldd-icon name="check-mark" class="w-3.5 h-3.5" aria-hidden="true"></nldd-icon>'
@@ -615,37 +650,42 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
         // Step sub-items (only when this task is active)
         let subStepsHtml = '';
         if (isActive) {
-          subStepsHtml = task.steps.map((step, si) => {
-            const stepDone = completedSet?.has(si) ?? false;
-            const stepActive = si === currentStepIndex;
-            const isLastStep = si === task.steps.length - 1;
+          subStepsHtml = task.steps
+            .map((step, si) => {
+              const stepDone = completedSet?.has(si) ?? false;
+              const stepActive = si === currentStepIndex;
+              const isLastStep = si === task.steps.length - 1;
 
-            let sCircleCls: string;
-            if (stepDone) sCircleCls = 'bg-accent-600 text-white';
-            else if (stepActive) sCircleCls = 'border-2 border-accent-600 bg-white font-semibold text-accent-600 text-xs';
-            else sCircleCls = 'border-2 border-slate-200 bg-white text-xs font-medium text-slate-400';
-            const sCircleContent = stepDone
-              ? '<nldd-icon name="check-mark" style="width:10px;height:10px;" aria-hidden="true"></nldd-icon>'
-              : String(si + 1);
-            const sLineColor = stepDone ? 'bg-accent-300' : 'bg-slate-200';
-            const sOpacity = stepActive ? 'opacity-100' : 'opacity-50';
-            const sCardCls = stepActive
-              ? 'rounded-xl bg-white p-4 shadow-sm outline outline-2 outline-accent-500 outline-offset-0 mb-4'
-              : 'py-1.5';
+              let sCircleCls: string;
+              if (stepDone) sCircleCls = 'bg-accent-600 text-white';
+              else if (stepActive)
+                sCircleCls =
+                  'border-2 border-accent-600 bg-white font-semibold text-accent-600 text-xs';
+              else
+                sCircleCls =
+                  'border-2 border-slate-200 bg-white text-xs font-medium text-slate-400';
+              const sCircleContent = stepDone
+                ? '<nldd-icon name="check-mark" style="width:10px;height:10px;" aria-hidden="true"></nldd-icon>'
+                : String(si + 1);
+              const sLineColor = stepDone ? 'bg-accent-300' : 'bg-slate-200';
+              const sOpacity = stepActive ? 'opacity-100' : 'opacity-50';
+              const sCardCls = stepActive
+                ? 'rounded-xl bg-white p-4 shadow-sm outline outline-2 outline-accent-500 outline-offset-0 mb-4'
+                : 'py-1.5';
 
-            let stepIconCls: string;
-            if (stepActive) stepIconCls = 'text-accent-600';
-            else if (stepDone) stepIconCls = 'text-accent-400';
-            else stepIconCls = 'text-slate-400';
+              let stepIconCls: string;
+              if (stepActive) stepIconCls = 'text-accent-600';
+              else if (stepDone) stepIconCls = 'text-accent-400';
+              else stepIconCls = 'text-slate-400';
 
-            let interactiveAttr = '';
-            let cursorCls = '';
-            if (stepDone) {
-              interactiveAttr = `role="button" tabindex="0" data-task="${taskIdx}" data-step="${si}" aria-label="Step ${si + 1}: ${step.title} — Completed. Tap to revisit"`;
-              cursorCls = 'cursor-pointer hover:opacity-70';
-            }
+              let interactiveAttr = '';
+              let cursorCls = '';
+              if (stepDone) {
+                interactiveAttr = `role="button" tabindex="0" data-task="${taskIdx}" data-step="${si}" aria-label="Step ${si + 1}: ${step.title} — Completed. Tap to revisit"`;
+                cursorCls = 'cursor-pointer hover:opacity-70';
+              }
 
-            return `
+              return `
               <div class="relative flex gap-3 ${sOpacity} ${cursorCls} transition-opacity" ${interactiveAttr} ${stepActive ? 'aria-current="step"' : ''}>
                 <div class="flex flex-col items-center">
                   <div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${sCircleCls}" aria-hidden="true">${sCircleContent}</div>
@@ -661,7 +701,8 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
                 </div>
               </div>
             `;
-          }).join('');
+            })
+            .join('');
         }
 
         let taskTitleCls: string;
@@ -693,14 +734,16 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
 
       // Gather item handlers
       if (phase === 'gather') {
-        timeline.querySelectorAll('[data-gather-row]').forEach(el => {
+        timeline.querySelectorAll('[data-gather-row]').forEach((el) => {
           el.addEventListener('click', (e) => {
             if (!(e.target as HTMLElement).closest('nldd-checkbox')) {
-              (el.querySelector('nldd-checkbox') as HTMLElement & { toggle?: () => void })?.toggle?.();
+              (
+                el.querySelector('nldd-checkbox') as HTMLElement & { toggle?: () => void }
+              )?.toggle?.();
             }
           });
         });
-        timeline.querySelectorAll('[data-gather-item]').forEach(el => {
+        timeline.querySelectorAll('[data-gather-item]').forEach((el) => {
           el.addEventListener('change', (e: Event) => {
             const idx = parseInt((el as HTMLElement).dataset['gatherItem']!, 10);
             if ((e as CustomEvent).detail.checked) checkedItems.add(idx);
@@ -711,7 +754,7 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
       }
 
       // Step jump handlers (completed steps)
-      timeline.querySelectorAll('[data-step]').forEach(el => {
+      timeline.querySelectorAll('[data-step]').forEach((el) => {
         const taskIdx = parseInt((el as HTMLElement).dataset['task']!, 10);
         const stepIdx = parseInt((el as HTMLElement).dataset['step']!, 10);
         const doJump = (): void => {
@@ -845,7 +888,7 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
       showToast('Note saved');
     });
 
-    [photoModal, noteModal].forEach(modal => {
+    [photoModal, noteModal].forEach((modal) => {
       modal.addEventListener('click', (e: Event) => {
         if (e.target === modal) {
           modal.classList.add('hidden');
@@ -856,7 +899,7 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
 
     document.addEventListener('keydown', (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        [photoModal, noteModal].forEach(m => {
+        [photoModal, noteModal].forEach((m) => {
           m.classList.add('hidden');
           m.classList.remove('flex');
         });

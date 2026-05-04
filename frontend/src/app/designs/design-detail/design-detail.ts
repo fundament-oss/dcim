@@ -8,7 +8,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { RouterLink, ActivatedRoute  } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import DesignFlowWrapperComponent from '../design-flow-wrapper';
 import {
   LogicalConnection,
@@ -29,9 +29,18 @@ interface NativeElementRef {
 }
 
 const ALL_ROLES: LogicalDeviceRole[] = [
-  'Compute', 'ToR', 'Spine', 'Core', 'PDU', 'Patch Panel',
-  'Storage', 'Firewall', 'Load Balancer', 'Console Server',
-  'Cable Manager', 'Adapter',
+  'Compute',
+  'ToR',
+  'Spine',
+  'Core',
+  'PDU',
+  'Patch Panel',
+  'Storage',
+  'Firewall',
+  'Load Balancer',
+  'Console Server',
+  'Cable Manager',
+  'Adapter',
 ];
 
 @Component({
@@ -48,24 +57,24 @@ export default class DesignDetailComponent {
   readonly designId = this.route.snapshot.paramMap.get('id') ?? '';
 
   // ── Mutable state ──────────────────────────────────────────────────────────
-  readonly mutableDesigns     = signal([...MOCK_DESIGNS]);
+  readonly mutableDesigns = signal([...MOCK_DESIGNS]);
 
-  readonly mutableDevices     = signal([...MOCK_LOGICAL_DEVICES]);
+  readonly mutableDevices = signal([...MOCK_LOGICAL_DEVICES]);
 
   readonly mutableConnections = signal([...MOCK_LOGICAL_CONNECTIONS]);
 
-  readonly mutableLayouts     = signal([...MOCK_DEVICE_LAYOUTS]);
+  readonly mutableLayouts = signal([...MOCK_DEVICE_LAYOUTS]);
 
   readonly design = computed<LogicalDesign | undefined>(() =>
-    this.mutableDesigns().find(d => d.id === this.designId),
+    this.mutableDesigns().find((d) => d.id === this.designId),
   );
 
   readonly devices = computed(() =>
-    this.mutableDevices().filter(d => d.designId === this.designId),
+    this.mutableDevices().filter((d) => d.designId === this.designId),
   );
 
   readonly connections = computed(() =>
-    this.mutableConnections().filter(c => c.designId === this.designId),
+    this.mutableConnections().filter((c) => c.designId === this.designId),
   );
 
   readonly layouts = computed(() => this.mutableLayouts());
@@ -75,67 +84,71 @@ export default class DesignDetailComponent {
 
   readonly selectedDevice = computed(() => {
     const id = this.selectedDeviceId();
-    return id ? this.mutableDevices().find(d => d.id === id) ?? null : null;
+    return id ? (this.mutableDevices().find((d) => d.id === id) ?? null) : null;
   });
 
   readonly selectedDeviceConnections = computed(() => {
     const id = this.selectedDeviceId();
     if (!id) return [];
     return this.mutableConnections().filter(
-      c => c.designId === this.designId && (c.sourceDeviceId === id || c.targetDeviceId === id),
+      (c) => c.designId === this.designId && (c.sourceDeviceId === id || c.targetDeviceId === id),
     );
   });
 
   // ── Device CRUD state ──────────────────────────────────────────────────────
-  editDevice   = signal<Partial<LogicalDevice> | null>(null);
+  editDevice = signal<Partial<LogicalDevice> | null>(null);
 
   deleteDevice = signal<LogicalDevice | null>(null);
 
-  private readonly deviceSheetEl  = viewChild<NativeElementRef>('deviceSheet');
+  private readonly deviceSheetEl = viewChild<NativeElementRef>('deviceSheet');
 
-  private readonly deviceModalEl  = viewChild<NativeElementRef>('deviceModal');
+  private readonly deviceModalEl = viewChild<NativeElementRef>('deviceModal');
 
-  private readonly fDeviceName    = viewChild<NativeElementRef>('fDeviceName');
+  private readonly fDeviceName = viewChild<NativeElementRef>('fDeviceName');
 
-  private readonly fDeviceRole    = viewChild<NativeElementRef>('fDeviceRole');
+  private readonly fDeviceRole = viewChild<NativeElementRef>('fDeviceRole');
 
   // ── Connection CRUD state ──────────────────────────────────────────────────
-  editConnection   = signal<Partial<LogicalConnection> | null>(null);
+  editConnection = signal<Partial<LogicalConnection> | null>(null);
 
   deleteConnection = signal<LogicalConnection | null>(null);
 
-  private readonly connSheetEl    = viewChild<NativeElementRef>('connSheet');
+  private readonly connSheetEl = viewChild<NativeElementRef>('connSheet');
 
-  private readonly connModalEl    = viewChild<NativeElementRef>('connModal');
+  private readonly connModalEl = viewChild<NativeElementRef>('connModal');
 
   private readonly fConnSrcDevice = viewChild<NativeElementRef>('fConnSrcDevice');
 
-  private readonly fConnSrcPort   = viewChild<NativeElementRef>('fConnSrcPort');
+  private readonly fConnSrcPort = viewChild<NativeElementRef>('fConnSrcPort');
 
   private readonly fConnTgtDevice = viewChild<NativeElementRef>('fConnTgtDevice');
 
-  private readonly fConnTgtPort   = viewChild<NativeElementRef>('fConnTgtPort');
+  private readonly fConnTgtPort = viewChild<NativeElementRef>('fConnTgtPort');
 
-  private readonly fConnType      = viewChild<NativeElementRef>('fConnType');
+  private readonly fConnType = viewChild<NativeElementRef>('fConnType');
 
   readonly allRoles = ALL_ROLES;
 
   constructor() {
     effect(() => {
       const el = this.deviceSheetEl()?.nativeElement;
-      if (this.editDevice() !== null) el?.show?.(); else el?.hide?.();
+      if (this.editDevice() !== null) el?.show?.();
+      else el?.hide?.();
     });
     effect(() => {
       const el = this.deviceModalEl()?.nativeElement;
-      if (this.deleteDevice() !== null) el?.show?.(); else el?.hide?.();
+      if (this.deleteDevice() !== null) el?.show?.();
+      else el?.hide?.();
     });
     effect(() => {
       const el = this.connSheetEl()?.nativeElement;
-      if (this.editConnection() !== null) el?.show?.(); else el?.hide?.();
+      if (this.editConnection() !== null) el?.show?.();
+      else el?.hide?.();
     });
     effect(() => {
       const el = this.connModalEl()?.nativeElement;
-      if (this.deleteConnection() !== null) el?.show?.(); else el?.hide?.();
+      if (this.deleteConnection() !== null) el?.show?.();
+      else el?.hide?.();
     });
   }
 
@@ -159,17 +172,20 @@ export default class DesignDetailComponent {
     const name = this.fDeviceName()?.nativeElement.value ?? '';
     const role = (this.fDeviceRole()?.nativeElement.value ?? 'Compute') as LogicalDeviceRole;
     const updated: LogicalDevice = {
-      id:       form.id || `dev-${  Date.now()}`,
+      id: form.id || `dev-${Date.now()}`,
       designId: this.designId,
       name,
       role,
     };
     // TODO(api): form.id ? LogicalDeviceService.UpdateLogicalDevice(UpdateLogicalDeviceRequest) : LogicalDeviceService.CreateLogicalDevice(CreateLogicalDeviceRequest)
     if (form.id) {
-      this.mutableDevices.update(list => list.map(d => d.id === form.id ? updated : d));
+      this.mutableDevices.update((list) => list.map((d) => (d.id === form.id ? updated : d)));
     } else {
-      this.mutableDevices.update(list => [...list, updated]);
-      this.mutableLayouts.update(list => [...list, { deviceId: updated.id, x: 200 + Math.random() * 200, y: 200 + Math.random() * 200 }]);
+      this.mutableDevices.update((list) => [...list, updated]);
+      this.mutableLayouts.update((list) => [
+        ...list,
+        { deviceId: updated.id, x: 200 + Math.random() * 200, y: 200 + Math.random() * 200 },
+      ]);
     }
     this.editDevice.set(null);
   }
@@ -187,11 +203,11 @@ export default class DesignDetailComponent {
     const target = this.deleteDevice();
     if (!target) return;
     // TODO(api): LogicalDeviceService.DeleteLogicalDevice(DeleteLogicalDeviceRequest)
-    this.mutableDevices.update(list => list.filter(d => d.id !== target.id));
-    this.mutableConnections.update(list =>
-      list.filter(c => c.sourceDeviceId !== target.id && c.targetDeviceId !== target.id),
+    this.mutableDevices.update((list) => list.filter((d) => d.id !== target.id));
+    this.mutableConnections.update((list) =>
+      list.filter((c) => c.sourceDeviceId !== target.id && c.targetDeviceId !== target.id),
     );
-    this.mutableLayouts.update(list => list.filter(l => l.deviceId !== target.id));
+    this.mutableLayouts.update((list) => list.filter((l) => l.deviceId !== target.id));
     if (this.selectedDeviceId() === target.id) this.selectedDeviceId.set(null);
     this.deleteDevice.set(null);
   }
@@ -222,24 +238,24 @@ export default class DesignDetailComponent {
     const form = this.editConnection();
     if (!form) return;
     const srcDeviceId = this.fConnSrcDevice()?.nativeElement.value ?? '';
-    const srcPort     = this.fConnSrcPort()?.nativeElement.value ?? '';
+    const srcPort = this.fConnSrcPort()?.nativeElement.value ?? '';
     const tgtDeviceId = this.fConnTgtDevice()?.nativeElement.value ?? '';
-    const tgtPort     = this.fConnTgtPort()?.nativeElement.value ?? '';
-    const connType    = (this.fConnType()?.nativeElement.value ?? 'network') as LogicalConnectionType;
+    const tgtPort = this.fConnTgtPort()?.nativeElement.value ?? '';
+    const connType = (this.fConnType()?.nativeElement.value ?? 'network') as LogicalConnectionType;
     const updated: LogicalConnection = {
-      id:              form.id || `conn-${  Date.now()}`,
-      designId:        this.designId,
-      sourceDeviceId:  srcDeviceId,
-      sourcePortRole:  srcPort,
-      targetDeviceId:  tgtDeviceId,
-      targetPortRole:  tgtPort,
-      connectionType:  connType,
+      id: form.id || `conn-${Date.now()}`,
+      designId: this.designId,
+      sourceDeviceId: srcDeviceId,
+      sourcePortRole: srcPort,
+      targetDeviceId: tgtDeviceId,
+      targetPortRole: tgtPort,
+      connectionType: connType,
     };
     // TODO(api): form.id ? LogicalConnectionService.UpdateLogicalConnection(UpdateLogicalConnectionRequest) : LogicalConnectionService.CreateLogicalConnection(CreateLogicalConnectionRequest)
     if (form.id) {
-      this.mutableConnections.update(list => list.map(c => c.id === form.id ? updated : c));
+      this.mutableConnections.update((list) => list.map((c) => (c.id === form.id ? updated : c)));
     } else {
-      this.mutableConnections.update(list => [...list, updated]);
+      this.mutableConnections.update((list) => [...list, updated]);
     }
     this.editConnection.set(null);
   }
@@ -257,7 +273,7 @@ export default class DesignDetailComponent {
     const target = this.deleteConnection();
     if (!target) return;
     // TODO(api): LogicalConnectionService.DeleteLogicalConnection(DeleteLogicalConnectionRequest)
-    this.mutableConnections.update(list => list.filter(c => c.id !== target.id));
+    this.mutableConnections.update((list) => list.filter((c) => c.id !== target.id));
     this.deleteConnection.set(null);
   }
 
@@ -265,15 +281,15 @@ export default class DesignDetailComponent {
 
   activateDesign(): void {
     // TODO(api): LogicalDesignService.UpdateLogicalDesign({ id, status: 'active' })
-    this.mutableDesigns.update(list =>
-      list.map(d => d.id === this.designId ? { ...d, status: 'active' as const } : d),
+    this.mutableDesigns.update((list) =>
+      list.map((d) => (d.id === this.designId ? { ...d, status: 'active' as const } : d)),
     );
   }
 
   archiveDesign(): void {
     // TODO(api): LogicalDesignService.UpdateLogicalDesign({ id, status: 'archived' })
-    this.mutableDesigns.update(list =>
-      list.map(d => d.id === this.designId ? { ...d, status: 'archived' as const } : d),
+    this.mutableDesigns.update((list) =>
+      list.map((d) => (d.id === this.designId ? { ...d, status: 'archived' as const } : d)),
     );
   }
 
@@ -287,14 +303,13 @@ export default class DesignDetailComponent {
   // ── Helpers ────────────────────────────────────────────────────────────────
 
   deviceName(id: string): string {
-    return this.mutableDevices().find(d => d.id === id)?.name ?? id;
+    return this.mutableDevices().find((d) => d.id === id)?.name ?? id;
   }
 
   readonly roleColor = (role: LogicalDeviceRole): string =>
     DEVICE_ROLE_COLORS[role]?.text ?? '#475569';
 
-  readonly roleBg = (role: LogicalDeviceRole): string =>
-    DEVICE_ROLE_COLORS[role]?.bg ?? '#f8fafc';
+  readonly roleBg = (role: LogicalDeviceRole): string => DEVICE_ROLE_COLORS[role]?.bg ?? '#f8fafc';
 
   readonly roleBorder = (role: LogicalDeviceRole): string =>
     DEVICE_ROLE_COLORS[role]?.border ?? '#94a3b8';
@@ -302,7 +317,7 @@ export default class DesignDetailComponent {
   readonly connTypeLabel = (type: LogicalConnectionType): string => {
     const connMap: Record<LogicalConnectionType, string> = {
       network: 'Network',
-      power:   'Power',
+      power: 'Power',
       console: 'Console',
     };
     return connMap[type];
@@ -311,7 +326,7 @@ export default class DesignDetailComponent {
   readonly connTypeBadgeClass = (type: LogicalConnectionType): string => {
     const connMap: Record<LogicalConnectionType, string> = {
       network: 'bg-blue-50 text-blue-700',
-      power:   'bg-amber-50 text-amber-700',
+      power: 'bg-amber-50 text-amber-700',
       console: 'bg-slate-100 text-slate-600',
     };
     return connMap[type];
@@ -319,8 +334,8 @@ export default class DesignDetailComponent {
 
   readonly statusBadgeClass = (status: string): string => {
     const statusMap: Record<string, string> = {
-      draft:    'bg-slate-100 text-slate-600',
-      active:   'bg-green-50 text-green-700',
+      draft: 'bg-slate-100 text-slate-600',
+      active: 'bg-green-50 text-green-700',
       archived: 'bg-amber-50 text-amber-700',
     };
     return statusMap[status] ?? 'bg-slate-100 text-slate-600';

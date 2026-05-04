@@ -38,8 +38,38 @@ export default tseslint.config(
           style: 'kebab-case',
         },
       ],
-      '@typescript-eslint/class-methods-use-this': ['error', { enforceForClassFields: false, exceptMethods: ['ngOnInit', 'ngOnChanges', 'ngDoCheck', 'ngAfterContentInit', 'ngAfterContentChecked', 'ngAfterViewInit', 'ngAfterViewChecked', 'ngOnDestroy'] }],
-      'class-methods-use-this': ['error', { enforceForClassFields: false, exceptMethods: ['ngOnInit', 'ngOnChanges', 'ngDoCheck', 'ngAfterContentInit', 'ngAfterContentChecked', 'ngAfterViewInit', 'ngAfterViewChecked', 'ngOnDestroy'] }],
+      '@typescript-eslint/class-methods-use-this': [
+        'error',
+        {
+          enforceForClassFields: false,
+          exceptMethods: [
+            'ngOnInit',
+            'ngOnChanges',
+            'ngDoCheck',
+            'ngAfterContentInit',
+            'ngAfterContentChecked',
+            'ngAfterViewInit',
+            'ngAfterViewChecked',
+            'ngOnDestroy',
+          ],
+        },
+      ],
+      'class-methods-use-this': [
+        'error',
+        {
+          enforceForClassFields: false,
+          exceptMethods: [
+            'ngOnInit',
+            'ngOnChanges',
+            'ngDoCheck',
+            'ngAfterContentInit',
+            'ngAfterContentChecked',
+            'ngAfterViewInit',
+            'ngAfterViewChecked',
+            'ngOnDestroy',
+          ],
+        },
+      ],
     },
   },
   {

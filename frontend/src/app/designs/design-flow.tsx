@@ -47,12 +47,29 @@ function DeviceNode({ data, selected }: NodeProps<DeviceNodeData>) {
       }}
       onClick={() => data.onSelect?.(data.deviceId)}
     >
-      <Handle type="target" position={Position.Top} style={{ background: colors.border, width: 8, height: 8 }} />
-      <div style={{ fontSize: 9, fontWeight: 700, color: colors.text, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 3 }}>
+      <Handle
+        type="target"
+        position={Position.Top}
+        style={{ background: colors.border, width: 8, height: 8 }}
+      />
+      <div
+        style={{
+          fontSize: 9,
+          fontWeight: 700,
+          color: colors.text,
+          textTransform: 'uppercase',
+          letterSpacing: '0.08em',
+          marginBottom: 3,
+        }}
+      >
         {data.role}
       </div>
       <div style={{ fontWeight: 600, color: '#1e293b' }}>{data.label}</div>
-      <Handle type="source" position={Position.Bottom} style={{ background: colors.border, width: 8, height: 8 }} />
+      <Handle
+        type="source"
+        position={Position.Bottom}
+        style={{ background: colors.border, width: 8, height: 8 }}
+      />
     </div>
   );
 }
@@ -62,8 +79,16 @@ const nodeTypes = { device: DeviceNode };
 // ── Edge styles by connection type ────────────────────────────────────────────
 
 function edgeStyle(type: string): Partial<Edge> {
-  if (type === 'power')   return { style: { stroke: '#f59e0b', strokeWidth: 2, strokeDasharray: '5 3' }, animated: false };
-  if (type === 'console') return { style: { stroke: '#94a3b8', strokeWidth: 1.5, strokeDasharray: '3 3' }, animated: false };
+  if (type === 'power')
+    return {
+      style: { stroke: '#f59e0b', strokeWidth: 2, strokeDasharray: '5 3' },
+      animated: false,
+    };
+  if (type === 'console')
+    return {
+      style: { stroke: '#94a3b8', strokeWidth: 1.5, strokeDasharray: '3 3' },
+      animated: false,
+    };
   return { style: { stroke: '#154273', strokeWidth: 2 }, animated: true };
 }
 
@@ -89,16 +114,16 @@ export function DesignFlow({
   onLayoutChange,
 }: DesignFlowProps) {
   function buildNodes(): Node[] {
-    return devices.map(d => {
-      const layout = layouts.find(l => l.deviceId === d.id);
+    return devices.map((d) => {
+      const layout = layouts.find((l) => l.deviceId === d.id);
       return {
-        id:   d.id,
+        id: d.id,
         type: 'device',
         position: { x: layout?.x ?? 100, y: layout?.y ?? 100 },
         selected: d.id === selectedDeviceId,
         data: {
-          label:    d.name,
-          role:     d.role,
+          label: d.name,
+          role: d.role,
           deviceId: d.id,
           onSelect: (id: string) => onSelectDevice(id),
         },
@@ -107,11 +132,11 @@ export function DesignFlow({
   }
 
   function buildEdges(): Edge[] {
-    return connections.map(c => ({
-      id:     c.id,
+    return connections.map((c) => ({
+      id: c.id,
       source: c.sourceDeviceId,
       target: c.targetDeviceId,
-      label:  `${c.sourcePortRole} → ${c.targetPortRole}`,
+      label: `${c.sourcePortRole} → ${c.targetPortRole}`,
       ...edgeStyle(c.connectionType),
     }));
   }
@@ -121,23 +146,23 @@ export function DesignFlow({
 
   useEffect(() => {
     setNodes(buildNodes());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [devices, layouts, selectedDeviceId]);
 
   useEffect(() => {
     setEdges(buildEdges());
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [connections]);
 
   const onConnect = useCallback(
-    (connection: Connection) => setEdges(eds => addEdge(connection, eds)),
+    (connection: Connection) => setEdges((eds) => addEdge(connection, eds)),
     [setEdges],
   );
 
   const onNodeDragStop = useCallback(
     (_: unknown, node: Node) => {
-      const updated = devices.map(d => {
-        const existing = layouts.find(l => l.deviceId === d.id);
+      const updated = devices.map((d) => {
+        const existing = layouts.find((l) => l.deviceId === d.id);
         if (d.id === node.id) return { deviceId: d.id, x: node.position.x, y: node.position.y };
         return existing ?? { deviceId: d.id, x: 100, y: 100 };
       });
