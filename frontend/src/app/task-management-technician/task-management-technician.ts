@@ -554,6 +554,29 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
       }, 50);
     }
 
+    // ── Toast ──
+    function showToast(msg: string): void {
+      toastText.textContent = msg;
+      toast.classList.remove('opacity-0');
+      toast.classList.add('opacity-100');
+      clearTimeout(toastTimeout);
+      toastTimeout = window.setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0');
+      }, 2500);
+    }
+
+    function scrollToCurrentStep(): void {
+      setTimeout(() => {
+        const el = timeline.querySelector('[aria-current="step"]');
+        if (!el) return;
+        const nav = document.querySelector('nav') as HTMLElement;
+        const topOffset = nav.offsetHeight + 16;
+        const targetY = el.getBoundingClientRect().top + window.scrollY - topOffset;
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      }, 50);
+    }
+
     // ── Main render ──
     function render(): void {
       renderHeader();
@@ -656,22 +679,23 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
               const stepActive = si === currentStepIndex;
               const isLastStep = si === task.steps.length - 1;
 
-              let sCircleCls: string;
-              if (stepDone) sCircleCls = 'bg-accent-600 text-white';
-              else if (stepActive)
-                sCircleCls =
-                  'border-2 border-accent-600 bg-white font-semibold text-accent-600 text-xs';
-              else
-                sCircleCls =
-                  'border-2 border-slate-200 bg-white text-xs font-medium text-slate-400';
-              const sCircleContent = stepDone
-                ? '<nldd-icon name="check-mark" style="width:10px;height:10px;" aria-hidden="true"></nldd-icon>'
-                : String(si + 1);
-              const sLineColor = stepDone ? 'bg-accent-300' : 'bg-slate-200';
-              const sOpacity = stepActive ? 'opacity-100' : 'opacity-50';
-              const sCardCls = stepActive
-                ? 'rounded-xl bg-white p-4 shadow-sm outline outline-2 outline-accent-500 outline-offset-0 mb-4'
-                : 'py-1.5';
+            let sCircleCls: string;
+            if (stepDone) sCircleCls = 'bg-accent-600 text-white';
+            else if (stepActive) sCircleCls = 'border-2 border-accent-600 bg-white font-semibold text-accent-600 text-xs';
+            else sCircleCls = 'border-2 border-slate-200 bg-white text-xs font-medium text-slate-400';
+            const sCircleContent = stepDone
+              ? '<nldd-icon name="check-mark" style="width:10px;height:10px;" aria-hidden="true"></nldd-icon>'
+              : String(si + 1);
+            const sLineColor = stepDone ? 'bg-accent-300' : 'bg-slate-200';
+            const sOpacity = stepActive ? 'opacity-100' : 'opacity-50';
+            const sCardCls = stepActive
+              ? 'rounded-xl bg-white p-4 shadow-sm outline outline-2 outline-accent-500 outline-offset-0 mb-4'
+              : 'py-1.5';
+
+            let stepIconCls: string;
+            if (stepActive) stepIconCls = 'text-accent-600';
+            else if (stepDone) stepIconCls = 'text-accent-400';
+            else stepIconCls = 'text-slate-400';
 
               let stepIconCls: string;
               if (stepActive) stepIconCls = 'text-accent-600';
@@ -704,6 +728,11 @@ export default class TaskManagementTechnicianComponent implements AfterViewInit 
             })
             .join('');
         }
+
+        let taskTitleCls: string;
+        if (isActive) taskTitleCls = 'text-slate-900';
+        else if (isDone) taskTitleCls = 'text-slate-500';
+        else taskTitleCls = 'text-slate-600';
 
         let taskTitleCls: string;
         if (isActive) taskTitleCls = 'text-slate-900';

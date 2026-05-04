@@ -4,9 +4,9 @@ import {
   computed,
   CUSTOM_ELEMENTS_SCHEMA,
   effect,
-  inject,
-  signal,
-  viewChild,
+inject,
+signal,
+viewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -138,6 +138,12 @@ const RACK_HISTORY: Record<string, RackEvent[]> = {
     },
   ],
 };
+
+// ── NativeElementRef ──────────────────────────────────────────────────────────
+
+interface NativeElementRef {
+  nativeElement: { value: string; show?: () => void; hide?: () => void };
+}
 
 // ── NativeElementRef ──────────────────────────────────────────────────────────
 

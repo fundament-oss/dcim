@@ -8,7 +8,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { RouterLink, ActivatedRoute } from '@angular/router';
+import { RouterLink, ActivatedRoute  } from '@angular/router';
 import DesignFlowWrapperComponent from '../design-flow-wrapper';
 import {
   LogicalConnection,
@@ -23,6 +23,10 @@ import {
   MOCK_DEVICE_LAYOUTS,
   DEVICE_ROLE_COLORS,
 } from '../design.model';
+
+interface NativeElementRef {
+  nativeElement: { value: string; show?: () => void; hide?: () => void };
+}
 
 interface NativeElementRef {
   nativeElement: { value: string; show?: () => void; hide?: () => void };
