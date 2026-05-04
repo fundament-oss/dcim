@@ -311,6 +311,7 @@ export default class TaskManagementAdminComponent implements AfterViewInit {
     const selectedTasks = new Set<number>();
     let editingTaskId: number | null = null;
     let toastTimeout: number | undefined;
+    let editAssigneeValue = '';
 
     // ── DOM refs ──
     const taskListEl = document.getElementById('taskList') as HTMLElement;
@@ -326,7 +327,10 @@ export default class TaskManagementAdminComponent implements AfterViewInit {
       hide(): void;
       dataset: DOMStringMap;
     };
-    const editModal = document.getElementById('editModal') as HTMLElement;
+    const editModal = document.getElementById('editModal') as HTMLElement & {
+      show(): void;
+      hide(): void;
+    };
     const toastEl = document.getElementById('toast') as HTMLElement;
     const toastText = document.getElementById('toastText') as HTMLElement;
 
@@ -368,18 +372,6 @@ export default class TaskManagementAdminComponent implements AfterViewInit {
       }, 2000);
     }
 
-    function openModal(modal: HTMLElement): void {
-      modal.classList.remove('hidden');
-      modal.classList.add('flex');
-      document.body.style.overflow = 'hidden';
-    }
-
-    function closeModal(modal: HTMLElement): void {
-      modal.classList.add('hidden');
-      modal.classList.remove('flex');
-      document.body.style.overflow = '';
-    }
-
     function updateBulkBar(): void {
       if (selectedTasks.size > 0) {
         bulkBar.classList.remove('hidden');
@@ -416,32 +408,32 @@ export default class TaskManagementAdminComponent implements AfterViewInit {
         ? task.location
         : '';
 
-      const assigneeContainer = document.querySelector('#assigneeSelector .grid') as HTMLElement;
-      let aHTML = `
-        <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-2.5 cursor-pointer hover:bg-slate-50 has-checked:ring-2 has-checked:ring-indigo-500 has-checked:border-transparent transition-colors">
-          <input type="radio" name="assignee" value="" class="h-4 w-4 rounded-full border-2 border-slate-300" ${!task || !task.assignee ? 'checked' : ''} />
-          <div class="flex items-center gap-2.5">
-            ${avatarHTML(null, 'h-8 w-8 text-sm')}
-            <span class="text-sm font-medium text-slate-500">Unassigned</span>
-          </div>
-        </label>
+      const assigneeContainer = document.getElementById('assigneeSelector') as HTMLElement;
+      editAssigneeValue = !task || !task.assignee ? '' : String(task.assignee);
+      let aHTML = `<nldd-radio-button-group name="assignee" class="space-y-1.5">`;
+      aHTML += `
+        <div class="flex items-center gap-3 rounded-xl border border-slate-200 p-2.5 hover:bg-slate-50 transition-colors">
+          ${avatarHTML(null, 'h-8 w-8 text-sm')}
+          <nldd-radio-button-field value="" label="Unassigned" ${!task || !task.assignee ? 'checked' : ''}></nldd-radio-button-field>
+        </div>
       `;
       technicians.forEach((t) => {
         aHTML += `
-          <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-2.5 cursor-pointer hover:bg-slate-50 has-checked:ring-2 has-checked:ring-indigo-500 has-checked:border-transparent transition-colors">
-            <input type="radio" name="assignee" value="${t.id}" class="h-4 w-4 rounded-full border-2 border-slate-300" ${task && task.assignee === t.id ? 'checked' : ''} />
-            <div class="flex items-center gap-2.5 flex-1 min-w-0">
-              ${avatarHTML(t, 'h-8 w-8 text-sm')}
-              <div class="flex-1 min-w-0">
-                <span class="text-sm font-medium text-slate-700">${t.name}</span>
-                <span class="ml-2 inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium ${t.available ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'}">${t.available ? 'Available' : 'Busy'}</span>
-              </div>
-            </div>
-          </label>
+          <div class="flex items-center gap-3 rounded-xl border border-slate-200 p-2.5 hover:bg-slate-50 transition-colors">
+            ${avatarHTML(t, 'h-8 w-8 text-sm')}
+            <nldd-radio-button-field value="${t.id}" label="${t.name}" ${task && task.assignee === t.id ? 'checked' : ''}></nldd-radio-button-field>
+            <span class="ml-auto inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium ${t.available ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-500'}">${t.available ? 'Available' : 'Busy'}</span>
+          </div>
         `;
       });
+      aHTML += `</nldd-radio-button-group>`;
       assigneeContainer.innerHTML = aHTML;
-      openModal(editModal);
+      assigneeContainer
+        .querySelector('nldd-radio-button-group')
+        ?.addEventListener('change', (e: Event) => {
+          editAssigneeValue = (e as CustomEvent).detail.value;
+        });
+      editModal.show();
     }
 
     function openDetail(id: number): void {
@@ -677,10 +669,7 @@ export default class TaskManagementAdminComponent implements AfterViewInit {
         return;
       }
 
-      const assigneeInput = document.querySelector(
-        'input[name="assignee"]:checked',
-      ) as HTMLInputElement | null;
-      const assigneeVal = assigneeInput?.value;
+      const assigneeVal = editAssigneeValue;
       const data = {
         title,
         description: (
@@ -710,7 +699,7 @@ export default class TaskManagementAdminComponent implements AfterViewInit {
         showToast('Task created');
       }
 
-      closeModal(editModal);
+      editModal.hide();
       if (currentView === 'list') renderList();
       else renderKanban();
     });
@@ -718,20 +707,13 @@ export default class TaskManagementAdminComponent implements AfterViewInit {
     (document.getElementById('detailCloseBtn') as HTMLElement).addEventListener('click', () =>
       detailSheet.hide(),
     );
-    (document.getElementById('editCloseBtn') as HTMLElement).addEventListener('click', () =>
-      closeModal(editModal),
-    );
     (document.getElementById('editCancelBtn') as HTMLElement).addEventListener('click', () =>
-      closeModal(editModal),
+      editModal.hide(),
     );
-
-    editModal.addEventListener('click', (e: Event) => {
-      if (e.target === editModal) closeModal(editModal);
-    });
     document.addEventListener('keydown', (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         detailSheet.hide();
-        closeModal(editModal);
+        editModal.hide();
       }
     });
 

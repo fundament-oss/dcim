@@ -335,29 +335,17 @@
 </nldd-sheet>
 
 <!-- ══════════════════════════════════════════════════════════════
-     ADD / EDIT TASK MODAL
+     ADD / EDIT TASK SHEET
      ══════════════════════════════════════════════════════════════ -->
-<div
-  id="editModal"
-  class="fixed inset-0 z-50 hidden items-start justify-center bg-slate-900/50 p-4 pt-10 backdrop-blur-sm overflow-y-auto"
-  role="dialog"
-  aria-modal="true"
->
-  <div
-    class="w-full max-w-lg rounded-2xl bg-white shadow-2xl shadow-slate-900/20 my-4 ring-1 ring-slate-200/80"
-  >
-    <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4">
+<nldd-sheet id="editModal" accessible-label="Add / edit task" placement="right" width="520px">
+  <div class="flex flex-col h-full">
+    <!-- Sheet header -->
+    <div class="flex items-center justify-between border-b border-slate-100 px-6 py-4 shrink-0">
       <h2 id="editModalTitle" class="text-base font-semibold text-slate-900">Add Task</h2>
-      <button
-        id="editCloseBtn"
-        class="rounded-lg p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
-        aria-label="Close"
-      >
-        <nldd-icon name="dismiss" class="w-4.5 h-4.5 block"></nldd-icon>
-      </button>
     </div>
 
-    <div class="px-6 py-5 space-y-4">
+    <!-- Sheet body -->
+    <div class="flex-1 overflow-y-auto px-6 py-5 space-y-4">
       <div>
         <label class="block text-xs font-medium text-slate-500 mb-1.5" for="editTitle">Title</label>
         <nldd-text-field
@@ -452,15 +440,14 @@
         <label class="block text-xs font-medium text-slate-500 mb-1.5" for="assigneeSelector"
           >Assignee</label
         >
-        <div id="assigneeSelector" role="group" aria-labelledby="assigneeSelector">
-          <div class="grid grid-cols-1 gap-1.5 max-h-48 overflow-y-auto">
-            <!-- Rendered by JS -->
-          </div>
+        <div id="assigneeSelector" role="group" class="max-h-48 overflow-y-auto">
+          <!-- Rendered by JS -->
         </div>
       </div>
     </div>
 
-    <div class="flex items-center justify-end gap-2 border-t border-slate-100 px-6 py-4">
+    <!-- Sheet footer -->
+    <div class="flex items-center justify-end gap-2 border-t border-slate-100 px-6 py-4 shrink-0">
       <nldd-button
         id="editCancelBtn"
         variant="neutral-transparent"
@@ -475,7 +462,7 @@
       ></nldd-button>
     </div>
   </div>
-</div>
+</nldd-sheet>
 
 <!-- ══════════════════════════════════════════════════════════════
      TOAST
