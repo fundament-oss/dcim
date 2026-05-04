@@ -149,7 +149,7 @@
     <!-- Sheet header -->
     <div class="flex items-start justify-between border-b border-slate-100 px-6 pt-6 pb-5 shrink-0">
       <div class="flex-1 min-w-0 pr-4">
-        <h2 id="detailTitle" class="text-base font-semibold text-slate-900 leading-snug"></h2>
+        <h2 id="detailTitle" class="text-base font-semibold text-slate-900 leading-snug" aria-label="Task title"></h2>
         <div class="mt-2.5 flex flex-wrap items-center gap-2">
           <span id="detailStatus"
             class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-0.5 text-xs font-medium"></span>
@@ -256,7 +256,7 @@
         <nldd-text-field id="editTitle" placeholder="E.g. Replace broken harddisk" accessible-label="Title" class="w-full"></nldd-text-field>
       </div>
       <div>
-        <label class="block text-xs font-medium text-slate-500 mb-1.5">Description</label>
+        <label class="block text-xs font-medium text-slate-500 mb-1.5" for="editDescription">Description</label>
         <textarea id="editDescription" rows="3" placeholder="Describe the task…"
           class="w-full resize-none rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-900 placeholder-slate-400 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:outline-none transition"></textarea>
       </div>
@@ -307,8 +307,8 @@
         <nldd-text-field id="editLocation" placeholder="E.g. DC Amsterdam-West · Rack 123" accessible-label="Location" class="w-full"></nldd-text-field>
       </div>
       <div>
-        <label class="block text-xs font-medium text-slate-500 mb-1.5">Assignee</label>
-        <div id="assigneeSelector">
+        <label class="block text-xs font-medium text-slate-500 mb-1.5" for="assigneeSelector">Assignee</label>
+        <div id="assigneeSelector" role="group" aria-labelledby="assigneeSelector">
           <div class="grid grid-cols-1 gap-1.5 max-h-48 overflow-y-auto">
             <!-- Rendered by JS -->
           </div>

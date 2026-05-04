@@ -6,23 +6,26 @@ import { DeviceState, Rack, RackDevice, RackSlot } from '../rack.model';
   templateUrl: './rack-diagram.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RackDiagramComponent {
+export default class RackDiagramComponent {
   readonly rack = input.required<Rack>();
+
   readonly viewMode = input<'front' | 'back'>('front');
+
   readonly activeDeviceId = input<string | null>(null);
+
   readonly deviceSelect = output<string>();
 
   readonly rackSlots = computed((): RackSlot[] => {
     const rack = this.rack();
     const slotMap = new Map<number, RackDevice>();
-    for (const dev of rack.devices) {
-      for (let u = dev.uStart; u < dev.uStart + dev.uSize; u++) {
+    rack.devices.forEach(dev => {
+      for (let u = dev.uStart; u < dev.uStart + dev.uSize; u += 1) {
         slotMap.set(u, dev);
       }
-    }
+    });
     const slots: RackSlot[] = [];
     const seen = new Set<string>();
-    for (let u = rack.totalU; u >= 1; u--) {
+    for (let u = rack.totalU; u >= 1; u -= 1) {
       const dev = slotMap.get(u) ?? null;
       if (dev) {
         const isFirst = !seen.has(dev.id);
@@ -35,11 +38,10 @@ export class RackDiagramComponent {
     return slots;
   });
 
-  deviceHeight(device: RackDevice): number {
-    return device.uSize * 28 + (device.uSize - 1);
-  }
+  readonly deviceHeight = (device: RackDevice): number =>
+    device.uSize * 28 + (device.uSize - 1);
 
-  deviceSlotClasses(device: RackDevice): string {
+  static deviceSlotClasses(device: RackDevice): string {
     if (device.type === 'switch') return 'bg-[#ffb612] border-[#e6a310] text-stone-900';
     if (device.type === 'patch')  return 'bg-[#a90061] border-[#8a004e] text-white';
     if (device.type === 'pdu')    return 'bg-[#42145f] border-[#33104a] text-white';
@@ -54,16 +56,15 @@ export class RackDiagramComponent {
   }
 
   deviceButtonClasses(device: RackDevice): string {
-    const stateClasses = this.deviceSlotClasses(device);
+    const stateClasses = RackDiagramComponent.deviceSlotClasses(device);
     if (this.isActive(device)) {
       return `${stateClasses} relative z-10 ring-yellow-300! ring-2 ring-offset-1 ring-offset-gray-300"`;
     }
     return stateClasses;
   }
 
-  powerBadgeClass(powerstate: 'ON' | 'OFF'): string {
-    return powerstate === 'ON' ? 'bg-teal-100 text-teal-700' : 'bg-red-100 text-red-600';
-  }
+  readonly powerBadgeClass = (powerstate: 'ON' | 'OFF'): string =>
+    powerstate === 'ON' ? 'bg-teal-100 text-teal-700' : 'bg-red-100 text-red-600';
 
   isActive(device: RackDevice): boolean {
     return device.id === this.activeDeviceId();

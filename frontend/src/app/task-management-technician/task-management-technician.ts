@@ -28,7 +28,7 @@ interface Task {
   changeDetection: ChangeDetectionStrategy.OnPush,
   host: { class: 'block bg-neutral-50 font-sans text-neutral-900 antialiased' },
 })
-export class TaskManagementTechnicianComponent implements AfterViewInit {
+export default class TaskManagementTechnicianComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     const DC_NAME = 'DC Amsterdam-West';
 
@@ -383,6 +383,7 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
     const checkedItems = new Set<number>();
     const completedTaskSteps = new Map<number, Set<number>>();
     let gatherCompleted = false;
+    let toastTimeout: number | undefined;
 
     const totalSteps = 1 + tasks.reduce((s, t) => s + t.steps.length, 0);
 
@@ -478,7 +479,7 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
     function renderProgress(): void {
       const completed = getCompletedCount();
       const pct = (completed / totalSteps) * 100;
-      progressFill.style.width = pct + '%';
+      progressFill.style.width = `${pct  }%`;
       progressLabel.textContent = `${completed}/${totalSteps}`;
       progressBar.setAttribute('aria-valuenow', String(completed));
       progressBar.setAttribute('aria-valuemax', String(totalSteps));
@@ -501,6 +502,29 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
       }
     }
 
+    // ── Toast ──
+    function showToast(msg: string): void {
+      toastText.textContent = msg;
+      toast.classList.remove('opacity-0');
+      toast.classList.add('opacity-100');
+      clearTimeout(toastTimeout);
+      toastTimeout = window.setTimeout(() => {
+        toast.classList.remove('opacity-100');
+        toast.classList.add('opacity-0');
+      }, 2500);
+    }
+
+    function scrollToCurrentStep(): void {
+      setTimeout(() => {
+        const el = timeline.querySelector('[aria-current="step"]');
+        if (!el) return;
+        const nav = document.querySelector('nav') as HTMLElement;
+        const topOffset = nav.offsetHeight + 16;
+        const targetY = el.getBoundingClientRect().top + window.scrollY - topOffset;
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      }, 50);
+    }
+
     // ── Main render ──
     function render(): void {
       renderHeader();
@@ -511,11 +535,10 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
 
       // ─ Gather row ─
       const isGatherActive = phase === 'gather';
-      const gatherCircleCls = gatherCompleted
-        ? 'bg-accent-600 text-white'
-        : isGatherActive
-          ? 'border-2 border-accent-600 bg-white font-semibold text-accent-600 text-sm'
-          : 'border-2 border-slate-300 bg-white text-sm font-medium text-slate-400';
+      let gatherCircleCls: string;
+      if (gatherCompleted) gatherCircleCls = 'bg-accent-600 text-white';
+      else if (isGatherActive) gatherCircleCls = 'border-2 border-accent-600 bg-white font-semibold text-accent-600 text-sm';
+      else gatherCircleCls = 'border-2 border-slate-300 bg-white text-sm font-medium text-slate-400';
       const gatherCircleContent = gatherCompleted
         ? '<nldd-icon name="check-mark" class="w-3.5 h-3.5" aria-hidden="true"></nldd-icon>'
         : '1';
@@ -524,6 +547,10 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
       const gatherCardCls = isGatherActive
         ? 'rounded-xl bg-white p-4 shadow-sm outline outline-2 outline-accent-500 outline-offset-0'
         : 'py-2';
+      let gatherIconCls: string;
+      if (isGatherActive) gatherIconCls = 'text-accent-600';
+      else if (gatherCompleted) gatherIconCls = 'text-accent-400';
+      else gatherIconCls = 'text-slate-400';
 
       let checklistHtml = '';
       if (isGatherActive) {
@@ -556,7 +583,7 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
           </div>
           <div class="flex-1 ${gatherCardCls} pb-8">
             <div class="flex items-center gap-2">
-              <nldd-icon name="inbox" style="width:20px;height:20px;" class="${isGatherActive ? 'text-accent-600' : gatherCompleted ? 'text-accent-400' : 'text-slate-400'}" aria-hidden="true"></nldd-icon>
+              <nldd-icon name="inbox" style="width:20px;height:20px;" class="${gatherIconCls}" aria-hidden="true"></nldd-icon>
               <h3 class="text-sm font-semibold ${isGatherActive ? 'text-slate-900' : 'text-slate-700'}">Gather tools &amp; parts</h3>
             </div>
             ${checklistHtml}
@@ -572,16 +599,18 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
         const isLast = taskIdx === tasks.length - 1;
 
         const circleNum = taskIdx + 2;
-        const circleCls = isDone
-          ? 'bg-accent-600 text-white'
-          : isActive
-            ? 'border-2 border-accent-600 bg-white font-semibold text-accent-600 text-sm'
-            : 'border-2 border-slate-300 bg-white text-sm font-medium text-slate-400';
+        let circleCls: string;
+        if (isDone) circleCls = 'bg-accent-600 text-white';
+        else if (isActive) circleCls = 'border-2 border-accent-600 bg-white font-semibold text-accent-600 text-sm';
+        else circleCls = 'border-2 border-slate-300 bg-white text-sm font-medium text-slate-400';
         const circleContent = isDone
           ? '<nldd-icon name="check-mark" class="w-3.5 h-3.5" aria-hidden="true"></nldd-icon>'
           : String(circleNum);
         const lineColor = isDone ? 'bg-accent-300' : 'bg-slate-200';
-        const rowOpacity = isActive ? 'opacity-100' : isDone ? 'opacity-60' : 'opacity-40';
+        let rowOpacity: string;
+        if (isActive) rowOpacity = 'opacity-100';
+        else if (isDone) rowOpacity = 'opacity-60';
+        else rowOpacity = 'opacity-40';
 
         // Step sub-items (only when this task is active)
         let subStepsHtml = '';
@@ -591,11 +620,10 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
             const stepActive = si === currentStepIndex;
             const isLastStep = si === task.steps.length - 1;
 
-            const sCircleCls = stepDone
-              ? 'bg-accent-600 text-white'
-              : stepActive
-                ? 'border-2 border-accent-600 bg-white font-semibold text-accent-600 text-xs'
-                : 'border-2 border-slate-200 bg-white text-xs font-medium text-slate-400';
+            let sCircleCls: string;
+            if (stepDone) sCircleCls = 'bg-accent-600 text-white';
+            else if (stepActive) sCircleCls = 'border-2 border-accent-600 bg-white font-semibold text-accent-600 text-xs';
+            else sCircleCls = 'border-2 border-slate-200 bg-white text-xs font-medium text-slate-400';
             const sCircleContent = stepDone
               ? '<nldd-icon name="check-mark" style="width:10px;height:10px;" aria-hidden="true"></nldd-icon>'
               : String(si + 1);
@@ -604,6 +632,11 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
             const sCardCls = stepActive
               ? 'rounded-xl bg-white p-4 shadow-sm outline outline-2 outline-accent-500 outline-offset-0 mb-4'
               : 'py-1.5';
+
+            let stepIconCls: string;
+            if (stepActive) stepIconCls = 'text-accent-600';
+            else if (stepDone) stepIconCls = 'text-accent-400';
+            else stepIconCls = 'text-slate-400';
 
             let interactiveAttr = '';
             let cursorCls = '';
@@ -620,7 +653,7 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
                 </div>
                 <div class="flex-1 ${sCardCls} pb-4">
                   <div class="flex items-center gap-2">
-                    <nldd-icon name="${step.icon}" style="width:18px;height:18px;" class="${stepActive ? 'text-accent-600' : stepDone ? 'text-accent-400' : 'text-slate-400'}" aria-hidden="true"></nldd-icon>
+                    <nldd-icon name="${step.icon}" style="width:18px;height:18px;" class="${stepIconCls}" aria-hidden="true"></nldd-icon>
                     <h3 class="text-sm font-medium ${stepActive ? 'text-slate-900' : 'text-slate-600'}">${step.title}</h3>
                   </div>
                   ${stepActive ? renderDescription(step.description) : ''}
@@ -631,6 +664,11 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
           }).join('');
         }
 
+        let taskTitleCls: string;
+        if (isActive) taskTitleCls = 'text-slate-900';
+        else if (isDone) taskTitleCls = 'text-slate-500';
+        else taskTitleCls = 'text-slate-600';
+
         html += `
           <div class="relative flex gap-4 ${rowOpacity} transition-opacity">
             <div class="flex flex-col items-center">
@@ -640,7 +678,7 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
             <div class="flex-1 pb-2">
               <div class="py-2">
                 <div class="flex items-center gap-2 flex-wrap">
-                  <span class="text-sm font-semibold ${isActive ? 'text-slate-900' : isDone ? 'text-slate-500' : 'text-slate-600'}">${task.title}</span>
+                  <span class="text-sm font-semibold ${taskTitleCls}">${task.title}</span>
                   ${priorityBadge(task.priority)}
                 </div>
                 <p class="text-xs text-slate-400 mt-0.5">${task.location}</p>
@@ -649,7 +687,7 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
             </div>
           </div>
         `;
-      });
+      }); // end tasks.forEach
 
       timeline.innerHTML = html;
 
@@ -658,13 +696,13 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
         timeline.querySelectorAll('[data-gather-row]').forEach(el => {
           el.addEventListener('click', (e) => {
             if (!(e.target as HTMLElement).closest('nldd-checkbox')) {
-              (el.querySelector('nldd-checkbox') as any)?.toggle();
+              (el.querySelector('nldd-checkbox') as HTMLElement & { toggle?: () => void })?.toggle?.();
             }
           });
         });
         timeline.querySelectorAll('[data-gather-item]').forEach(el => {
           el.addEventListener('change', (e: Event) => {
-            const idx = parseInt((el as HTMLElement).dataset['gatherItem']!);
+            const idx = parseInt((el as HTMLElement).dataset['gatherItem']!, 10);
             if ((e as CustomEvent).detail.checked) checkedItems.add(idx);
             else checkedItems.delete(idx);
             render();
@@ -674,36 +712,24 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
 
       // Step jump handlers (completed steps)
       timeline.querySelectorAll('[data-step]').forEach(el => {
-        const taskIdx = parseInt((el as HTMLElement).dataset['task']!);
-        const stepIdx = parseInt((el as HTMLElement).dataset['step']!);
-        el.addEventListener('click', () => jumpToStep(taskIdx, stepIdx));
+        const taskIdx = parseInt((el as HTMLElement).dataset['task']!, 10);
+        const stepIdx = parseInt((el as HTMLElement).dataset['step']!, 10);
+        const doJump = (): void => {
+          phase = 'task';
+          currentTaskIndex = taskIdx;
+          currentStepIndex = stepIdx;
+          render();
+          scrollToCurrentStep();
+        };
+        el.addEventListener('click', doJump);
         el.addEventListener('keydown', (e: Event) => {
           const key = (e as KeyboardEvent).key;
           if (key === 'Enter' || key === ' ') {
             e.preventDefault();
-            jumpToStep(taskIdx, stepIdx);
+            doJump();
           }
         });
       });
-    }
-
-    function scrollToCurrentStep(): void {
-      setTimeout(() => {
-        const el = timeline.querySelector('[aria-current="step"]');
-        if (!el) return;
-        const nav = document.querySelector('nav') as HTMLElement;
-        const topOffset = nav.offsetHeight + 16;
-        const targetY = el.getBoundingClientRect().top + window.scrollY - topOffset;
-        window.scrollTo({ top: targetY, behavior: 'smooth' });
-      }, 50);
-    }
-
-    function jumpToStep(taskIdx: number, stepIdx: number): void {
-      phase = 'task';
-      currentTaskIndex = taskIdx;
-      currentStepIndex = stepIdx;
-      render();
-      scrollToCurrentStep();
     }
 
     // ── Done button ──
@@ -728,11 +754,11 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
 
       const task = tasks[currentTaskIndex];
       if (currentStepIndex < task.steps.length - 1) {
-        currentStepIndex++;
+        currentStepIndex += 1;
         render();
         scrollToCurrentStep();
       } else if (currentTaskIndex < tasks.length - 1) {
-        currentTaskIndex++;
+        currentTaskIndex += 1;
         currentStepIndex = 0;
         render();
         scrollToCurrentStep();
@@ -749,9 +775,9 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
     prevBtn.addEventListener('click', () => {
       if (phase === 'gather') return;
       if (currentStepIndex > 0) {
-        currentStepIndex--;
+        currentStepIndex -= 1;
       } else if (currentTaskIndex > 0) {
-        currentTaskIndex--;
+        currentTaskIndex -= 1;
         currentStepIndex = tasks[currentTaskIndex].steps.length - 1;
       } else {
         phase = 'gather';
@@ -837,19 +863,6 @@ export class TaskManagementTechnicianComponent implements AfterViewInit {
         menuDropdown.classList.add('hidden');
       }
     });
-
-    // ── Toast ──
-    let toastTimeout: number | undefined;
-    function showToast(msg: string): void {
-      toastText.textContent = msg;
-      toast.classList.remove('opacity-0');
-      toast.classList.add('opacity-100');
-      clearTimeout(toastTimeout);
-      toastTimeout = window.setTimeout(() => {
-        toast.classList.remove('opacity-100');
-        toast.classList.add('opacity-0');
-      }, 2500);
-    }
 
     // ── Init ──
     render();

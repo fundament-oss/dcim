@@ -82,10 +82,10 @@
                     <td class="px-5 py-2.5 font-medium text-slate-800 font-mono text-xs">{{ pd.name }}</td>
                     <td class="px-3 py-2.5 text-slate-600">{{ pd.portType }}</td>
                     <td class="px-3 py-2.5 text-slate-600 tabular-nums">
-                      @if (pd.speedGbps != null) { {{ pd.speedGbps }} Gbps }
+                      @if (pd.speedGbps !== null && pd.speedGbps !== undefined) { {{ pd.speedGbps }} Gbps }
                     </td>
                     <td class="px-3 py-2.5 text-slate-600 tabular-nums">
-                      @if (pd.powerWatts != null) { {{ pd.powerWatts }} W }
+                      @if (pd.powerWatts !== null && pd.powerWatts !== undefined) { {{ pd.powerWatts }} W }
                     </td>
                     <td class="px-3 py-2.5">
                       <div class="flex flex-wrap gap-1 items-center">

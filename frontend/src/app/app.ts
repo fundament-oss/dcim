@@ -6,6 +6,6 @@ import { RouterOutlet } from '@angular/router';
   imports: [RouterOutlet],
   templateUrl: './app.html',
 })
-export class App {
+export default class App {
   protected readonly title = signal('fundament-dcim');
 }

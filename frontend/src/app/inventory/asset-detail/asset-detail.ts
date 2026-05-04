@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, inject, signal } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { ActivatedRoute, Router } from '@angular/router';
+import { RouterLink, ActivatedRoute, Router  } from '@angular/router';
 import {
   Asset,
   AssetCategory,
@@ -44,8 +43,9 @@ const MOCK_EXTRA_DETAILS: Record<string, AssetExtraDetail> = {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   host: { class: 'block bg-slate-50 min-h-screen' },
 })
-export class AssetDetailComponent {
+export default class AssetDetailComponent {
   private readonly route = inject(ActivatedRoute);
+
   private readonly router = inject(Router);
 
   readonly assetId = computed(() => this.route.snapshot.paramMap.get('id') ?? '');
@@ -81,7 +81,7 @@ export class AssetDetailComponent {
 
   readonly newNoteText = signal('');
 
-  statusLabel(status: AssetStatus): string {
+  readonly statusLabel = (status: AssetStatus): string => {
     const labels: Record<AssetStatus, string> = {
       deployed: 'Deployed',
       available: 'Available',
@@ -91,9 +91,9 @@ export class AssetDetailComponent {
       requested: 'Requested',
     };
     return labels[status];
-  }
+  };
 
-  statusBadgeClass(status: AssetStatus): string {
+  readonly statusBadgeClass = (status: AssetStatus): string => {
     const classes: Record<AssetStatus, string> = {
       deployed: 'bg-teal-50 text-teal-700',
       available: 'bg-green-50 text-green-700',
@@ -103,9 +103,9 @@ export class AssetDetailComponent {
       requested: 'bg-purple-50 text-purple-700',
     };
     return classes[status];
-  }
+  };
 
-  statusDotClass(status: AssetStatus): string {
+  readonly statusDotClass = (status: AssetStatus): string => {
     const classes: Record<AssetStatus, string> = {
       deployed: 'bg-teal-500',
       available: 'bg-green-500',
@@ -115,9 +115,9 @@ export class AssetDetailComponent {
       requested: 'bg-purple-500',
     };
     return classes[status];
-  }
+  };
 
-  statusIcon(status: AssetStatus): string {
+  readonly statusIcon = (status: AssetStatus): string => {
     const icons: Record<AssetStatus, string> = {
       deployed: 'check-mark-circle',
       available: 'check-mark-circle',
@@ -127,9 +127,9 @@ export class AssetDetailComponent {
       requested: 'clock-arrow-counter-clockwise',
     };
     return icons[status];
-  }
+  };
 
-  statusIconColor(status: AssetStatus): string {
+  readonly statusIconColor = (status: AssetStatus): string => {
     const colors: Record<AssetStatus, string> = {
       deployed: 'text-teal-500',
       available: 'text-green-500',
@@ -139,9 +139,9 @@ export class AssetDetailComponent {
       requested: 'text-purple-500',
     };
     return colors[status];
-  }
+  };
 
-  statusIconBgClass(status: AssetStatus): string {
+  readonly statusIconBgClass = (status: AssetStatus): string => {
     const classes: Record<AssetStatus, string> = {
       deployed: 'bg-teal-50',
       available: 'bg-green-50',
@@ -151,35 +151,35 @@ export class AssetDetailComponent {
       requested: 'bg-purple-50',
     };
     return `flex h-14 w-14 items-center justify-center rounded-full ${classes[status]}`;
-  }
+  };
 
-  formatDaysAgo(daysAgo: number): string {
+  readonly formatDaysAgo = (daysAgo: number): string => {
     if (daysAgo === 0) return 'Today';
     if (daysAgo === 1) return 'Yesterday';
     if (daysAgo < 30) return `${daysAgo} days ago`;
     const months = Math.floor(daysAgo / 30);
     return months === 1 ? '1 month ago' : `${months} months ago`;
-  }
+  };
 
-  historyIcon(action: HistoryEntry['action']): string {
+  readonly historyIcon = (action: HistoryEntry['action']): string => {
     const icons: Record<HistoryEntry['action'], string> = {
       'status-change': 'tag',
       'location-change': 'info-circle',
       'maintenance': 'gear',
     };
     return icons[action];
-  }
+  };
 
-  historyIconBg(action: HistoryEntry['action']): string {
+  readonly historyIconBg = (action: HistoryEntry['action']): string => {
     const classes: Record<HistoryEntry['action'], string> = {
       'status-change': 'bg-indigo-50 text-indigo-500',
       'location-change': 'bg-sky-50 text-sky-500',
       'maintenance': 'bg-amber-50 text-amber-500',
     };
     return classes[action];
-  }
+  };
 
-  categoryIcon(category: AssetCategory): string {
+  readonly categoryIcon = (category: AssetCategory): string => {
     const map: Partial<Record<AssetCategory, string>> = {
       Server: 'cylinder-split', Switch: 'list', Storage: 'rectangle-stack',
       Power: 'lock-closed', Firewall: 'shield-check-mark', Cooling: 'cloud',
@@ -188,5 +188,5 @@ export class AssetDetailComponent {
       CPU: 'gear', GPU: 'gear', Transceiver: 'puzzle-piece',
     };
     return map[category] ?? 'rectangle-stack';
-  }
+  };
 }

@@ -1,12 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, inject, signal, viewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
-import { DcSelectorComponent } from '../shared/dc-selector';
-import { RackDiagramComponent } from './rack-diagram/rack-diagram';
+import DcSelectorComponent from '../shared/dc-selector';
+import RackDiagramComponent from './rack-diagram/rack-diagram';
 import { Rack, RACKS } from './rack.model';
-import { DATACENTER_INFO } from '../datacenters/datacenter.model';
-import { MOCK_RACK_ROWS } from '../datacenters/datacenter.model';
+import { DATACENTER_INFO, MOCK_RACK_ROWS  } from '../datacenters/datacenter.model';
 
 // ── Notes & History types ──────────────────────────────────────────────────────
 
@@ -64,6 +63,12 @@ const RACK_HISTORY: Record<string, RackEvent[]> = {
   ],
 };
 
+// ── NativeElementRef ──────────────────────────────────────────────────────────
+
+interface NativeElementRef {
+  nativeElement: { value: string; show?: () => void; hide?: () => void };
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 @Component({
@@ -73,8 +78,9 @@ const RACK_HISTORY: Record<string, RackEvent[]> = {
   imports: [DcSelectorComponent, RackDiagramComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class RacksComponent {
+export default class RacksComponent {
   private readonly route  = inject(ActivatedRoute);
+
   private readonly router = inject(Router);
 
   readonly currentRackId = toSignal(
@@ -83,7 +89,9 @@ export class RacksComponent {
   );
 
   viewMode    = signal<'front' | 'back'>('front');
+
   searchQuery = signal('');
+
   activeModal = signal<'notes' | 'history' | null>(null);
 
   // ── Mutable rack list ──────────────────────────────────────────────────────
@@ -91,16 +99,22 @@ export class RacksComponent {
 
   // ── CRUD state ─────────────────────────────────────────────────────────────
   editRack   = signal<Partial<Rack> | null>(null);
+
   deleteRack = signal<Rack | null>(null);
 
   readonly datacenters = DATACENTER_INFO;
+
   readonly rackRows    = MOCK_RACK_ROWS;
 
-  private readonly rackSheetEl   = viewChild<ElementRef>('rackSheet');
-  private readonly rackModalEl   = viewChild<ElementRef>('rackModal');
-  private readonly fRackName     = viewChild<ElementRef>('fRackName');
-  private readonly fRackDcId     = viewChild<ElementRef>('fRackDcId');
-  private readonly fRackTotalU   = viewChild<ElementRef>('fRackTotalU');
+  private readonly rackSheetEl   = viewChild<NativeElementRef>('rackSheet');
+
+  private readonly rackModalEl   = viewChild<NativeElementRef>('rackModal');
+
+  private readonly fRackName     = viewChild<NativeElementRef>('fRackName');
+
+  private readonly fRackDcId     = viewChild<NativeElementRef>('fRackDcId');
+
+  private readonly fRackTotalU   = viewChild<NativeElementRef>('fRackTotalU');
 
   readonly currentDC = computed(() => this.currentRack()?.dcId ?? 'ams-01');
 
@@ -114,12 +128,12 @@ export class RacksComponent {
       }
     });
     effect(() => {
-      const el = this.rackSheetEl()?.nativeElement as any;
-      if (this.editRack() !== null) el?.show(); else el?.hide();
+      const el = this.rackSheetEl()?.nativeElement as { show?: () => void; hide?: () => void };
+      if (this.editRack() !== null) el?.show?.(); else el?.hide?.();
     });
     effect(() => {
-      const el = this.rackModalEl()?.nativeElement as any;
-      if (this.deleteRack() !== null) el?.show(); else el?.hide();
+      const el = this.rackModalEl()?.nativeElement as { show?: () => void; hide?: () => void };
+      if (this.deleteRack() !== null) el?.show?.(); else el?.hide?.();
     });
   }
 
@@ -171,11 +185,11 @@ export class RacksComponent {
   saveRack(): void {
     const form = this.editRack();
     if (!form) return;
-    const name   = (this.fRackName()?.nativeElement  as any)?.value as string;
-    const dcId   = (this.fRackDcId()?.nativeElement  as any)?.value as string;
-    const totalU = parseInt((this.fRackTotalU()?.nativeElement as any)?.value ?? '42') || 42;
+    const name   = (this.fRackName()?.nativeElement as HTMLInputElement)?.value ?? '';
+    const dcId   = (this.fRackDcId()?.nativeElement as HTMLInputElement)?.value ?? '';
+    const totalU = parseInt((this.fRackTotalU()?.nativeElement as HTMLInputElement)?.value ?? '42', 10) || 42;
     const updated: Rack = {
-      id:      form.id || 'rack-' + Date.now(),
+      id:      form.id || `rack-${  Date.now()}`,
       name,
       dcId,
       totalU,
@@ -241,49 +255,47 @@ export class RacksComponent {
     this.activeModal.set(null);
   }
 
-  rackUsedU(rack: Rack): number {
-    return rack.devices.reduce((sum, d) => sum + d.uSize, 0);
-  }
+  readonly rackUsedU = (rack: Rack): number =>
+    rack.devices.reduce((sum, d) => sum + d.uSize, 0);
 
-  formatPowerKw(watts: number): string {
-    return (watts / 1000).toFixed(1);
-  }
+  readonly formatPowerKw = (watts: number): string =>
+    (watts / 1000).toFixed(1);
 
-  formatDaysAgo(daysAgo: number): string {
+  readonly formatDaysAgo = (daysAgo: number): string => {
     if (daysAgo === 0) return 'Today';
     if (daysAgo === 1) return '1 day ago';
     if (daysAgo < 7)   return `${daysAgo} days ago`;
     const weeks = Math.floor(daysAgo / 7);
     return weeks === 1 ? '1 week ago' : `${weeks} weeks ago`;
-  }
+  };
 
-  historyEventIcon(type: RackEvent['type']): string {
-    const map: Record<RackEvent['type'], string> = {
+  readonly historyEventIcon = (type: RackEvent['type']): string => {
+    const eventMap: Record<RackEvent['type'], string> = {
       power:    'exclamation-triangle',
       hardware: 'puzzle-piece',
       config:   'gear',
       alert:    'exclamation-triangle-filled',
     };
-    return map[type];
-  }
+    return eventMap[type];
+  };
 
-  historyEventIconColor(type: RackEvent['type']): string {
-    const map: Record<RackEvent['type'], string> = {
+  readonly historyEventIconColor = (type: RackEvent['type']): string => {
+    const eventMap: Record<RackEvent['type'], string> = {
       power:    'color: #f59e0b',
       hardware: 'color: #3b82f6',
       config:   'color: #6366f1',
       alert:    'color: #ef4444',
     };
-    return map[type];
-  }
+    return eventMap[type];
+  };
 
-  historyEventIconBg(type: RackEvent['type']): string {
-    const map: Record<RackEvent['type'], string> = {
+  readonly historyEventIconBg = (type: RackEvent['type']): string => {
+    const eventMap: Record<RackEvent['type'], string> = {
       power:    'bg-amber-50',
       hardware: 'bg-blue-50',
       config:   'bg-indigo-50',
       alert:    'bg-red-50',
     };
-    return map[type];
-  }
+    return eventMap[type];
+  };
 }

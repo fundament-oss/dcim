@@ -50,7 +50,7 @@ interface PriorityStyle {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   host: { class: 'flex flex-col bg-white text-slate-900' },
 })
-export class TaskManagementAdminComponent implements AfterViewInit {
+export default class TaskManagementAdminComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     // ── Technicians ──
     const technicians: Technician[] = [
@@ -165,8 +165,9 @@ export class TaskManagementAdminComponent implements AfterViewInit {
 
     // ── State ──
     let currentView = "list";
-    let selectedTasks = new Set<number>();
+    const selectedTasks = new Set<number>();
     let editingTaskId: number | null = null;
+    let toastTimeout: number | undefined;
 
     // ── DOM refs ──
     const taskListEl    = document.getElementById("taskList") as HTMLElement;
@@ -177,7 +178,7 @@ export class TaskManagementAdminComponent implements AfterViewInit {
     const selectAllCb   = document.getElementById("selectAll") as HTMLElement;
     const bulkBar       = document.getElementById("bulkBar") as HTMLElement;
     const bulkCount     = document.getElementById("bulkCount") as HTMLElement;
-    const detailSheet   = document.getElementById("detailSheet") as any;
+    const detailSheet   = document.getElementById("detailSheet") as HTMLElement & { show(): void; hide(): void; dataset: DOMStringMap };
     const editModal     = document.getElementById("editModal") as HTMLElement;
     const toastEl       = document.getElementById("toast") as HTMLElement;
     const toastText     = document.getElementById("toastText") as HTMLElement;
@@ -189,7 +190,7 @@ export class TaskManagementAdminComponent implements AfterViewInit {
 
     function formatDate(str: string | null): string {
       if (!str) return "—";
-      const d = new Date(str + "T00:00:00");
+      const d = new Date(`${str  }T00:00:00`);
       return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
     }
 
@@ -208,134 +209,28 @@ export class TaskManagementAdminComponent implements AfterViewInit {
       return `<span class="inline-flex ${size} items-center justify-center rounded-full ${tech.color} text-white font-semibold shrink-0" title="${tech.name}">${tech.initials}</span>`;
     }
 
-    // ── Render List View ──
-    function renderList(): void {
-      let html = "";
-      tasks.forEach(task => {
-        const tech = getTech(task.assignee);
-        const isSelected = selectedTasks.has(task.id);
-        const icon = categoryIcons[task.category] ?? "ellipsis";
-        const taskId = `T-${2890 + task.id}`;
-        html += `
-          <tr class="border-b border-slate-100 transition-colors hover:bg-slate-50 cursor-pointer ${isSelected ? "bg-indigo-50/60" : ""}" data-open="${task.id}">
-            <td class="w-10 px-3 py-3" data-no-open>
-              <nldd-checkbox class="task-cb" accessible-label="Select task ${taskId}" data-id="${task.id}" ${isSelected ? "checked" : ""}></nldd-checkbox>
-            </td>
-            <td class="w-20 px-2 py-3">
-              <span class="font-mono text-xs text-slate-400">${taskId}</span>
-            </td>
-            <td class="min-w-0 px-2 py-3">
-              <p class="text-sm font-medium text-slate-900 leading-snug truncate max-w-xs">${task.title}</p>
-              <p class="mt-0.5 text-xs text-slate-400 truncate flex items-center gap-1">
-                <nldd-icon name="apartment-building" style="width:11px;height:11px;display:inline-block;vertical-align:middle;"></nldd-icon>${task.location}
-              </p>
-            </td>
-            <td class="w-32 px-2 py-3">${statusBadge(task.status)}</td>
-            <td class="w-24 px-2 py-3">${priorityBadge(task.priority)}</td>
-            <td class="w-28 px-2 py-3">
-              <span class="inline-flex items-center gap-1.5 text-xs text-slate-500">
-                <nldd-icon name="${icon}" style="width:14px;height:14px;color:#94a3b8;display:inline-block;vertical-align:middle;"></nldd-icon>${task.category}
-              </span>
-            </td>
-            <td class="w-12 px-2 py-3 text-center">${avatarHTML(tech, "h-7 w-7 text-xs")}</td>
-            <td class="w-28 px-2 py-3 text-xs text-slate-500">
-              ${task.due ? formatDate(task.due) : '<span class="text-slate-300">—</span>'}
-            </td>
-          </tr>
-        `;
-      });
-      taskListEl.innerHTML = html;
-      (document.getElementById("taskCount") as HTMLElement).textContent = `${tasks.length} task${tasks.length !== 1 ? "s" : ""}`;
-
-      taskListEl.querySelectorAll("tr[data-open]").forEach(el => {
-        el.addEventListener("click", (e) => {
-          if ((e.target as HTMLElement).closest("[data-no-open]")) return;
-          openDetail(parseInt((el as HTMLElement).dataset["open"]!));
-        });
-      });
-      taskListEl.querySelectorAll(".task-cb").forEach(cb => {
-        cb.addEventListener("change", (e) => {
-          e.stopPropagation();
-          const el = cb as HTMLElement;
-          const id = parseInt(el.dataset["id"]!);
-          if ((e as CustomEvent).detail.checked) selectedTasks.add(id); else selectedTasks.delete(id);
-          updateBulkBar();
-          renderList();
-        });
-      });
+    function showToast(msg: string): void {
+      toastText.textContent = msg;
+      toastEl.classList.remove("opacity-0");
+      toastEl.classList.add("opacity-100");
+      clearTimeout(toastTimeout);
+      toastTimeout = window.setTimeout(() => {
+        toastEl.classList.remove("opacity-100");
+        toastEl.classList.add("opacity-0");
+      }, 2000);
     }
 
-    // ── Render Kanban View ──
-    function renderKanban(): void {
-      let html = "";
-      kanbanColumns.forEach(col => {
-        const s = statusStyles[col];
-        const colTasks = tasks.filter(t => t.status === col);
-        html += `
-          <div class="shrink-0 w-72 snap-center">
-            <div class="mb-3 flex items-center gap-2">
-              <span class="h-2 w-2 rounded-full ${s.dot}"></span>
-              <h3 class="text-sm font-semibold text-slate-700">${col}</h3>
-              <span class="ml-auto inline-flex items-center justify-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500">${colTasks.length}</span>
-            </div>
-            <div class="space-y-2">
-        `;
-        colTasks.forEach(task => {
-          const tech = getTech(task.assignee);
-          const icon = categoryIcons[task.category] ?? "ti-dots";
-          html += `
-            <div class="cursor-pointer rounded-xl border ${s.kanbanBorder} bg-white p-3.5 hover:shadow-md hover:shadow-slate-200/80 transition-shadow" data-open="${task.id}">
-              <h4 class="text-sm font-medium text-slate-900 leading-snug">${task.title}</h4>
-              <div class="mt-2 flex items-center gap-1.5">
-                ${priorityBadge(task.priority)}
-                <span class="inline-flex items-center gap-1 text-xs text-slate-400">
-                  <nldd-icon name="${icon}" style="width:13px;height:13px;"></nldd-icon>${task.category}
-                </span>
-              </div>
-              <div class="mt-3 flex items-center justify-between">
-                <span class="inline-flex items-center gap-1 text-xs text-slate-400 truncate max-w-[60%]">
-                  <nldd-icon name="apartment-building" style="width:11px;height:11px;"></nldd-icon>${task.location.split("·")[1]?.trim() ?? task.location}
-                </span>
-                <div class="flex items-center gap-2">
-                  ${task.due ? `<span class="text-xs text-slate-400">${formatDate(task.due).replace(/,.*/, "")}</span>` : ""}
-                  ${avatarHTML(tech, "h-6 w-6 text-[10px]")}
-                </div>
-              </div>
-              ${task.notes.length ? `<div class="mt-2.5 flex items-center gap-1 text-xs text-slate-400 border-t border-slate-100 pt-2.5"><nldd-icon name="envelope" style="width:13px;height:13px;"></nldd-icon>${task.notes.length} note${task.notes.length !== 1 ? "s" : ""}</div>` : ""}
-            </div>
-          `;
-        });
-        if (colTasks.length === 0) {
-          html += `<div class="rounded-xl border-2 border-dashed border-slate-200 p-6 text-center text-xs text-slate-400">No tasks</div>`;
-        }
-        html += `</div></div>`;
-      });
-      kanbanBoard.innerHTML = html;
-
-      kanbanBoard.querySelectorAll("[data-open]").forEach(el => {
-        el.addEventListener("click", () => openDetail(parseInt((el as HTMLElement).dataset["open"]!)));
-      });
+    function openModal(modal: HTMLElement): void {
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      document.body.style.overflow = "hidden";
     }
 
-    // ── View toggle ──
-    function setView(view: string): void {
-      currentView = view;
-      const isKanban = view === "kanban";
-      listView.classList.toggle("hidden", isKanban);
-      kanbanView.classList.toggle("hidden", !isKanban);
-      viewToggle.setAttribute("value", view);
-      if (isKanban) renderKanban(); else renderList();
+    function closeModal(modal: HTMLElement): void {
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      document.body.style.overflow = "";
     }
-
-    viewToggle.addEventListener("change", (e: Event) => setView((e as CustomEvent).detail.value));
-
-    // ── Select all ──
-    selectAllCb.addEventListener("change", (e: Event) => {
-      if ((e as CustomEvent).detail.checked) tasks.forEach(t => selectedTasks.add(t.id));
-      else selectedTasks.clear();
-      updateBulkBar();
-      renderList();
-    });
 
     function updateBulkBar(): void {
       if (selectedTasks.size > 0) {
@@ -348,7 +243,47 @@ export class TaskManagementAdminComponent implements AfterViewInit {
       }
     }
 
-    // ── Task Detail Modal ──
+    function openEditModal(taskId: number | null): void {
+      editingTaskId = taskId;
+      const task = taskId !== null ? tasks.find(t => t.id === taskId) : null;
+
+      (document.getElementById("editModalTitle") as HTMLElement).textContent = task ? "Edit task" : "New task";
+      (document.getElementById("editTitle") as HTMLInputElement).value = task ? task.title : "";
+      (document.getElementById("editDescription") as HTMLTextAreaElement).value = task ? task.description : "";
+      (document.getElementById("editStatus") as HTMLSelectElement).value        = task ? task.status : "Ready";
+      (document.getElementById("editPriority") as HTMLSelectElement).value      = task ? task.priority : "Medium";
+      (document.getElementById("editCategory") as HTMLSelectElement).value      = task ? task.category : "Hardware";
+      (document.getElementById("editDue") as HTMLInputElement).value            = task ? task.due : "";
+      (document.getElementById("editLocation") as HTMLInputElement).value = task ? task.location : "";
+
+      const assigneeContainer = document.querySelector("#assigneeSelector .grid") as HTMLElement;
+      let aHTML = `
+        <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-2.5 cursor-pointer hover:bg-slate-50 has-checked:ring-2 has-checked:ring-indigo-500 has-checked:border-transparent transition-colors">
+          <input type="radio" name="assignee" value="" class="h-4 w-4 rounded-full border-2 border-slate-300" ${!task || !task.assignee ? "checked" : ""} />
+          <div class="flex items-center gap-2.5">
+            ${avatarHTML(null, "h-8 w-8 text-sm")}
+            <span class="text-sm font-medium text-slate-500">Unassigned</span>
+          </div>
+        </label>
+      `;
+      technicians.forEach(t => {
+        aHTML += `
+          <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-2.5 cursor-pointer hover:bg-slate-50 has-checked:ring-2 has-checked:ring-indigo-500 has-checked:border-transparent transition-colors">
+            <input type="radio" name="assignee" value="${t.id}" class="h-4 w-4 rounded-full border-2 border-slate-300" ${task && task.assignee === t.id ? "checked" : ""} />
+            <div class="flex items-center gap-2.5 flex-1 min-w-0">
+              ${avatarHTML(t, "h-8 w-8 text-sm")}
+              <div class="flex-1 min-w-0">
+                <span class="text-sm font-medium text-slate-700">${t.name}</span>
+                <span class="ml-2 inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium ${t.available ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500"}">${t.available ? "Available" : "Busy"}</span>
+              </div>
+            </div>
+          </label>
+        `;
+      });
+      assigneeContainer.innerHTML = aHTML;
+      openModal(editModal);
+    }
+
     function openDetail(id: number): void {
       const task = tasks.find(t => t.id === id);
       if (!task) return;
@@ -412,17 +347,11 @@ export class TaskManagementAdminComponent implements AfterViewInit {
       detailSheet.show();
     }
 
-    // ── Add note ──
-    (document.getElementById("sendNoteBtn") as HTMLElement).addEventListener("click", addNote);
-    (document.getElementById("newNoteInput") as HTMLElement).addEventListener("keydown", (e: Event) => {
-      if ((e as KeyboardEvent).key === "Enter") addNote();
-    });
-
     function addNote(): void {
-      const input = document.getElementById("newNoteInput") as any;
-      const text = (input.value as string ?? "").trim();
+      const input = document.getElementById("newNoteInput") as HTMLInputElement;
+      const text = (input.value ?? "").trim();
       if (!text) return;
-      const taskId = parseInt(detailSheet.dataset["taskId"]!);
+      const taskId = parseInt(detailSheet.dataset["taskId"]!, 10);
       const task = tasks.find(t => t.id === taskId);
       if (!task) return;
       task.notes.unshift({ author: null, text, time: "Just now" });
@@ -431,53 +360,145 @@ export class TaskManagementAdminComponent implements AfterViewInit {
       showToast("Note added");
     }
 
-    // ── Edit / Add Modal ──
-    function openEditModal(taskId: number | null): void {
-      editingTaskId = taskId;
-      const task = taskId !== null ? tasks.find(t => t.id === taskId) : null;
-
-      (document.getElementById("editModalTitle") as HTMLElement).textContent = task ? "Edit task" : "New task";
-      (document.getElementById("editTitle") as any).value          = task ? task.title : "";
-      (document.getElementById("editDescription") as HTMLTextAreaElement).value = task ? task.description : "";
-      (document.getElementById("editStatus") as HTMLSelectElement).value        = task ? task.status : "Ready";
-      (document.getElementById("editPriority") as HTMLSelectElement).value      = task ? task.priority : "Medium";
-      (document.getElementById("editCategory") as HTMLSelectElement).value      = task ? task.category : "Hardware";
-      (document.getElementById("editDue") as HTMLInputElement).value            = task ? task.due : "";
-      (document.getElementById("editLocation") as any).value       = task ? task.location : "";
-
-      const assigneeContainer = document.querySelector("#assigneeSelector .grid") as HTMLElement;
-      let aHTML = `
-        <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-2.5 cursor-pointer hover:bg-slate-50 has-checked:ring-2 has-checked:ring-indigo-500 has-checked:border-transparent transition-colors">
-          <input type="radio" name="assignee" value="" class="h-4 w-4 rounded-full border-2 border-slate-300" ${!task || !task.assignee ? "checked" : ""} />
-          <div class="flex items-center gap-2.5">
-            ${avatarHTML(null, "h-8 w-8 text-sm")}
-            <span class="text-sm font-medium text-slate-500">Unassigned</span>
-          </div>
-        </label>
-      `;
-      technicians.forEach(t => {
-        aHTML += `
-          <label class="flex items-center gap-3 rounded-xl border border-slate-200 p-2.5 cursor-pointer hover:bg-slate-50 has-checked:ring-2 has-checked:ring-indigo-500 has-checked:border-transparent transition-colors">
-            <input type="radio" name="assignee" value="${t.id}" class="h-4 w-4 rounded-full border-2 border-slate-300" ${task && task.assignee === t.id ? "checked" : ""} />
-            <div class="flex items-center gap-2.5 flex-1 min-w-0">
-              ${avatarHTML(t, "h-8 w-8 text-sm")}
-              <div class="flex-1 min-w-0">
-                <span class="text-sm font-medium text-slate-700">${t.name}</span>
-                <span class="ml-2 inline-flex items-center rounded-full px-1.5 py-0.5 text-[10px] font-medium ${t.available ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500"}">${t.available ? "Available" : "Busy"}</span>
-              </div>
-            </div>
-          </label>
+    // ── Render List View ──
+    function renderList(): void {
+      let html = "";
+      tasks.forEach(task => {
+        const tech = getTech(task.assignee);
+        const isSelected = selectedTasks.has(task.id);
+        const icon = categoryIcons[task.category] ?? "ellipsis";
+        const taskId = `T-${2890 + task.id}`;
+        html += `
+          <tr class="border-b border-slate-100 transition-colors hover:bg-slate-50 cursor-pointer ${isSelected ? "bg-indigo-50/60" : ""}" data-open="${task.id}">
+            <td class="w-10 px-3 py-3" data-no-open>
+              <nldd-checkbox class="task-cb" accessible-label="Select task ${taskId}" data-id="${task.id}" ${isSelected ? "checked" : ""}></nldd-checkbox>
+            </td>
+            <td class="w-20 px-2 py-3">
+              <span class="font-mono text-xs text-slate-400">${taskId}</span>
+            </td>
+            <td class="min-w-0 px-2 py-3">
+              <p class="text-sm font-medium text-slate-900 leading-snug truncate max-w-xs">${task.title}</p>
+              <p class="mt-0.5 text-xs text-slate-400 truncate flex items-center gap-1">
+                <nldd-icon name="apartment-building" style="width:11px;height:11px;display:inline-block;vertical-align:middle;"></nldd-icon>${task.location}
+              </p>
+            </td>
+            <td class="w-32 px-2 py-3">${statusBadge(task.status)}</td>
+            <td class="w-24 px-2 py-3">${priorityBadge(task.priority)}</td>
+            <td class="w-28 px-2 py-3">
+              <span class="inline-flex items-center gap-1.5 text-xs text-slate-500">
+                <nldd-icon name="${icon}" style="width:14px;height:14px;color:#94a3b8;display:inline-block;vertical-align:middle;"></nldd-icon>${task.category}
+              </span>
+            </td>
+            <td class="w-12 px-2 py-3 text-center">${avatarHTML(tech, "h-7 w-7 text-xs")}</td>
+            <td class="w-28 px-2 py-3 text-xs text-slate-500">
+              ${task.due ? formatDate(task.due) : '<span class="text-slate-300">—</span>'}
+            </td>
+          </tr>
         `;
       });
-      assigneeContainer.innerHTML = aHTML;
-      openModal(editModal);
+      taskListEl.innerHTML = html;
+      (document.getElementById("taskCount") as HTMLElement).textContent = `${tasks.length} task${tasks.length !== 1 ? "s" : ""}`;
+
+      taskListEl.querySelectorAll("tr[data-open]").forEach(el => {
+        el.addEventListener("click", (e) => {
+          if ((e.target as HTMLElement).closest("[data-no-open]")) return;
+          openDetail(parseInt((el as HTMLElement).dataset["open"]!, 10));
+        });
+      });
+      taskListEl.querySelectorAll(".task-cb").forEach(cb => {
+        cb.addEventListener("change", (e) => {
+          e.stopPropagation();
+          const el = cb as HTMLElement;
+          const id = parseInt(el.dataset["id"]!, 10);
+          if ((e as CustomEvent).detail.checked) selectedTasks.add(id); else selectedTasks.delete(id);
+          updateBulkBar();
+          renderList();
+        });
+      });
     }
+
+    // ── Render Kanban View ──
+    function renderKanban(): void {
+      let html = "";
+      kanbanColumns.forEach(col => {
+        const s = statusStyles[col];
+        const colTasks = tasks.filter(t => t.status === col);
+        html += `
+          <div class="shrink-0 w-72 snap-center">
+            <div class="mb-3 flex items-center gap-2">
+              <span class="h-2 w-2 rounded-full ${s.dot}"></span>
+              <h3 class="text-sm font-semibold text-slate-700">${col}</h3>
+              <span class="ml-auto inline-flex items-center justify-center rounded-full bg-slate-100 px-2 py-0.5 text-xs font-medium text-slate-500">${colTasks.length}</span>
+            </div>
+            <div class="space-y-2">
+        `;
+        colTasks.forEach(task => {
+          const tech = getTech(task.assignee);
+          const icon = categoryIcons[task.category] ?? "ti-dots";
+          html += `
+            <div class="cursor-pointer rounded-xl border ${s.kanbanBorder} bg-white p-3.5 hover:shadow-md hover:shadow-slate-200/80 transition-shadow" data-open="${task.id}">
+              <h4 class="text-sm font-medium text-slate-900 leading-snug">${task.title}</h4>
+              <div class="mt-2 flex items-center gap-1.5">
+                ${priorityBadge(task.priority)}
+                <span class="inline-flex items-center gap-1 text-xs text-slate-400">
+                  <nldd-icon name="${icon}" style="width:13px;height:13px;"></nldd-icon>${task.category}
+                </span>
+              </div>
+              <div class="mt-3 flex items-center justify-between">
+                <span class="inline-flex items-center gap-1 text-xs text-slate-400 truncate max-w-[60%]">
+                  <nldd-icon name="apartment-building" style="width:11px;height:11px;"></nldd-icon>${task.location.split("·")[1]?.trim() ?? task.location}
+                </span>
+                <div class="flex items-center gap-2">
+                  ${task.due ? `<span class="text-xs text-slate-400">${formatDate(task.due).replace(/,.*/, "")}</span>` : ""}
+                  ${avatarHTML(tech, "h-6 w-6 text-[10px]")}
+                </div>
+              </div>
+              ${task.notes.length ? `<div class="mt-2.5 flex items-center gap-1 text-xs text-slate-400 border-t border-slate-100 pt-2.5"><nldd-icon name="envelope" style="width:13px;height:13px;"></nldd-icon>${task.notes.length} note${task.notes.length !== 1 ? "s" : ""}</div>` : ""}
+            </div>
+          `;
+        });
+        if (colTasks.length === 0) {
+          html += `<div class="rounded-xl border-2 border-dashed border-slate-200 p-6 text-center text-xs text-slate-400">No tasks</div>`;
+        }
+        html += `</div></div>`;
+      });
+      kanbanBoard.innerHTML = html;
+
+      kanbanBoard.querySelectorAll("[data-open]").forEach(el => {
+        el.addEventListener("click", () => openDetail(parseInt((el as HTMLElement).dataset["open"]!, 10)));
+      });
+    }
+
+    // ── View toggle ──
+    function setView(view: string): void {
+      currentView = view;
+      const isKanban = view === "kanban";
+      listView.classList.toggle("hidden", isKanban);
+      kanbanView.classList.toggle("hidden", !isKanban);
+      viewToggle.setAttribute("value", view);
+      if (isKanban) renderKanban(); else renderList();
+    }
+
+    // ── Event listeners ──
+    viewToggle.addEventListener("change", (e: Event) => setView((e as CustomEvent).detail.value));
+
+    selectAllCb.addEventListener("change", (e: Event) => {
+      if ((e as CustomEvent).detail.checked) tasks.forEach(t => selectedTasks.add(t.id));
+      else selectedTasks.clear();
+      updateBulkBar();
+      renderList();
+    });
+
+    (document.getElementById("sendNoteBtn") as HTMLElement).addEventListener("click", addNote);
+    (document.getElementById("newNoteInput") as HTMLElement).addEventListener("keydown", (e: Event) => {
+      if ((e as KeyboardEvent).key === "Enter") addNote();
+    });
 
     (document.getElementById("addTaskFab") as HTMLElement).addEventListener("click", () => openEditModal(null));
 
     (document.getElementById("editSaveBtn") as HTMLElement).addEventListener("click", () => {
-      const titleInput = document.getElementById("editTitle") as any;
-      const title = ((titleInput.value as string) ?? "").trim();
+      const titleInput = document.getElementById("editTitle") as HTMLInputElement;
+      const title = (titleInput.value ?? "").trim();
       if (!title) { titleInput.focus(); return; }
 
       const assigneeInput = document.querySelector('input[name="assignee"]:checked') as HTMLInputElement | null;
@@ -489,8 +510,8 @@ export class TaskManagementAdminComponent implements AfterViewInit {
         priority: (document.getElementById("editPriority") as HTMLSelectElement).value,
         category: (document.getElementById("editCategory") as HTMLSelectElement).value,
         due:      (document.getElementById("editDue") as HTMLInputElement).value,
-        location: ((document.getElementById("editLocation") as any).value as string ?? "").trim(),
-        assignee: assigneeVal ? parseInt(assigneeVal) : null,
+        location: ((document.getElementById("editLocation") as HTMLInputElement).value ?? "").trim(),
+        assignee: assigneeVal ? parseInt(assigneeVal, 10) : null,
       };
 
       if (editingTaskId !== null) {
@@ -506,18 +527,6 @@ export class TaskManagementAdminComponent implements AfterViewInit {
       if (currentView === "list") renderList(); else renderKanban();
     });
 
-    // ── Modal helpers ──
-    function openModal(modal: HTMLElement): void {
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-      document.body.style.overflow = "hidden";
-    }
-    function closeModal(modal: HTMLElement): void {
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-      document.body.style.overflow = "";
-    }
-
     (document.getElementById("detailCloseBtn") as HTMLElement).addEventListener("click", () => detailSheet.hide());
     (document.getElementById("editCloseBtn") as HTMLElement).addEventListener("click",   () => closeModal(editModal));
     (document.getElementById("editCancelBtn") as HTMLElement).addEventListener("click",  () => closeModal(editModal));
@@ -526,19 +535,6 @@ export class TaskManagementAdminComponent implements AfterViewInit {
     document.addEventListener("keydown", (e: KeyboardEvent) => {
       if (e.key === "Escape") { detailSheet.hide(); closeModal(editModal); }
     });
-
-    // ── Toast ──
-    let toastTimeout: number | undefined;
-    function showToast(msg: string): void {
-      toastText.textContent = msg;
-      toastEl.classList.remove("opacity-0");
-      toastEl.classList.add("opacity-100");
-      clearTimeout(toastTimeout);
-      toastTimeout = window.setTimeout(() => {
-        toastEl.classList.remove("opacity-100");
-        toastEl.classList.add("opacity-0");
-      }, 2000);
-    }
 
     // ── Init ──
     setView("list");

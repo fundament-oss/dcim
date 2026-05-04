@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactFlow from 'reactflow';
+import ReactFlow, { ReactFlowProps } from 'reactflow';
 
-export const ReactFlowWrappableComponent = (props: any) => {
+export const ReactFlowWrappableComponent = (props: ReactFlowProps) => {
   return React.createElement(ReactFlow, props);
 };

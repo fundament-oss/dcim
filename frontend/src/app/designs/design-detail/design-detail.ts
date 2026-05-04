@@ -4,14 +4,12 @@ import {
   computed,
   CUSTOM_ELEMENTS_SCHEMA,
   effect,
-  ElementRef,
   inject,
   signal,
   viewChild,
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
-import { DesignFlowWrapperComponent } from '../design-flow-wrapper';
+import { RouterLink, ActivatedRoute  } from '@angular/router';
+import DesignFlowWrapperComponent from '../design-flow-wrapper';
 import {
   LogicalConnection,
   LogicalConnectionType,
@@ -25,6 +23,10 @@ import {
   MOCK_DEVICE_LAYOUTS,
   DEVICE_ROLE_COLORS,
 } from '../design.model';
+
+interface NativeElementRef {
+  nativeElement: { value: string; show?: () => void; hide?: () => void };
+}
 
 const ALL_ROLES: LogicalDeviceRole[] = [
   'Compute', 'ToR', 'Spine', 'Core', 'PDU', 'Patch Panel',
@@ -40,15 +42,18 @@ const ALL_ROLES: LogicalDeviceRole[] = [
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   host: { class: 'flex flex-col overflow-hidden', style: 'height: calc(100dvh - 4.25rem)' },
 })
-export class DesignDetailComponent {
+export default class DesignDetailComponent {
   private readonly route = inject(ActivatedRoute);
 
   readonly designId = this.route.snapshot.paramMap.get('id') ?? '';
 
   // ── Mutable state ──────────────────────────────────────────────────────────
   readonly mutableDesigns     = signal([...MOCK_DESIGNS]);
+
   readonly mutableDevices     = signal([...MOCK_LOGICAL_DEVICES]);
+
   readonly mutableConnections = signal([...MOCK_LOGICAL_CONNECTIONS]);
+
   readonly mutableLayouts     = signal([...MOCK_DEVICE_LAYOUTS]);
 
   readonly design = computed<LogicalDesign | undefined>(() =>
@@ -83,43 +88,54 @@ export class DesignDetailComponent {
 
   // ── Device CRUD state ──────────────────────────────────────────────────────
   editDevice   = signal<Partial<LogicalDevice> | null>(null);
+
   deleteDevice = signal<LogicalDevice | null>(null);
 
-  private readonly deviceSheetEl  = viewChild<ElementRef>('deviceSheet');
-  private readonly deviceModalEl  = viewChild<ElementRef>('deviceModal');
-  private readonly fDeviceName    = viewChild<ElementRef>('fDeviceName');
-  private readonly fDeviceRole    = viewChild<ElementRef>('fDeviceRole');
+  private readonly deviceSheetEl  = viewChild<NativeElementRef>('deviceSheet');
+
+  private readonly deviceModalEl  = viewChild<NativeElementRef>('deviceModal');
+
+  private readonly fDeviceName    = viewChild<NativeElementRef>('fDeviceName');
+
+  private readonly fDeviceRole    = viewChild<NativeElementRef>('fDeviceRole');
 
   // ── Connection CRUD state ──────────────────────────────────────────────────
   editConnection   = signal<Partial<LogicalConnection> | null>(null);
+
   deleteConnection = signal<LogicalConnection | null>(null);
 
-  private readonly connSheetEl    = viewChild<ElementRef>('connSheet');
-  private readonly connModalEl    = viewChild<ElementRef>('connModal');
-  private readonly fConnSrcDevice = viewChild<ElementRef>('fConnSrcDevice');
-  private readonly fConnSrcPort   = viewChild<ElementRef>('fConnSrcPort');
-  private readonly fConnTgtDevice = viewChild<ElementRef>('fConnTgtDevice');
-  private readonly fConnTgtPort   = viewChild<ElementRef>('fConnTgtPort');
-  private readonly fConnType      = viewChild<ElementRef>('fConnType');
+  private readonly connSheetEl    = viewChild<NativeElementRef>('connSheet');
+
+  private readonly connModalEl    = viewChild<NativeElementRef>('connModal');
+
+  private readonly fConnSrcDevice = viewChild<NativeElementRef>('fConnSrcDevice');
+
+  private readonly fConnSrcPort   = viewChild<NativeElementRef>('fConnSrcPort');
+
+  private readonly fConnTgtDevice = viewChild<NativeElementRef>('fConnTgtDevice');
+
+  private readonly fConnTgtPort   = viewChild<NativeElementRef>('fConnTgtPort');
+
+  private readonly fConnType      = viewChild<NativeElementRef>('fConnType');
 
   readonly allRoles = ALL_ROLES;
 
   constructor() {
     effect(() => {
-      const el = this.deviceSheetEl()?.nativeElement as any;
-      if (this.editDevice() !== null) el?.show(); else el?.hide();
+      const el = this.deviceSheetEl()?.nativeElement;
+      if (this.editDevice() !== null) el?.show?.(); else el?.hide?.();
     });
     effect(() => {
-      const el = this.deviceModalEl()?.nativeElement as any;
-      if (this.deleteDevice() !== null) el?.show(); else el?.hide();
+      const el = this.deviceModalEl()?.nativeElement;
+      if (this.deleteDevice() !== null) el?.show?.(); else el?.hide?.();
     });
     effect(() => {
-      const el = this.connSheetEl()?.nativeElement as any;
-      if (this.editConnection() !== null) el?.show(); else el?.hide();
+      const el = this.connSheetEl()?.nativeElement;
+      if (this.editConnection() !== null) el?.show?.(); else el?.hide?.();
     });
     effect(() => {
-      const el = this.connModalEl()?.nativeElement as any;
-      if (this.deleteConnection() !== null) el?.show(); else el?.hide();
+      const el = this.connModalEl()?.nativeElement;
+      if (this.deleteConnection() !== null) el?.show?.(); else el?.hide?.();
     });
   }
 
@@ -140,10 +156,10 @@ export class DesignDetailComponent {
   saveDevice(): void {
     const form = this.editDevice();
     if (!form) return;
-    const name = (this.fDeviceName()?.nativeElement as any)?.value as string;
-    const role = ((this.fDeviceRole()?.nativeElement as any)?.value ?? 'Compute') as LogicalDeviceRole;
+    const name = this.fDeviceName()?.nativeElement.value ?? '';
+    const role = (this.fDeviceRole()?.nativeElement.value ?? 'Compute') as LogicalDeviceRole;
     const updated: LogicalDevice = {
-      id:       form.id || 'dev-' + Date.now(),
+      id:       form.id || `dev-${  Date.now()}`,
       designId: this.designId,
       name,
       role,
@@ -205,13 +221,13 @@ export class DesignDetailComponent {
   saveConnection(): void {
     const form = this.editConnection();
     if (!form) return;
-    const srcDeviceId = (this.fConnSrcDevice()?.nativeElement as any)?.value as string;
-    const srcPort     = (this.fConnSrcPort()?.nativeElement as any)?.value as string;
-    const tgtDeviceId = (this.fConnTgtDevice()?.nativeElement as any)?.value as string;
-    const tgtPort     = (this.fConnTgtPort()?.nativeElement as any)?.value as string;
-    const connType    = ((this.fConnType()?.nativeElement as any)?.value ?? 'network') as LogicalConnectionType;
+    const srcDeviceId = this.fConnSrcDevice()?.nativeElement.value ?? '';
+    const srcPort     = this.fConnSrcPort()?.nativeElement.value ?? '';
+    const tgtDeviceId = this.fConnTgtDevice()?.nativeElement.value ?? '';
+    const tgtPort     = this.fConnTgtPort()?.nativeElement.value ?? '';
+    const connType    = (this.fConnType()?.nativeElement.value ?? 'network') as LogicalConnectionType;
     const updated: LogicalConnection = {
-      id:              form.id || 'conn-' + Date.now(),
+      id:              form.id || `conn-${  Date.now()}`,
       designId:        this.designId,
       sourceDeviceId:  srcDeviceId,
       sourcePortRole:  srcPort,
@@ -274,42 +290,39 @@ export class DesignDetailComponent {
     return this.mutableDevices().find(d => d.id === id)?.name ?? id;
   }
 
-  roleColor(role: LogicalDeviceRole): string {
-    return DEVICE_ROLE_COLORS[role]?.text ?? '#475569';
-  }
+  readonly roleColor = (role: LogicalDeviceRole): string =>
+    DEVICE_ROLE_COLORS[role]?.text ?? '#475569';
 
-  roleBg(role: LogicalDeviceRole): string {
-    return DEVICE_ROLE_COLORS[role]?.bg ?? '#f8fafc';
-  }
+  readonly roleBg = (role: LogicalDeviceRole): string =>
+    DEVICE_ROLE_COLORS[role]?.bg ?? '#f8fafc';
 
-  roleBorder(role: LogicalDeviceRole): string {
-    return DEVICE_ROLE_COLORS[role]?.border ?? '#94a3b8';
-  }
+  readonly roleBorder = (role: LogicalDeviceRole): string =>
+    DEVICE_ROLE_COLORS[role]?.border ?? '#94a3b8';
 
-  connTypeLabel(type: LogicalConnectionType): string {
-    const map: Record<LogicalConnectionType, string> = {
+  readonly connTypeLabel = (type: LogicalConnectionType): string => {
+    const connMap: Record<LogicalConnectionType, string> = {
       network: 'Network',
       power:   'Power',
       console: 'Console',
     };
-    return map[type];
-  }
+    return connMap[type];
+  };
 
-  connTypeBadgeClass(type: LogicalConnectionType): string {
-    const map: Record<LogicalConnectionType, string> = {
+  readonly connTypeBadgeClass = (type: LogicalConnectionType): string => {
+    const connMap: Record<LogicalConnectionType, string> = {
       network: 'bg-blue-50 text-blue-700',
       power:   'bg-amber-50 text-amber-700',
       console: 'bg-slate-100 text-slate-600',
     };
-    return map[type];
-  }
+    return connMap[type];
+  };
 
-  statusBadgeClass(status: string): string {
-    const map: Record<string, string> = {
+  readonly statusBadgeClass = (status: string): string => {
+    const statusMap: Record<string, string> = {
       draft:    'bg-slate-100 text-slate-600',
       active:   'bg-green-50 text-green-700',
       archived: 'bg-amber-50 text-amber-700',
     };
-    return map[status] ?? 'bg-slate-100 text-slate-600';
-  }
+    return statusMap[status] ?? 'bg-slate-100 text-slate-600';
+  };
 }

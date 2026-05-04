@@ -1,10 +1,14 @@
-import { ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, signal, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   LogicalDesign,
   LogicalDesignStatus,
   MOCK_DESIGNS,
 } from './design.model';
+
+interface NativeElementRef {
+  nativeElement: { value: string; show?: () => void; hide?: () => void };
+}
 
 @Component({
   selector: 'app-designs',
@@ -14,8 +18,9 @@ import {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   host: { class: 'flex flex-col min-h-screen bg-white' },
 })
-export class DesignsComponent {
+export default class DesignsComponent {
   statusFilter = signal<LogicalDesignStatus | 'all'>('all');
+
   searchQuery  = signal('');
 
   // ── Mutable designs list ───────────────────────────────────────────────────
@@ -23,20 +28,23 @@ export class DesignsComponent {
 
   // ── CRUD state — null = closed, object = open ──────────────────────────────
   editDesign   = signal<Partial<LogicalDesign> | null>(null);
+
   deleteDesign = signal<LogicalDesign | null>(null);
 
-  private readonly designSheetEl = viewChild<ElementRef>('designSheet');
-  private readonly deleteModalEl = viewChild<ElementRef>('deleteModal');
-  private readonly fDesignName   = viewChild<ElementRef>('fDesignName');
+  private readonly designSheetEl = viewChild<NativeElementRef>('designSheet');
+
+  private readonly deleteModalEl = viewChild<NativeElementRef>('deleteModal');
+
+  private readonly fDesignName   = viewChild<NativeElementRef>('fDesignName');
 
   constructor() {
     effect(() => {
-      const el = this.designSheetEl()?.nativeElement as any;
-      if (this.editDesign() !== null) el?.show(); else el?.hide();
+      const el = this.designSheetEl()?.nativeElement;
+      if (this.editDesign() !== null) el?.show?.(); else el?.hide?.();
     });
     effect(() => {
-      const el = this.deleteModalEl()?.nativeElement as any;
-      if (this.deleteDesign() !== null) el?.show(); else el?.hide();
+      const el = this.deleteModalEl()?.nativeElement;
+      if (this.deleteDesign() !== null) el?.show?.(); else el?.hide?.();
     });
   }
 
@@ -71,11 +79,11 @@ export class DesignsComponent {
   }
 
   saveDesign(): void {
-    const name = (this.fDesignName()?.nativeElement as any)?.value as string;
+    const name = this.fDesignName()?.nativeElement.value ?? '';
     if (!name?.trim()) return;
     // TODO(api): LogicalDesignService.CreateLogicalDesign(CreateLogicalDesignRequest)
     const design: LogicalDesign = {
-      id:      'design-' + Date.now(),
+      id:      `design-${  Date.now()}`,
       name:    name.trim(),
       version: 1,
       status:  'draft',
@@ -108,25 +116,24 @@ export class DesignsComponent {
     this.deleteDesign.set(null);
   }
 
-  statusBadgeClass(status: LogicalDesignStatus): string {
-    const map: Record<LogicalDesignStatus, string> = {
+  readonly statusBadgeClass = (status: LogicalDesignStatus): string => {
+    const statusMap: Record<LogicalDesignStatus, string> = {
       draft:    'bg-slate-100 text-slate-600',
       active:   'bg-green-50 text-green-700',
       archived: 'bg-amber-50 text-amber-700',
     };
-    return map[status];
-  }
+    return statusMap[status];
+  };
 
-  statusLabel(status: LogicalDesignStatus): string {
-    const map: Record<LogicalDesignStatus, string> = {
+  readonly statusLabel = (status: LogicalDesignStatus): string => {
+    const statusMap: Record<LogicalDesignStatus, string> = {
       draft:    'Draft',
       active:   'Active',
       archived: 'Archived',
     };
-    return map[status];
-  }
+    return statusMap[status];
+  };
 
-  formatDate(dateStr: string): string {
-    return new Date(dateStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-  }
+  readonly formatDate = (dateStr: string): string =>
+    new Date(dateStr).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 }

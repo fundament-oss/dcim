@@ -1,6 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, inject, signal, viewChild } from '@angular/core';
+import { RouterLink, ActivatedRoute  } from '@angular/router';
 import {
   Asset,
   AssetCategory,
@@ -14,6 +13,10 @@ import {
   PortCompatibility,
 } from '../../inventory/inventory';
 
+interface NativeElementRef {
+  nativeElement: { value: string; show?: () => void; hide?: () => void };
+}
+
 @Component({
   selector: 'app-catalog-detail',
   templateUrl: './catalog-detail.html',
@@ -22,7 +25,7 @@ import {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   host: { class: 'block bg-slate-50 min-h-screen' },
 })
-export class CatalogDetailComponent {
+export default class CatalogDetailComponent {
   private readonly route = inject(ActivatedRoute);
 
   readonly catalogId = computed(() => this.route.snapshot.paramMap.get('id') ?? '');
@@ -37,11 +40,14 @@ export class CatalogDetailComponent {
   });
 
   readonly deployedCount  = computed(() => this.assets().filter(a => a.status === 'deployed').length);
+
   readonly availableCount = computed(() => this.assets().filter(a => a.status === 'available').length);
+
   readonly issuesCount    = computed(() => this.assets().filter(a => a.status === 'needs-repair' || a.status === 'decommissioned').length);
 
   // ── Port definitions ───────────────────────────────────────────────────────
   readonly mutablePortDefs    = signal([...MOCK_PORT_DEFINITIONS]);
+
   readonly mutableCompatibilities = signal([...MOCK_PORT_COMPATIBILITIES]);
 
   readonly portDefs = computed(() =>
@@ -55,42 +61,51 @@ export class CatalogDetailComponent {
 
   // ── Port definition CRUD state ────────────────────────────────────────────
   editPortDef   = signal<Partial<PortDefinition> | null>(null);
+
   deletePortDef = signal<PortDefinition | null>(null);
 
-  private readonly portSheetEl  = viewChild<ElementRef>('portSheet');
-  private readonly portModalEl  = viewChild<ElementRef>('portModal');
-  private readonly fPortName    = viewChild<ElementRef>('fPortName');
-  private readonly fPortType    = viewChild<ElementRef>('fPortType');
-  private readonly fPortSpeed   = viewChild<ElementRef>('fPortSpeed');
-  private readonly fPortPower   = viewChild<ElementRef>('fPortPower');
+  private readonly portSheetEl  = viewChild<NativeElementRef>('portSheet');
+
+  private readonly portModalEl  = viewChild<NativeElementRef>('portModal');
+
+  private readonly fPortName    = viewChild<NativeElementRef>('fPortName');
+
+  private readonly fPortType    = viewChild<NativeElementRef>('fPortType');
+
+  private readonly fPortSpeed   = viewChild<NativeElementRef>('fPortSpeed');
+
+  private readonly fPortPower   = viewChild<NativeElementRef>('fPortPower');
 
   // ── Port compatibility CRUD state ─────────────────────────────────────────
   addCompatPortDefId = signal<string | null>(null);
+
   deleteCompat       = signal<PortCompatibility | null>(null);
 
-  private readonly compatModalEl      = viewChild<ElementRef>('compatModal');
-  private readonly compatDeleteModalEl = viewChild<ElementRef>('compatDeleteModal');
-  private readonly fCompatEntry       = viewChild<ElementRef>('fCompatEntry');
+  private readonly compatModalEl      = viewChild<NativeElementRef>('compatModal');
+
+  private readonly compatDeleteModalEl = viewChild<NativeElementRef>('compatDeleteModal');
+
+  private readonly fCompatEntry       = viewChild<NativeElementRef>('fCompatEntry');
 
   // ── Catalog list for compatibility dropdown ────────────────────────────────
   readonly allCatalogEntries = MOCK_CATALOG;
 
   constructor() {
     effect(() => {
-      const el = this.portSheetEl()?.nativeElement as any;
-      if (this.editPortDef() !== null) el?.show(); else el?.hide();
+      const el = this.portSheetEl()?.nativeElement;
+      if (this.editPortDef() !== null) el?.show?.(); else el?.hide?.();
     });
     effect(() => {
-      const el = this.portModalEl()?.nativeElement as any;
-      if (this.deletePortDef() !== null) el?.show(); else el?.hide();
+      const el = this.portModalEl()?.nativeElement;
+      if (this.deletePortDef() !== null) el?.show?.(); else el?.hide?.();
     });
     effect(() => {
-      const el = this.compatModalEl()?.nativeElement as any;
-      if (this.addCompatPortDefId() !== null) el?.show(); else el?.hide();
+      const el = this.compatModalEl()?.nativeElement;
+      if (this.addCompatPortDefId() !== null) el?.show?.(); else el?.hide?.();
     });
     effect(() => {
-      const el = this.compatDeleteModalEl()?.nativeElement as any;
-      if (this.deleteCompat() !== null) el?.show(); else el?.hide();
+      const el = this.compatDeleteModalEl()?.nativeElement;
+      if (this.deleteCompat() !== null) el?.show?.(); else el?.hide?.();
     });
   }
 
@@ -111,19 +126,19 @@ export class CatalogDetailComponent {
   savePortDef(): void {
     const form = this.editPortDef();
     if (!form) return;
-    const name      = (this.fPortName()?.nativeElement as any)?.value as string;
-    const portType  = (this.fPortType()?.nativeElement as any)?.value as string;
-    const speedRaw  = (this.fPortSpeed()?.nativeElement as any)?.value;
-    const powerRaw  = (this.fPortPower()?.nativeElement as any)?.value;
+    const name      = this.fPortName()?.nativeElement.value ?? '';
+    const portType  = this.fPortType()?.nativeElement.value ?? '';
+    const speedRaw  = this.fPortSpeed()?.nativeElement.value;
+    const powerRaw  = this.fPortPower()?.nativeElement.value;
     const speedGbps = speedRaw ? parseFloat(speedRaw) : undefined;
     const powerWatts = powerRaw ? parseFloat(powerRaw) : undefined;
     const updated: PortDefinition = {
-      id:              form.id || 'pd-' + Date.now(),
+      id:              form.id || `pd-${  Date.now()}`,
       catalogEntryId:  this.catalogId(),
       name,
       portType,
-      ...(speedGbps != null && !isNaN(speedGbps) ? { speedGbps } : {}),
-      ...(powerWatts != null && !isNaN(powerWatts) ? { powerWatts } : {}),
+      ...(speedGbps != null && !Number.isNaN(speedGbps) ? { speedGbps } : {}),
+      ...(powerWatts != null && !Number.isNaN(powerWatts) ? { powerWatts } : {}),
     };
     // TODO(api): form.id ? CatalogService.UpdatePortDefinition(UpdatePortDefinitionRequest) : CatalogService.CreatePortDefinition(CreatePortDefinitionRequest)
     if (form.id) {
@@ -163,12 +178,12 @@ export class CatalogDetailComponent {
 
   confirmAddCompatibility(): void {
     const pdId    = this.addCompatPortDefId();
-    const entryId = (this.fCompatEntry()?.nativeElement as any)?.value as string;
+    const entryId = this.fCompatEntry()?.nativeElement.value ?? '';
     if (!pdId || !entryId) return;
     // TODO(api): CatalogService.CreatePortCompatibility(CreatePortCompatibilityRequest)
     this.mutableCompatibilities.update(list => [
       ...list,
-      { id: 'pc-' + Date.now(), portDefinitionId: pdId, compatibleCatalogEntryId: entryId },
+      { id: `pc-${  Date.now()}`, portDefinitionId: pdId, compatibleCatalogEntryId: entryId },
     ]);
     this.addCompatPortDefId.set(null);
   }
@@ -189,9 +204,8 @@ export class CatalogDetailComponent {
     this.deleteCompat.set(null);
   }
 
-  compatibleEntryName(entryId: string): string {
-    return MOCK_CATALOG.find(e => e.id === entryId)?.model ?? entryId;
-  }
+  readonly compatibleEntryName = (entryId: string): string =>
+    MOCK_CATALOG.find(e => e.id === entryId)?.model ?? entryId;
 
   portDefName(pdId: string): string {
     return this.mutablePortDefs().find(p => p.id === pdId)?.name ?? pdId;
@@ -201,11 +215,10 @@ export class CatalogDetailComponent {
     return this.mutableCompatibilities().filter(c => c.portDefinitionId === pdId);
   }
 
-  specEntries(specs: Record<string, string>): { key: string; value: string }[] {
-    return Object.entries(specs).map(([key, value]) => ({ key, value }));
-  }
+  readonly specEntries = (specs: Record<string, string>): { key: string; value: string }[] =>
+    Object.entries(specs).map(([key, value]) => ({ key, value }));
 
-  categoryIcon(category: AssetCategory): string {
+  readonly categoryIcon = (category: AssetCategory): string => {
     const map: Partial<Record<AssetCategory, string>> = {
       Server: 'cylinder-split', Switch: 'list', Storage: 'rectangle-stack',
       Power: 'lock-closed', Firewall: 'shield-check-mark', Cooling: 'cloud',
@@ -214,9 +227,9 @@ export class CatalogDetailComponent {
       CPU: 'gear', GPU: 'gear', Transceiver: 'puzzle-piece',
     };
     return map[category] ?? 'rectangle-stack';
-  }
+  };
 
-  statusLabel(status: AssetStatus): string {
+  readonly statusLabel = (status: AssetStatus): string => {
     const labels: Record<AssetStatus, string> = {
       deployed: 'Deployed',
       available: 'Available',
@@ -226,9 +239,9 @@ export class CatalogDetailComponent {
       requested: 'Requested',
     };
     return labels[status];
-  }
+  };
 
-  statusBadgeClass(status: AssetStatus): string {
+  readonly statusBadgeClass = (status: AssetStatus): string => {
     const classes: Record<AssetStatus, string> = {
       deployed: 'bg-teal-50 text-teal-700',
       available: 'bg-green-50 text-green-700',
@@ -238,9 +251,9 @@ export class CatalogDetailComponent {
       requested: 'bg-purple-50 text-purple-700',
     };
     return classes[status];
-  }
+  };
 
-  statusDotClass(status: AssetStatus): string {
+  readonly statusDotClass = (status: AssetStatus): string => {
     const classes: Record<AssetStatus, string> = {
       deployed: 'bg-teal-400',
       available: 'bg-green-400',
@@ -250,5 +263,5 @@ export class CatalogDetailComponent {
       requested: 'bg-purple-400',
     };
     return classes[status];
-  }
+  };
 }

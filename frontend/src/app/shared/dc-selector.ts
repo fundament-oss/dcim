@@ -24,17 +24,19 @@ import { DATACENTER_INFO, DatacenterStatus } from '../datacenters/datacenter.mod
     </nav>
   `,
 })
-export class DcSelectorComponent {
+export default class DcSelectorComponent {
   readonly selectedId = input.required<string>();
+
   readonly dcSelected = output<string>();
 
   readonly datacenters = DATACENTER_INFO;
 
-  statusDotClass(status: DatacenterStatus): string {
+  readonly statusDotClass = (status: DatacenterStatus): string => {
     switch (status) {
       case 'operational': return 'bg-teal-500';
       case 'degraded':    return 'bg-amber-500';
       case 'maintenance': return 'bg-slate-400';
+      default:            return '';
     }
-  }
+  };
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, signal, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, effect, signal, viewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   AssetCategory,
@@ -6,6 +6,10 @@ import {
   MOCK_ASSETS,
   MOCK_CATALOG,
 } from '../inventory/inventory';
+
+interface NativeElementRef {
+  nativeElement: { value: string; show?: () => void; hide?: () => void };
+}
 
 interface CatalogRow {
   entry: CatalogEntry;
@@ -23,8 +27,9 @@ interface CatalogRow {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   host: { class: 'flex flex-col min-h-screen bg-white' },
 })
-export class CatalogComponent {
+export default class CatalogComponent {
   searchQuery    = signal('');
+
   categoryFilter = signal<AssetCategory | 'all'>('all');
 
   readonly categories: AssetCategory[] = [
@@ -37,23 +42,29 @@ export class CatalogComponent {
 
   // ── CRUD state ─────────────────────────────────────────────────────────────
   editEntry   = signal<Partial<CatalogEntry> | null>(null);
+
   deleteEntry = signal<CatalogEntry | null>(null);
+
   specRows    = signal<{ key: string; value: string }[]>([]);
 
-  private readonly entrySheetEl  = viewChild<ElementRef>('entrySheet');
-  private readonly entryModalEl  = viewChild<ElementRef>('entryModal');
-  private readonly fEntryModel   = viewChild<ElementRef>('fEntryModel');
-  private readonly fEntryMfr     = viewChild<ElementRef>('fEntryMfr');
-  private readonly fEntryCat     = viewChild<ElementRef>('fEntryCat');
+  private readonly entrySheetEl  = viewChild<NativeElementRef>('entrySheet');
+
+  private readonly entryModalEl  = viewChild<NativeElementRef>('entryModal');
+
+  private readonly fEntryModel   = viewChild<NativeElementRef>('fEntryModel');
+
+  private readonly fEntryMfr     = viewChild<NativeElementRef>('fEntryMfr');
+
+  private readonly fEntryCat     = viewChild<NativeElementRef>('fEntryCat');
 
   constructor() {
     effect(() => {
-      const el = this.entrySheetEl()?.nativeElement as any;
-      if (this.editEntry() !== null) el?.show(); else el?.hide();
+      const el = this.entrySheetEl()?.nativeElement;
+      if (this.editEntry() !== null) el?.show?.(); else el?.hide?.();
     });
     effect(() => {
-      const el = this.entryModalEl()?.nativeElement as any;
-      if (this.deleteEntry() !== null) el?.show(); else el?.hide();
+      const el = this.entryModalEl()?.nativeElement;
+      if (this.deleteEntry() !== null) el?.show?.(); else el?.hide?.();
     });
   }
 
@@ -81,15 +92,18 @@ export class CatalogComponent {
   });
 
   readonly totalProducts  = computed(() => this.allRows().length);
+
   readonly totalAssets    = computed(() => this.allRows().reduce((s, r) => s + r.total, 0));
+
   readonly totalAvailable = computed(() => this.allRows().reduce((s, r) => s + r.available, 0));
+
   readonly totalIssues    = computed(() => this.allRows().reduce((s, r) => s + r.issues, 0));
 
   readonly categoryCounts = computed(() => {
     const counts: Record<string, number> = {};
-    for (const row of this.allRows()) {
+    this.allRows().forEach(row => {
       counts[row.entry.category] = (counts[row.entry.category] ?? 0) + 1;
-    }
+    });
     return counts;
   });
 
@@ -124,27 +138,27 @@ export class CatalogComponent {
   }
 
   updateSpecKey(index: number, event: Event): void {
-    const val = (event.target as any).value as string;
+    const val = (event.target as HTMLInputElement).value;
     this.specRows.update(rows => rows.map((r, i) => i === index ? { ...r, key: val } : r));
   }
 
   updateSpecVal(index: number, event: Event): void {
-    const val = (event.target as any).value as string;
+    const val = (event.target as HTMLInputElement).value;
     this.specRows.update(rows => rows.map((r, i) => i === index ? { ...r, value: val } : r));
   }
 
   saveEntry(): void {
     const form = this.editEntry();
     if (!form) return;
-    const model        = (this.fEntryModel()?.nativeElement as any)?.value as string;
-    const manufacturer = (this.fEntryMfr()?.nativeElement as any)?.value as string;
-    const category     = ((this.fEntryCat()?.nativeElement as any)?.value ?? 'Server') as AssetCategory;
+    const model        = this.fEntryModel()?.nativeElement.value ?? '';
+    const manufacturer = this.fEntryMfr()?.nativeElement.value ?? '';
+    const category     = (this.fEntryCat()?.nativeElement.value ?? 'Server') as AssetCategory;
     const specs: Record<string, string> = {};
-    for (const row of this.specRows()) {
+    this.specRows().forEach(row => {
       if (row.key.trim()) specs[row.key.trim()] = row.value;
-    }
+    });
     const updated: CatalogEntry = {
-      id:           form.id || 'CAT-' + String(Date.now()).slice(-6),
+      id:           form.id || `CAT-${  String(Date.now()).slice(-6)}`,
       model,
       manufacturer,
       category,
@@ -177,7 +191,7 @@ export class CatalogComponent {
     this.deleteEntry.set(null);
   }
 
-  categoryIcon(category: AssetCategory): string {
+  readonly categoryIcon = (category: AssetCategory): string => {
     const map: Partial<Record<AssetCategory, string>> = {
       Server:      'cylinder-split',
       Switch:      'list',
@@ -196,9 +210,9 @@ export class CatalogComponent {
       Transceiver: 'puzzle-piece',
     };
     return map[category] ?? 'rectangle-stack';
-  }
+  };
 
-  categoryBadgeClass(category: AssetCategory): string {
+  readonly categoryBadgeClass = (category: AssetCategory): string => {
     const map: Partial<Record<AssetCategory, string>> = {
       Server:      'bg-indigo-50 text-indigo-700',
       Switch:      'bg-violet-50 text-violet-700',
@@ -217,5 +231,5 @@ export class CatalogComponent {
       Other:       'bg-slate-100 text-slate-600',
     };
     return map[category] ?? 'bg-slate-100 text-slate-600';
-  }
+  };
 }

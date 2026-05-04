@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, computed, effect, ElementRef, inject, signal, viewChild, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, effect, inject, signal, viewChild, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { DcSelectorComponent } from '../shared/dc-selector';
+import DcSelectorComponent from '../shared/dc-selector';
 import { RACKS } from '../racks/rack.model';
-import { IsometricCanvasComponent } from './isometric-canvas';
+import IsometricCanvasComponent from './isometric-canvas';
 import {
   AisleDefinition,
   DATACENTER_INFO,
@@ -10,24 +10,14 @@ import {
   DatacenterStatus,
   FLOOR_CONFIGS,
   FLOOR_POSITIONS,
-  RackFloorStatus,
+  RackCell,
   rackDeviceCount,
   rackFillPct,
   rackPowerW,
 } from './datacenter.model';
 
-// ── View model ────────────────────────────────────────────────────────────────
-
-export interface RackCell {
-  rackId: string | undefined;
-  rackName: string;
-  row: string;
-  col: number;
-  fillPct: number;
-  deviceCount: number;
-  powerW: number;
-  ownership: 'own' | 'other-client';
-  floorStatus: RackFloorStatus | 'n/a';
+interface NativeElementRef {
+  nativeElement: { value: string; show?: () => void; hide?: () => void };
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -40,34 +30,41 @@ export interface RackCell {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   host: { class: 'flex flex-col bg-white text-slate-900' },
 })
-export class DatacentersComponent {
+export default class DatacentersComponent {
   private readonly router = inject(Router);
 
   // ── Mutable DC list ────────────────────────────────────────────────────────
   readonly mutableDcs = signal([...DATACENTER_INFO]);
 
   selectedDcId  = signal('ams-01');
+
   viewMode      = signal<'map' | 'isometric'>('map');
+
   hoveredRackId = signal<string | null>(null);
+
   tooltipX      = signal(0);
+
   tooltipY      = signal(0);
+
   showRackTemplateModal = signal(false);
 
   // ── CRUD state ─────────────────────────────────────────────────────────────
   editForm    = signal<Partial<DatacenterInfo> | null>(null);
+
   deleteTarget = signal<DatacenterInfo | null>(null);
 
-  private readonly editSheetEl   = viewChild<ElementRef>('editSheet');
-  private readonly deleteModalEl = viewChild<ElementRef>('deleteModal');
+  private readonly editSheetEl   = viewChild<NativeElementRef>('editSheet');
+
+  private readonly deleteModalEl = viewChild<NativeElementRef>('deleteModal');
 
   constructor() {
     effect(() => {
-      const el = this.editSheetEl()?.nativeElement as any;
-      if (this.editForm() !== null) el?.show(); else el?.hide();
+      const el = this.editSheetEl()?.nativeElement;
+      if (this.editForm() !== null) el?.show?.(); else el?.hide?.();
     });
     effect(() => {
-      const el = this.deleteModalEl()?.nativeElement as any;
-      if (this.deleteTarget() !== null) el?.show(); else el?.hide();
+      const el = this.deleteModalEl()?.nativeElement;
+      if (this.deleteTarget() !== null) el?.show?.(); else el?.hide?.();
     });
   }
 
@@ -111,32 +108,32 @@ export class DatacentersComponent {
 
   // All rows (including other-client) — used for the map view
   readonly floorRows = computed((): Map<string, RackCell[]> => {
-    const map = new Map<string, RackCell[]>();
-    for (const cell of this.rackCells()) {
-      const row = map.get(cell.row) ?? [];
+    const floorMap = new Map<string, RackCell[]>();
+    this.rackCells().forEach(cell => {
+      const row = floorMap.get(cell.row) ?? [];
       row.push(cell);
-      map.set(cell.row, row);
-    }
-    for (const [key, cells] of map) {
-      map.set(key, [...cells].sort((a, b) => a.col - b.col));
-    }
-    return map;
+      floorMap.set(cell.row, row);
+    });
+    floorMap.forEach((cells, key) => {
+      floorMap.set(key, [...cells].sort((a, b) => a.col - b.col));
+    });
+    return floorMap;
   });
 
   readonly rowKeys = computed(() => [...this.floorRows().keys()].sort());
 
   // Own racks only — used for the isometric view
   readonly ownFloorRows = computed((): Map<string, RackCell[]> => {
-    const map = new Map<string, RackCell[]>();
-    for (const cell of this.rackCells().filter(c => c.ownership === 'own')) {
-      const row = map.get(cell.row) ?? [];
+    const floorMap = new Map<string, RackCell[]>();
+    this.rackCells().filter(c => c.ownership === 'own').forEach(cell => {
+      const row = floorMap.get(cell.row) ?? [];
       row.push(cell);
-      map.set(cell.row, row);
-    }
-    for (const [key, cells] of map) {
-      map.set(key, [...cells].sort((a, b) => a.col - b.col));
-    }
-    return map;
+      floorMap.set(cell.row, row);
+    });
+    floorMap.forEach((cells, key) => {
+      floorMap.set(key, [...cells].sort((a, b) => a.col - b.col));
+    });
+    return floorMap;
   });
 
   readonly ownRows = computed(() => [...this.ownFloorRows().keys()].sort());
@@ -178,10 +175,15 @@ export class DatacentersComponent {
   // ── Isometric SVG geometry ─────────────────────────────────────────────────
 
   readonly CELL_W  = 56;
+
   readonly CELL_D  = 32;
+
   readonly MAX_H   = 90;
+
   readonly MIN_H   = 20;
+
   readonly COL_GAP = 10;
+
   readonly ROW_GAP = 24;
 
   isoPoints(cell: RackCell, rowIndex: number): {
@@ -201,20 +203,20 @@ export class DatacentersComponent {
     const bx = originX;
     const by = originY + h;
 
-    const t0x = bx,                 t0y = by - h - this.CELL_D / 2;
-    const t1x = bx + this.CELL_W / 2, t1y = by - h;
-    const t2x = bx,                 t2y = by - h + this.CELL_D / 2;
-    const t3x = bx - this.CELL_W / 2, t3y = by - h;
+    const t0x = bx; const                 t0y = by - h - this.CELL_D / 2;
+    const t1x = bx + this.CELL_W / 2; const t1y = by - h;
+    const t2x = bx; const                 t2y = by - h + this.CELL_D / 2;
+    const t3x = bx - this.CELL_W / 2; const t3y = by - h;
 
-    const l0x = bx - this.CELL_W / 2, l0y = by - h;
-    const l1x = bx,                 l1y = by - h + this.CELL_D / 2;
-    const l2x = bx,                 l2y = by + this.CELL_D / 2;
-    const l3x = bx - this.CELL_W / 2, l3y = by;
+    const l0x = bx - this.CELL_W / 2; const l0y = by - h;
+    const l1x = bx; const                 l1y = by - h + this.CELL_D / 2;
+    const l2x = bx; const                 l2y = by + this.CELL_D / 2;
+    const l3x = bx - this.CELL_W / 2; const l3y = by;
 
-    const r0x = bx,                 r0y = by - h + this.CELL_D / 2;
-    const r1x = bx + this.CELL_W / 2, r1y = by - h;
-    const r2x = bx + this.CELL_W / 2, r2y = by;
-    const r3x = bx,                 r3y = by + this.CELL_D / 2;
+    const r0x = bx; const                 r0y = by - h + this.CELL_D / 2;
+    const r1x = bx + this.CELL_W / 2; const r1y = by - h;
+    const r2x = bx + this.CELL_W / 2; const r2y = by;
+    const r3x = bx; const                 r3y = by + this.CELL_D / 2;
 
     const pt = (...pairs: number[]) =>
       pairs.reduce<string[]>((acc, v, i) => {
@@ -242,71 +244,85 @@ export class DatacentersComponent {
 
   // ── Color helpers ──────────────────────────────────────────────────────────
 
-  rackCellClass(cell: RackCell): string {
+  readonly rackCellClass = (cell: RackCell): string => {
     if (cell.floorStatus === 'issue')
       return 'bg-red-50 border-red-300 text-red-600 hover:border-red-500 cursor-pointer';
     return 'bg-emerald-50 border-emerald-300 text-emerald-700 hover:border-emerald-500 cursor-pointer';
-  }
+  };
 
-  rackFillBarClass(cell: RackCell): string {
+  readonly rackFillBarClass = (cell: RackCell): string => {
     if (cell.floorStatus === 'issue') return 'bg-red-200';
     return 'bg-emerald-200';
-  }
+  };
 
-  isoColorTop(cell: RackCell): string {
+  static isoColorTop(cell: RackCell): string {
     return cell.floorStatus === 'issue' ? '#fca5a5' : '#6ee7b7';
   }
 
-  isoColorLeft(cell: RackCell): string {
+  static isoColorLeft(cell: RackCell): string {
     return cell.floorStatus === 'issue' ? '#f87171' : '#34d399';
   }
 
-  isoColorRight(cell: RackCell): string {
+  static isoColorRight(cell: RackCell): string {
     return cell.floorStatus === 'issue' ? '#ef4444' : '#10b981';
   }
 
-  isoStroke(cell: RackCell, hovered: boolean): string {
+  static isoStroke(cell: RackCell, hovered: boolean): string {
     if (hovered) return '#6366f1';
     return cell.floorStatus === 'issue' ? '#fca5a5' : '#6ee7b7';
   }
 
-  statusBadgeClass(status: DatacenterStatus): string {
+  readonly statusBadgeClass = (status: DatacenterStatus): string => {
     switch (status) {
       case 'operational': return 'bg-teal-50 text-teal-700 ring-1 ring-teal-200';
       case 'degraded':    return 'bg-amber-50 text-amber-700 ring-1 ring-amber-200';
       case 'maintenance': return 'bg-slate-100 text-slate-500 ring-1 ring-slate-200';
+      default:            return '';
     }
-  }
+  };
 
-  statusDotClass(status: DatacenterStatus): string {
+  readonly statusDotClass = (status: DatacenterStatus): string => {
     switch (status) {
       case 'operational': return 'bg-teal-500';
       case 'degraded':    return 'bg-amber-500';
       case 'maintenance': return 'bg-slate-400';
+      default:            return '';
     }
-  }
+  };
 
-  statusLabel(status: DatacenterStatus): string {
+  readonly statusLabel = (status: DatacenterStatus): string => {
     switch (status) {
       case 'operational': return 'Operational';
       case 'degraded':    return 'Degraded';
       case 'maintenance': return 'Maintenance';
+      default:            return '';
     }
-  }
+  };
 
   // ── CRUD form field refs ───────────────────────────────────────────────────
-  private readonly fName       = viewChild<ElementRef>('fName');
-  private readonly fFullName   = viewChild<ElementRef>('fFullName');
-  private readonly fCity       = viewChild<ElementRef>('fCity');
-  private readonly fCountry    = viewChild<ElementRef>('fCountry');
-  private readonly fAddress    = viewChild<ElementRef>('fAddress');
-  private readonly fTier       = viewChild<ElementRef>('fTier');
-  private readonly fStatus     = viewChild<ElementRef>('fStatus');
-  private readonly fEstablished = viewChild<ElementRef>('fEstablished');
-  private readonly fPowerKw    = viewChild<ElementRef>('fPowerKw');
-  private readonly fCoolingKw  = viewChild<ElementRef>('fCoolingKw');
-  private readonly fFloorSqm   = viewChild<ElementRef>('fFloorSqm');
-  private readonly fPue        = viewChild<ElementRef>('fPue');
+  private readonly fName       = viewChild<NativeElementRef>('fName');
+
+  private readonly fFullName   = viewChild<NativeElementRef>('fFullName');
+
+  private readonly fCity       = viewChild<NativeElementRef>('fCity');
+
+  private readonly fCountry    = viewChild<NativeElementRef>('fCountry');
+
+  private readonly fAddress    = viewChild<NativeElementRef>('fAddress');
+
+  private readonly fTier       = viewChild<NativeElementRef>('fTier');
+
+  private readonly fStatus     = viewChild<NativeElementRef>('fStatus');
+
+  private readonly fEstablished = viewChild<NativeElementRef>('fEstablished');
+
+  private readonly fPowerKw    = viewChild<NativeElementRef>('fPowerKw');
+
+  private readonly fCoolingKw  = viewChild<NativeElementRef>('fCoolingKw');
+
+  private readonly fFloorSqm   = viewChild<NativeElementRef>('fFloorSqm');
+
+  private readonly fPue        = viewChild<NativeElementRef>('fPue');
 
   // ── CRUD actions ───────────────────────────────────────────────────────────
 
@@ -330,19 +346,19 @@ export class DatacentersComponent {
     const form = this.editForm();
     if (!form) return;
     const updated: DatacenterInfo = {
-      id:               form.id || 'dc-' + Date.now(),
-      name:             (this.fName()?.nativeElement as any)?.value ?? '',
-      fullName:         (this.fFullName()?.nativeElement as any)?.value ?? '',
-      city:             (this.fCity()?.nativeElement as any)?.value ?? '',
-      country:          (this.fCountry()?.nativeElement as any)?.value ?? '',
-      address:          (this.fAddress()?.nativeElement as any)?.value ?? '',
-      tier:             (parseInt((this.fTier()?.nativeElement as any)?.value ?? '3') || 3) as 1|2|3|4,
-      status:           ((this.fStatus()?.nativeElement as any)?.value ?? 'operational') as DatacenterStatus,
-      established:      parseFloat((this.fEstablished()?.nativeElement as any)?.value ?? '0') || 0,
-      powerCapacityKw:  parseFloat((this.fPowerKw()?.nativeElement as any)?.value ?? '0') || 0,
-      coolingCapacityKw: parseFloat((this.fCoolingKw()?.nativeElement as any)?.value ?? '0') || 0,
-      floorSqm:         parseFloat((this.fFloorSqm()?.nativeElement as any)?.value ?? '0') || 0,
-      pue:              parseFloat((this.fPue()?.nativeElement as any)?.value ?? '0') || 0,
+      id:               form.id || `dc-${  Date.now()}`,
+      name:             this.fName()?.nativeElement.value ?? '',
+      fullName:         this.fFullName()?.nativeElement.value ?? '',
+      city:             this.fCity()?.nativeElement.value ?? '',
+      country:          this.fCountry()?.nativeElement.value ?? '',
+      address:          this.fAddress()?.nativeElement.value ?? '',
+      tier:             (parseInt(this.fTier()?.nativeElement.value ?? '3', 10) || 3) as 1|2|3|4,
+      status:           (this.fStatus()?.nativeElement.value ?? 'operational') as DatacenterStatus,
+      established:      parseFloat(this.fEstablished()?.nativeElement.value ?? '0') || 0,
+      powerCapacityKw:  parseFloat(this.fPowerKw()?.nativeElement.value ?? '0') || 0,
+      coolingCapacityKw: parseFloat(this.fCoolingKw()?.nativeElement.value ?? '0') || 0,
+      floorSqm:         parseFloat(this.fFloorSqm()?.nativeElement.value ?? '0') || 0,
+      pue:              parseFloat(this.fPue()?.nativeElement.value ?? '0') || 0,
     };
     // TODO(api): form.id ? SiteService.UpdateSite(UpdateSiteRequest) : SiteService.CreateSite(CreateSiteRequest)
     if (form.id) {
@@ -390,7 +406,5 @@ export class DatacentersComponent {
     this.router.navigate(['/racks', rackId]);
   }
 
-  formatPowerKw(kw: number): string {
-    return kw.toFixed(1) + ' kW';
-  }
+  readonly formatPowerKw = (kw: number): string => `${kw.toFixed(1)  } kW`;
 }

@@ -9,4 +9,4 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
   imports: [RouterLink, RouterLinkActive, RouterOutlet],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class ShellComponent {}
+export default class ShellComponent {}

@@ -474,47 +474,65 @@ interface FlatRow {
     '(document:keydown.escape)': 'closeNotes()',
   },
 })
-export class InventoryComponent {
+export default class InventoryComponent {
   readonly ITEMS_PER_PAGE = 50;
 
   // ── Mutable asset list ─────────────────────────────────────────────────────
   readonly mutableAssets = signal([...MOCK_ASSETS]);
 
   searchQuery = signal('');
+
   statusFilter = signal<AssetStatus | 'all'>('all');
+
   categoryFilter = signal<AssetCategory | 'all'>('all');
+
   locationFilter = signal<string>('all');
+
   showDecommissioned = signal(false);
+
   sortColumn = signal<SortableColumn>('status');
+
   sortDirection = signal<'asc' | 'desc'>('asc');
+
   currentPage = signal(1);
+
   activeNotesAsset = signal<Asset | null>(null);
+
   expandedIds = signal<Set<string>>(
     new Set(MOCK_ASSETS.filter(a => MOCK_ASSETS.some(b => b.parentId === a.id)).map(a => a.id)),
   );
 
   // ── CRUD state ─────────────────────────────────────────────────────────────
   editAsset   = signal<Partial<Asset> | null>(null);
+
   deleteAsset = signal<Asset | null>(null);
 
   private readonly assetSheetEl  = viewChild<ElementRef>('assetSheet');
+
   private readonly assetModalEl  = viewChild<ElementRef>('assetModal');
+
   private readonly fAssetModel   = viewChild<ElementRef>('fAssetModel');
+
   private readonly fAssetTag     = viewChild<ElementRef>('fAssetTag');
+
   private readonly fAssetCat     = viewChild<ElementRef>('fAssetCat');
+
   private readonly fAssetStatus  = viewChild<ElementRef>('fAssetStatus');
+
   private readonly fAssetDc      = viewChild<ElementRef>('fAssetDc');
+
   private readonly fAssetRack    = viewChild<ElementRef>('fAssetRack');
+
   private readonly fAssetNotes   = viewChild<ElementRef>('fAssetNotes');
 
   constructor() {
     effect(() => {
-      const el = this.assetSheetEl()?.nativeElement as any;
-      if (this.editAsset() !== null) el?.show(); else el?.hide();
+      const el = this.assetSheetEl()?.nativeElement as { show?: () => void; hide?: () => void };
+      if (this.editAsset() !== null) el?.show?.(); else el?.hide?.();
     });
     effect(() => {
-      const el = this.assetModalEl()?.nativeElement as any;
-      if (this.deleteAsset() !== null) el?.show(); else el?.hide();
+      const el = this.assetModalEl()?.nativeElement as { show?: () => void; hide?: () => void };
+      if (this.deleteAsset() !== null) el?.show?.(); else el?.hide?.();
     });
   }
 
@@ -522,7 +540,9 @@ export class InventoryComponent {
     'Server', 'Switch', 'Storage', 'Power', 'Firewall', 'Cooling', 'KVM', 'Other',
     'Memory', 'Disk', 'NIC', 'PSU', 'CPU', 'GPU', 'Transceiver',
   ];
+
   readonly datacenters = [...new Set(MOCK_ASSETS.filter(a => !a.parentId).map((a) => a.datacenter))].sort();
+
   readonly statuses: { value: AssetStatus; label: string }[] = [
     { value: 'needs-repair', label: 'Needs Repair' },
     { value: 'decommissioned', label: 'Decommissioned' },
@@ -567,6 +587,7 @@ export class InventoryComponent {
   });
 
   readonly totalFiltered = computed(() => this.filtered().length);
+
   readonly totalPages = computed(() => Math.max(1, Math.ceil(this.totalFiltered() / this.ITEMS_PER_PAGE)));
 
   private readonly pagedTopLevel = computed(() => {
@@ -578,14 +599,14 @@ export class InventoryComponent {
   private buildChildRows(parentId: string, depth: number, expanded: Set<string>): FlatRow[] {
     const children = this.mutableAssets().filter(a => a.parentId === parentId);
     const rows: FlatRow[] = [];
-    for (const child of children) {
+    children.forEach(child => {
       const hasChildren = this.mutableAssets().some(a => a.parentId === child.id);
       const isExpanded = expanded.has(child.id);
       rows.push({ asset: child, depth, hasChildren, isExpanded });
       if (isExpanded) {
         rows.push(...this.buildChildRows(child.id, depth + 1, expanded));
       }
-    }
+    });
     return rows;
   }
 
@@ -593,18 +614,19 @@ export class InventoryComponent {
     const topLevel = this.pagedTopLevel();
     const expanded = this.expandedIds();
     const rows: FlatRow[] = [];
-    for (const asset of topLevel) {
+    topLevel.forEach(asset => {
       const hasChildren = this.mutableAssets().some(a => a.parentId === asset.id);
       const isExpanded = expanded.has(asset.id);
       rows.push({ asset, depth: 0, hasChildren, isExpanded });
       if (isExpanded) {
         rows.push(...this.buildChildRows(asset.id, 1, expanded));
       }
-    }
+    });
     return rows;
   });
 
   readonly pageStart = computed(() => (this.currentPage() - 1) * this.ITEMS_PER_PAGE + 1);
+
   readonly pageEnd = computed(() => Math.min(this.currentPage() * this.ITEMS_PER_PAGE, this.totalFiltered()));
 
   readonly pageNumbers = computed(() => {
@@ -617,30 +639,34 @@ export class InventoryComponent {
 
   readonly statusCounts = computed(() => {
     const counts: Partial<Record<AssetStatus | 'all', number>> = { all: this.topLevelAssets.length };
-    for (const a of this.topLevelAssets) {
+    this.topLevelAssets.forEach(a => {
       counts[a.status] = (counts[a.status] ?? 0) + 1;
-    }
+    });
     return counts;
   });
 
   readonly categoryCounts = computed(() => {
     const counts: Partial<Record<AssetCategory, number>> = {};
-    for (const a of this.topLevelAssets) {
+    this.topLevelAssets.forEach(a => {
       counts[a.category] = (counts[a.category] ?? 0) + 1;
-    }
+    });
     return counts;
   });
 
   readonly locationCounts = computed(() => {
     const counts: Record<string, number> = {};
-    for (const a of this.topLevelAssets) {
+    this.topLevelAssets.forEach(a => {
       counts[a.datacenter] = (counts[a.datacenter] ?? 0) + 1;
-    }
+    });
     return counts;
   });
+
   readonly totalCount = this.topLevelAssets.length;
+
   readonly deployedCount = this.topLevelAssets.filter((a) => a.status === 'deployed').length;
+
   readonly availableCount = this.topLevelAssets.filter((a) => a.status === 'available').length;
+
   readonly issuesCount = this.topLevelAssets.filter(
     (a) => a.status === 'needs-repair' || a.status === 'decommissioned',
   ).length;
@@ -668,14 +694,14 @@ export class InventoryComponent {
     const form = this.editAsset();
     if (!form) return;
     const updated: Asset = {
-      id:         form.id || 'AST-' + String(Date.now()).slice(-5),
-      model:      (this.fAssetModel()?.nativeElement as any)?.value as string ?? '',
-      assetTag:   (this.fAssetTag()?.nativeElement as any)?.value as string ?? '',
-      category:   ((this.fAssetCat()?.nativeElement as any)?.value ?? 'Server') as AssetCategory,
-      status:     ((this.fAssetStatus()?.nativeElement as any)?.value ?? 'available') as AssetStatus,
-      datacenter: (this.fAssetDc()?.nativeElement as any)?.value as string ?? '',
-      rack:       (this.fAssetRack()?.nativeElement as any)?.value as string ?? '',
-      notes:      (this.fAssetNotes()?.nativeElement as any)?.value as string ?? '',
+      id:         form.id || `AST-${  String(Date.now()).slice(-5)}`,
+      model:      (this.fAssetModel()?.nativeElement as HTMLInputElement)?.value ?? '',
+      assetTag:   (this.fAssetTag()?.nativeElement as HTMLInputElement)?.value ?? '',
+      category:   ((this.fAssetCat()?.nativeElement as HTMLInputElement)?.value ?? 'Server') as AssetCategory,
+      status:     ((this.fAssetStatus()?.nativeElement as HTMLInputElement)?.value ?? 'available') as AssetStatus,
+      datacenter: (this.fAssetDc()?.nativeElement as HTMLInputElement)?.value ?? '',
+      rack:       (this.fAssetRack()?.nativeElement as HTMLInputElement)?.value ?? '',
+      notes:      (this.fAssetNotes()?.nativeElement as HTMLInputElement)?.value ?? '',
       parentId:   form.parentId,
     };
     // TODO(api): form.id ? AssetService.UpdateAsset(UpdateAssetRequest) : AssetService.CreateAsset(CreateAssetRequest)
@@ -742,7 +768,7 @@ export class InventoryComponent {
     return this.statuses.find((s) => s.value === status)?.label ?? status;
   }
 
-  statusBadgeClass(status: AssetStatus): string {
+  readonly statusBadgeClass = (status: AssetStatus): string => {
     const map: Record<AssetStatus, string> = {
       'needs-repair': 'bg-amber-50 text-amber-700',
       'decommissioned': 'bg-red-50 text-red-600',
@@ -752,9 +778,9 @@ export class InventoryComponent {
       'requested': 'bg-slate-100 text-slate-600',
     };
     return map[status];
-  }
+  };
 
-  statusDotClass(status: AssetStatus): string {
+  readonly statusDotClass = (status: AssetStatus): string => {
     const map: Record<AssetStatus, string> = {
       'needs-repair': 'bg-amber-400',
       'decommissioned': 'bg-red-400',
@@ -764,9 +790,9 @@ export class InventoryComponent {
       'requested': 'bg-slate-400',
     };
     return map[status];
-  }
+  };
 
-  categoryIcon(category: AssetCategory): string {
+  readonly categoryIcon = (category: AssetCategory): string => {
     const map: Partial<Record<AssetCategory, string>> = {
       Server: 'cylinder-split', Switch: 'list', Storage: 'rectangle-stack',
       Power: 'lock-closed', Firewall: 'shield-check-mark', Cooling: 'cloud',
@@ -775,7 +801,7 @@ export class InventoryComponent {
       CPU: 'gear', GPU: 'gear', Transceiver: 'puzzle-piece',
     };
     return map[category] ?? 'rectangle-stack';
-  }
+  };
 
   openNotes(asset: Asset) {
     this.activeNotesAsset.set(asset);
@@ -785,15 +811,14 @@ export class InventoryComponent {
     this.activeNotesAsset.set(null);
   }
 
-  getAssetNotes(assetId: string): AssetNoteDetail | null {
-    return MOCK_NOTES[assetId] ?? null;
-  }
+  readonly getAssetNotes = (assetId: string): AssetNoteDetail | null =>
+    MOCK_NOTES[assetId] ?? null;
 
-  formatDaysAgo(days: number): string {
+  readonly formatDaysAgo = (days: number): string => {
     if (days === 0) return 'Today';
     if (days === 1) return '1 day ago';
     if (days < 30) return `${days} days ago`;
     const months = Math.floor(days / 30);
     return months === 1 ? '1 month ago' : `${months} months ago`;
-  }
+  };
 }

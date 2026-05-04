@@ -298,7 +298,8 @@
 
             <!-- Edit / Delete actions -->
             <div role="cell" class="shrink-0 flex items-center gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity pr-3"
-              (click)="$event.stopPropagation()">
+              (click)="$event.stopPropagation()"
+              (keydown)="$event.stopPropagation()">
               <nldd-icon-button icon="pencil-on-square" variant="neutral-transparent" size="xs"
                 text="Edit asset" (click)="openEditAsset(row.asset, $event)"></nldd-icon-button>
               <nldd-icon-button icon="trash" variant="neutral-transparent" size="xs"
@@ -347,12 +348,16 @@
     class="fixed inset-0 z-50 flex items-start justify-center bg-slate-900/50 p-4 pt-10 backdrop-blur-sm overflow-y-auto"
     role="dialog"
     aria-modal="true"
+    tabindex="0"
     [attr.aria-label]="'Notes for ' + asset.model"
-    (click)="closeNotes()">
+    (click)="closeNotes()"
+    (keydown.escape)="closeNotes()">
 
     <div
       class="w-full max-w-lg rounded-2xl bg-white shadow-2xl shadow-slate-900/20 my-4 ring-1 ring-slate-200/80"
-      (click)="$event.stopPropagation()">
+      tabindex="-1"
+      (click)="$event.stopPropagation()"
+      (keydown)="$event.stopPropagation()">
 
       <!-- Modal header -->
       <div class="flex items-start justify-between border-b border-slate-100 px-6 pt-6 pb-5">

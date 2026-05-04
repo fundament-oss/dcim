@@ -9,10 +9,10 @@ import { PatchMappingFlow } from './patch-mapping-flow';
   styleUrls: ['../../../node_modules/reactflow/dist/style.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class PatchMappingFlowWrapperComponent implements AfterViewInit, OnDestroy {
+export default class PatchMappingFlowWrapperComponent implements AfterViewInit, OnDestroy {
   @ViewChild('container', { static: true }) container!: ElementRef;
 
-  private root: any;
+  private root: ReturnType<typeof ReactDOM.createRoot> | undefined;
 
   ngAfterViewInit() {
     this.root = ReactDOM.createRoot(this.container.nativeElement);

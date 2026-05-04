@@ -9,8 +9,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { AisleDefinition } from './datacenter.model';
-import { RackCell } from './datacenters';
+import { AisleDefinition, RackCell } from './datacenter.model';
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -39,16 +38,21 @@ const MARGIN_LEFT = 80;
     </canvas>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class IsometricCanvasComponent implements OnDestroy {
+export default class IsometricCanvasComponent implements OnDestroy {
   readonly cells     = input<RackCell[]>([]);
+
   readonly aisles    = input<AisleDefinition[]>([]);
+
   readonly ariaLabel = input('Isometric floor plan');
 
   readonly rackHover = output<string | null>();
+
   readonly rackClick = output<string>();
 
   private readonly canvasEl  = viewChild<ElementRef<HTMLCanvasElement>>('canvas');
+
   private readonly hoveredId = signal<string | null>(null);
+
   private resizeObserver?: ResizeObserver;
 
   constructor() {
@@ -100,24 +104,24 @@ export class IsometricCanvasComponent implements OnDestroy {
   // ── Geometry ───────────────────────────────────────────────────────────────
 
   /** Compute effective row offsets, inserting AISLE_GAP units after rows that have an aisle. */
-  private computeOffsets(rows: string[], aisles: AisleDefinition[]): Map<string, number> {
+  private static computeOffsets(rows: string[], aisles: AisleDefinition[]): Map<string, number> {
     const offsets = new Map<string, number>();
     let offset = 0;
-    for (const row of rows) {
+    rows.forEach(row => {
       offsets.set(row, offset);
       offset += aisles.some(a => a.afterRow === row) ? 1 + AISLE_GAP : 1;
-    }
+    });
     return offsets;
   }
 
-  private screen(originX: number, originY: number, col0: number, rowOff: number) {
+  private static screen(originX: number, originY: number, col0: number, rowOff: number) {
     return {
       x: originX + (col0 - rowOff) * (TW / 2),
       y: originY + (col0 + rowOff) * (TH / 2),
     };
   }
 
-  private rackH(cell: RackCell) {
+  private static rackH(cell: RackCell) {
     return cell.ownership === 'other-client'
       ? OTHER_H
       : MIN_RACK_H + (cell.fillPct / 100) * (MAX_RACK_H - MIN_RACK_H);
@@ -133,48 +137,49 @@ export class IsometricCanvasComponent implements OnDestroy {
   ): void {
     const rows    = [...new Set(cells.map(c => c.row))].sort();
     const maxCol  = Math.max(...cells.map(c => c.col), 1);
-    const offsets = this.computeOffsets(rows, aisles);
+    const offsets = IsometricCanvasComponent.computeOffsets(rows, aisles);
     const maxOff  = (offsets.get(rows[rows.length - 1]) ?? 0) + 1;
 
     const dpr  = window.devicePixelRatio || 1;
     const cssW = canvas.parentElement?.clientWidth || canvas.offsetWidth || 600;
     const cssH = MARGIN_TOP + (maxCol + maxOff) * (TH / 2) + MAX_RACK_H + 60;
 
-    canvas.style.width  = '100%';
-    canvas.style.height = `${cssH}px`;
-    canvas.width        = Math.round(cssW * dpr);
-    canvas.height       = Math.round(cssH * dpr);
+    const canvasEl = canvas;
+    canvasEl.style.width  = '100%';
+    canvasEl.style.height = `${cssH}px`;
+    canvasEl.width        = Math.round(cssW * dpr);
+    canvasEl.height       = Math.round(cssH * dpr);
 
-    const ctx = canvas.getContext('2d')!;
+    const ctx = canvasEl.getContext('2d')!;
     ctx.scale(dpr, dpr);
     ctx.clearRect(0, 0, cssW, cssH);
 
     // Origin: shift right enough that the leftmost point (col0=0, rowOff=maxOff) stays visible
     const originX = MARGIN_LEFT + maxOff * (TW / 2);
     const originY = MARGIN_TOP;
-    const S = (col0: number, rowOff: number) => this.screen(originX, originY, col0, rowOff);
+    const S = (col0: number, rowOff: number) => IsometricCanvasComponent.screen(originX, originY, col0, rowOff);
 
     const cellMap = new Map<string, RackCell>();
-    for (const c of cells) cellMap.set(`${c.row}-${c.col}`, c);
+    cells.forEach(c => cellMap.set(`${c.row}-${c.col}`, c));
 
     // Pass 1 — floor tiles (all rows, back→front, col ascending = col0=0 first)
-    for (const row of rows) {
+    rows.forEach(row => {
       const ro = offsets.get(row)!;
-      for (let col = 1; col <= maxCol; col++) {
+      for (let col = 1; col <= maxCol; col += 1) {
         const cell = cellMap.get(`${row}-${col}`);
-        if (!cell) continue;
+        if (!cell) continue; // eslint-disable-line no-continue
         const { x, y } = S(col - 1, ro);
         this.floorTile(ctx, x, y, cell.ownership === 'other-client');
       }
-    }
+    });
 
     // Pass 2 — aisle strips in the gap between rows
-    for (let ri = 1; ri < rows.length; ri++) {
+    for (let ri = 1; ri < rows.length; ri += 1) {
       const aisle = aisles.find(a => a.afterRow === rows[ri - 1]);
-      if (!aisle) continue;
+      if (!aisle) continue; // eslint-disable-line no-continue
       const aisleStart = offsets.get(rows[ri - 1])! + 1;          // just after the row
       const aisleEnd   = offsets.get(rows[ri])!;                   // just before next row
-      for (let col = 1; col <= maxCol; col++) {
+      for (let col = 1; col <= maxCol; col += 1) {
         const { x: x0, y: y0 } = S(col - 1, aisleStart);
         const { x: x1, y: y1 } = S(col - 1, aisleEnd);
         this.aisleTile(ctx, x0, y0, x1, y1, aisle.type);
@@ -186,28 +191,28 @@ export class IsometricCanvasComponent implements OnDestroy {
     const frontOff = maxOff;
 
     // Entrance row (top)
-    for (let col = 1; col <= maxCol; col++) {
+    for (let col = 1; col <= maxCol; col += 1) {
       const { x, y } = S(col - 1, backOff);
       this.floorTile(ctx, x, y, false);
     }
 
     // Front row (bottom)
-    for (let col = 1; col <= maxCol; col++) {
+    for (let col = 1; col <= maxCol; col += 1) {
       const { x, y } = S(col - 1, frontOff);
       this.floorTile(ctx, x, y, false);
     }
 
     // Left and right border columns — one tile per rack row + aisle spans + corners
-    for (const borderCol of [-1, maxCol]) {
+    [-1, maxCol].forEach(borderCol => {
       // Corner at entrance
       { const { x, y } = S(borderCol, backOff); this.floorTile(ctx, x, y, false); }
       // Tiles at each rack row
-      for (const row of rows) {
+      rows.forEach(row => {
         const { x, y } = S(borderCol, offsets.get(row)!);
         this.floorTile(ctx, x, y, false);
-      }
+      });
       // Aisle-coloured spans between rows
-      for (let ri = 1; ri < rows.length; ri++) {
+      for (let ri = 1; ri < rows.length; ri += 1) {
         const aisle = aisles.find(a => a.afterRow === rows[ri - 1]);
         if (aisle) {
           const aisleStart = offsets.get(rows[ri - 1])! + 1;
@@ -219,23 +224,23 @@ export class IsometricCanvasComponent implements OnDestroy {
       }
       // Corner at front
       { const { x, y } = S(borderCol, frontOff); this.floorTile(ctx, x, y, false); }
-    }
+    });
 
     // Pass 4 — racks (back→front: rows ascending, within row cols ascending)
-    for (const row of rows) {
+    rows.forEach(row => {
       const ro = offsets.get(row)!;
-      for (let col = 1; col <= maxCol; col++) {
+      for (let col = 1; col <= maxCol; col += 1) {
         const cell = cellMap.get(`${row}-${col}`);
-        if (!cell) continue;
+        if (!cell) continue; // eslint-disable-line no-continue
         const { x, y } = S(col - 1, ro);
-        this.rack(ctx, x, y, this.rackH(cell), cell, hoveredId === cell.rackId);
+        this.rack(ctx, x, y, IsometricCanvasComponent.rackH(cell), cell, hoveredId === cell.rackId);
       }
-    }
+    });
 
     // Pass 5 — labels (always on top of all geometry)
-    for (let ri = 1; ri < rows.length; ri++) {
+    for (let ri = 1; ri < rows.length; ri += 1) {
       const aisle = aisles.find(a => a.afterRow === rows[ri - 1]);
-      if (!aisle) continue;
+      if (!aisle) continue; // eslint-disable-line no-continue
       const aisleStart = offsets.get(rows[ri - 1])! + 1;
       const aisleEnd   = offsets.get(rows[ri])!;
       const midOff = (aisleStart + aisleEnd) / 2;
@@ -259,7 +264,7 @@ export class IsometricCanvasComponent implements OnDestroy {
     ctx.fillText('Entrance', ex, ey + TH / 4);
     ctx.restore();
 
-    for (const row of rows) {
+    rows.forEach(row => {
       const ro = offsets.get(row)!;
       const { x, y } = S(-2, ro);
       ctx.save();
@@ -269,13 +274,13 @@ export class IsometricCanvasComponent implements OnDestroy {
       ctx.textBaseline = 'middle';
       ctx.fillText(row, x + TW / 2, y + TH / 4);
       ctx.restore();
-    }
+    });
   }
 
   // ── Draw primitives ────────────────────────────────────────────────────────
 
-  private floorTile(ctx: CanvasRenderingContext2D, x: number, y: number, other: boolean): void {
-    const w2 = TW / 2, d2 = TH / 2;
+  private readonly floorTile = (ctx: CanvasRenderingContext2D, x: number, y: number, other: boolean): void => {
+    const w2 = TW / 2; const d2 = TH / 2;
     ctx.beginPath();
     ctx.moveTo(x,      y);
     ctx.lineTo(x + w2, y + d2);
@@ -287,15 +292,15 @@ export class IsometricCanvasComponent implements OnDestroy {
     ctx.strokeStyle = '#e2e8f0';
     ctx.lineWidth   = 0.5;
     ctx.stroke();
-  }
+  };
 
-  private aisleTile(
+  private readonly aisleTile = (
     ctx: CanvasRenderingContext2D,
     x0: number, y0: number,   // screen pos at aisleStart row
     x1: number, y1: number,   // screen pos at aisleEnd row (same col)
     type: 'cold' | 'hot',
-  ): void {
-    const w2 = TW / 2, d2 = TH / 2;
+  ): void => {
+    const w2 = TW / 2; const d2 = TH / 2;
     // Four corners: top-right, bottom-right, bottom-left, top-left of this tile column
     ctx.beginPath();
     ctx.moveTo(x0 + w2, y0 + d2);   // top-right corner of start tile
@@ -334,18 +339,18 @@ export class IsometricCanvasComponent implements OnDestroy {
     ctx.strokeStyle = type === 'cold' ? '#7dd3fc' : '#fdba74';
     ctx.lineWidth   = 0.5;
     ctx.stroke();
-  }
+  };
 
-  private rack(
+  private readonly rack = (
     ctx: CanvasRenderingContext2D,
     x: number, y: number, h: number,
     cell: RackCell, hovered: boolean,
-  ): void {
-    const w2 = TW / 2, d2 = TH / 2;
+  ): void => {
+    const w2 = TW / 2; const d2 = TH / 2;
     const isOther = cell.ownership === 'other-client';
     const isIssue = cell.floorStatus === 'issue';
 
-    let topC: string, leftC: string, rightC: string, strokeC: string;
+    let topC: string; let leftC: string; let rightC: string; let strokeC: string;
     if (hovered && !isOther) {
       topC = '#c7d2fe'; leftC = '#a5b4fc'; rightC = '#818cf8'; strokeC = '#6366f1';
     } else if (isOther) {
@@ -402,7 +407,7 @@ export class IsometricCanvasComponent implements OnDestroy {
       ctx.lineWidth   = 1;
       ctx.beginPath();
       const steps = 6;
-      for (let i = 0; i <= steps; i++) {
+      for (let i = 0; i <= steps; i += 1) {
         const t = i / steps;
         // Diagonal lines going top-right to bottom-left inside the face
         const sx = x - w2 + t * w2;
@@ -443,10 +448,10 @@ export class IsometricCanvasComponent implements OnDestroy {
       ctx.fillText('⚠', x + w2 - 4, y - h + 6);
       ctx.restore();
     }
-  }
+  };
 
-  private wallBlock(ctx: CanvasRenderingContext2D, x: number, y: number, h: number): void {
-    const w2 = TW / 2, d2 = TH / 2;
+  private static wallBlock(ctx: CanvasRenderingContext2D, x: number, y: number, h: number): void {
+    const w2 = TW / 2; const d2 = TH / 2;
     // Top face
     ctx.beginPath();
     ctx.moveTo(x,      y - h); ctx.lineTo(x + w2, y - h + d2);
@@ -477,27 +482,25 @@ export class IsometricCanvasComponent implements OnDestroy {
     const aisles  = this.aisles();
     const rows    = [...new Set(cells.map(c => c.row))].sort();
     const maxCol  = Math.max(...cells.map(c => c.col), 1);
-    const offsets = this.computeOffsets(rows, aisles);
+    const offsets = IsometricCanvasComponent.computeOffsets(rows, aisles);
     const maxOff  = (offsets.get(rows[rows.length - 1]) ?? 0) + 1;
 
-    const cssW    = canvas.parentElement?.clientWidth || canvas.offsetWidth || 600;
-    void cssW;
     const originX = MARGIN_LEFT + maxOff * (TW / 2);
     const originY = MARGIN_TOP;
     const S       = (col0: number, rowOff: number) =>
-      this.screen(originX, originY, col0, rowOff);
+      IsometricCanvasComponent.screen(originX, originY, col0, rowOff);
 
     const cellMap = new Map<string, RackCell>();
-    for (const c of cells) cellMap.set(`${c.row}-${c.col}`, c);
+    cells.forEach(c => cellMap.set(`${c.row}-${c.col}`, c));
 
     // Test front-to-back (reverse of draw order)
-    for (let ri = rows.length - 1; ri >= 0; ri--) {
+    for (let ri = rows.length - 1; ri >= 0; ri -= 1) {
       const ro = offsets.get(rows[ri])!;
-      for (let col = maxCol; col >= 1; col--) {
+      for (let col = maxCol; col >= 1; col -= 1) {
         const cell = cellMap.get(`${rows[ri]}-${col}`);
-        if (!cell || cell.ownership !== 'own') continue;
+        if (!cell || cell.ownership !== 'own') continue; // eslint-disable-line no-continue
         const { x, y } = S(col - 1, ro);
-        const h = this.rackH(cell);
+        const h = IsometricCanvasComponent.rackH(cell);
         if (mx >= x - TW / 2 && mx <= x + TW / 2 && my >= y - h && my <= y + TH) {
           return cell.rackId ?? null;
         }

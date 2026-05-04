@@ -4,7 +4,6 @@ import {
   computed,
   CUSTOM_ELEMENTS_SCHEMA,
   effect,
-  ElementRef,
   inject,
   signal,
   viewChild,
@@ -20,6 +19,10 @@ import {
 } from '../datacenter.model';
 import { RACKS } from '../../racks/rack.model';
 
+interface NativeElementRef {
+  nativeElement: { value: string; show?: () => void; hide?: () => void };
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 @Component({
@@ -30,7 +33,7 @@ import { RACKS } from '../../racks/rack.model';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   host: { class: 'flex flex-col bg-white text-slate-900' },
 })
-export class DatacenterDetailComponent {
+export default class DatacenterDetailComponent {
   private readonly route = inject(ActivatedRoute);
 
   // TODO(api): SiteService.GetSite(GetSiteRequest)
@@ -68,41 +71,51 @@ export class DatacenterDetailComponent {
   // ── Room CRUD ──────────────────────────────────────────────────────────────
 
   editRoom    = signal<Partial<Room> | null>(null);
+
   deleteRoom  = signal<Room | null>(null);
 
-  private readonly roomSheetEl   = viewChild<ElementRef>('roomSheet');
-  private readonly roomModalEl   = viewChild<ElementRef>('roomModal');
-  private readonly fRoomName     = viewChild<ElementRef>('fRoomName');
-  private readonly fRoomFloor    = viewChild<ElementRef>('fRoomFloor');
+  private readonly roomSheetEl   = viewChild<NativeElementRef>('roomSheet');
+
+  private readonly roomModalEl   = viewChild<NativeElementRef>('roomModal');
+
+  private readonly fRoomName     = viewChild<NativeElementRef>('fRoomName');
+
+  private readonly fRoomFloor    = viewChild<NativeElementRef>('fRoomFloor');
 
   // ── RackRow CRUD ───────────────────────────────────────────────────────────
 
   editRackRow   = signal<Partial<RackRow> | null>(null);
+
   deleteRackRow = signal<RackRow | null>(null);
+
   activeRoomId  = signal<string>('');
 
-  private readonly rowSheetEl  = viewChild<ElementRef>('rowSheet');
-  private readonly rowModalEl  = viewChild<ElementRef>('rowModal');
-  private readonly fRowName    = viewChild<ElementRef>('fRowName');
-  private readonly fRowX       = viewChild<ElementRef>('fRowX');
-  private readonly fRowY       = viewChild<ElementRef>('fRowY');
+  private readonly rowSheetEl  = viewChild<NativeElementRef>('rowSheet');
+
+  private readonly rowModalEl  = viewChild<NativeElementRef>('rowModal');
+
+  private readonly fRowName    = viewChild<NativeElementRef>('fRowName');
+
+  private readonly fRowX       = viewChild<NativeElementRef>('fRowX');
+
+  private readonly fRowY       = viewChild<NativeElementRef>('fRowY');
 
   constructor() {
     effect(() => {
-      const el = this.roomSheetEl()?.nativeElement as any;
-      if (this.editRoom() !== null) el?.show(); else el?.hide();
+      const el = this.roomSheetEl()?.nativeElement;
+      if (this.editRoom() !== null) el?.show?.(); else el?.hide?.();
     });
     effect(() => {
-      const el = this.roomModalEl()?.nativeElement as any;
-      if (this.deleteRoom() !== null) el?.show(); else el?.hide();
+      const el = this.roomModalEl()?.nativeElement;
+      if (this.deleteRoom() !== null) el?.show?.(); else el?.hide?.();
     });
     effect(() => {
-      const el = this.rowSheetEl()?.nativeElement as any;
-      if (this.editRackRow() !== null) el?.show(); else el?.hide();
+      const el = this.rowSheetEl()?.nativeElement;
+      if (this.editRackRow() !== null) el?.show?.(); else el?.hide?.();
     });
     effect(() => {
-      const el = this.rowModalEl()?.nativeElement as any;
-      if (this.deleteRackRow() !== null) el?.show(); else el?.hide();
+      const el = this.rowModalEl()?.nativeElement;
+      if (this.deleteRackRow() !== null) el?.show?.(); else el?.hide?.();
     });
   }
 
@@ -124,10 +137,10 @@ export class DatacenterDetailComponent {
   saveRoom(): void {
     const form = this.editRoom();
     if (!form) return;
-    const name  = (this.fRoomName()?.nativeElement  as any)?.value as string;
-    const floor = parseInt((this.fRoomFloor()?.nativeElement as any)?.value ?? '1') || 1;
+    const name  = this.fRoomName()?.nativeElement.value ?? '';
+    const floor = parseInt(this.fRoomFloor()?.nativeElement.value ?? '1', 10) || 1;
     const updated: Room = {
-      id:     form.id || 'room-' + Date.now(),
+      id:     form.id || `room-${  Date.now()}`,
       siteId: form.siteId!,
       name,
       floor,
@@ -177,11 +190,11 @@ export class DatacenterDetailComponent {
   saveRackRow(): void {
     const form = this.editRackRow();
     if (!form) return;
-    const name = (this.fRowName()?.nativeElement as any)?.value as string;
-    const posX = parseInt((this.fRowX()?.nativeElement as any)?.value ?? '1') || 1;
-    const posY = parseInt((this.fRowY()?.nativeElement as any)?.value ?? '1') || 1;
+    const name = this.fRowName()?.nativeElement.value ?? '';
+    const posX = parseInt(this.fRowX()?.nativeElement.value ?? '1', 10) || 1;
+    const posY = parseInt(this.fRowY()?.nativeElement.value ?? '1', 10) || 1;
     const updated: RackRow = {
-      id:        form.id || 'rr-' + Date.now(),
+      id:        form.id || `rr-${  Date.now()}`,
       roomId:    form.roomId!,
       name,
       positionX: posX,

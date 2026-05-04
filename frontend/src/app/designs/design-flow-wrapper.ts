@@ -20,18 +20,22 @@ import { LogicalDevice, LogicalConnection, LogicalDeviceLayout } from './design.
   styleUrls: ['../../../node_modules/reactflow/dist/style.css'],
   encapsulation: ViewEncapsulation.None,
 })
-export class DesignFlowWrapperComponent implements AfterViewInit, OnChanges, OnDestroy {
+export default class DesignFlowWrapperComponent implements AfterViewInit, OnChanges, OnDestroy {
   @ViewChild('container', { static: true }) container!: ElementRef;
 
   @Input() devices: LogicalDevice[] = [];
+
   @Input() connections: LogicalConnection[] = [];
+
   @Input() layouts: LogicalDeviceLayout[] = [];
+
   @Input() selectedDeviceId: string | null = null;
 
   readonly deviceSelected = output<string | null>();
+
   readonly layoutChanged  = output<LogicalDeviceLayout[]>();
 
-  private root: any;
+  private root: ReturnType<typeof ReactDOM.createRoot> | undefined;
 
   ngAfterViewInit() {
     this.root = ReactDOM.createRoot(this.container.nativeElement);
@@ -55,6 +59,6 @@ export class DesignFlowWrapperComponent implements AfterViewInit, OnChanges, OnD
       onSelectDevice:   (id) => this.deviceSelected.emit(id),
       onLayoutChange:   (layouts) => this.layoutChanged.emit(layouts),
     };
-    this.root.render(React.createElement(DesignFlow, props));
+    this.root!.render(React.createElement(DesignFlow, props));
   }
 }
