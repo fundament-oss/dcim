@@ -8,7 +8,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { RouterLink, ActivatedRoute  } from '@angular/router';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import DesignFlowWrapperComponent from '../design-flow-wrapper';
 import {
   LogicalConnection,
