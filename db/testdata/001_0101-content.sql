@@ -44,16 +44,6 @@ INSERT INTO racks (id, rack_row_id, name, total_units, position_in_row) VALUES
 -- Device catalogs
 -- ============================================================
 INSERT INTO device_catalogs (id, manufacturer, model, part_number, category, form_factor, rack_units, weight_kg, power_draw_w, specs) VALUES
-  -- Servers
-  ('019644a0-4000-7000-8000-000000000001', 'Dell', 'PowerEdge R760', 'PER760-001', 'server', '1U', 1, 18.5, 800,
-   '{"cpu_sockets": 2, "max_memory_gb": 4096, "drive_bays": 8}'),
-  ('019644a0-4000-7000-8000-000000000002', 'Dell', 'PowerEdge R660', 'PER660-001', 'server', '1U', 1, 16.0, 700,
-   '{"cpu_sockets": 2, "max_memory_gb": 2048, "drive_bays": 8}'),
-  -- Switches
-  ('019644a0-4000-7000-8000-000000000003', 'Arista', '7050CX3-32S', '7050CX3-32S', 'switch', '1U', 1, 9.5, 350,
-   '{"switching_capacity_tbps": 6.4, "ports_qsfp28": 32, "ports_sfp_plus": 2}'),
-  ('019644a0-4000-7000-8000-000000000004', 'Arista', '7060CX2-32S', '7060CX2-32S', 'switch', '1U', 1, 10.2, 450,
-   '{"switching_capacity_tbps": 6.4, "ports_qsfp28": 32, "ports_sfp_plus": 2}'),
   -- PDUs
   ('019644a0-4000-7000-8000-000000000005', 'APC', 'AP8886', 'AP8886', 'pdu', '0U', 0, 6.5, 0,
    '{"outlets_c13": 24, "outlets_c19": 6, "input_voltage": 230, "max_amps": 32}'),
@@ -65,58 +55,53 @@ INSERT INTO device_catalogs (id, manufacturer, model, part_number, category, for
    '{"speed": "10Gbps", "wavelength_nm": 850, "type": "SFP+", "reach_m": 300}'),
   ('019644a0-4000-7000-8000-000000000008', 'Finisar', 'FTL410QE4C', 'FTL410QE4C', 'sfp', NULL, NULL, 0.03, 3.5,
    '{"speed": "100Gbps", "wavelength_nm": 850, "type": "QSFP28", "reach_m": 100}'),
-  -- Console server
-  ('019644a0-4000-7000-8000-000000000009', 'Opengear', 'OM2248-L', 'OM2248-L', 'console_server', '1U', 1, 4.0, 60,
-   '{"serial_ports": 48, "network_ports": 2}'),
   -- Cable
   ('019644a0-4000-7000-8000-00000000000a', 'FS.com', 'DAC-QSFP28-100G-2M', 'DAC-Q28-2M', 'cable', NULL, NULL, 0.1, 0,
    '{"type": "DAC", "speed": "100Gbps", "length_m": 2, "connector": "QSFP28"}'),
   -- NIC
   ('019644a0-4000-7000-8000-00000000000b', 'Mellanox', 'ConnectX-6 Dx', 'MCX623106AN', 'nic', NULL, NULL, 0.2, 20,
-   '{"ports": 2, "speed": "100Gbps", "interface": "QSFP28", "pcie": "4.0 x16"}');
+   '{"ports": 2, "speed": "100Gbps", "interface": "QSFP28", "pcie": "4.0 x16"}'),
+  -- metal-stack servers
+  ('019644a0-4000-7000-8000-000000000010', 'Supermicro', 'SYS-2029BT-HNR', 'SYS-2029BT-HNR', 'server', '2U', 2, 35.0, 2200,
+   '{"series": "Big-Twin", "board": "X11DPT-B", "nodes": 4, "cpu_sockets_per_node": 2, "dimm_slots_per_node": 12, "drive_bays_per_node": 6}'),
+  ('019644a0-4000-7000-8000-000000000011', 'Supermicro', 'SYS-220BT-HNTR', 'SYS-220BT-HNTR', 'server', '2U', 2, 35.0, 2200,
+   '{"series": "Big-Twin", "board": "X12DPT-B6", "nodes": 4, "cpu_sockets_per_node": 2, "dimm_slots_per_node": 16, "drive_bays_per_node": 6}'),
+  ('019644a0-4000-7000-8000-000000000012', 'Supermicro', 'SSG-5019D8-TR12P', 'SSG-5019D8-TR12P', 'server', '1U', 1, 17.0, 400,
+   '{"series": "SuperServer", "board": "X11SDV-8C-TP8F", "cpu_sockets": 1, "dimm_slots": 4, "drive_bays": 12}'),
+  ('019644a0-4000-7000-8000-000000000013', 'Supermicro', '2029UZ-TN20R25M', 'SYS-2029UZ-TN20R25M', 'server', '2U', 2, 30.0, 1600,
+   '{"series": "SuperServer", "board": "X11DPU", "cpu_sockets": 2, "dimm_slots": 24, "drive_bays": 25}'),
+  ('019644a0-4000-7000-8000-000000000014', 'Supermicro', 'SYS-621C-TN12R', 'SYS-621C-TN12R', 'server', '2U', 2, 28.0, 1200,
+   '{"series": "SuperServer", "board": "X13DDW-A", "cpu_sockets": 2, "dimm_slots": 16, "drive_bays": 12}'),
+  ('019644a0-4000-7000-8000-000000000015', 'Supermicro', '5039MD8-H8TNR', 'SYS-5039MD8-H8TNR', 'server', '3U', 3, 25.0, 1200,
+   '{"series": "Microcloud", "board": "X11SDD-8C-F", "nodes": 8, "cpu_sockets_per_node": 1, "dimm_slots_per_node": 4, "drive_bays_per_node": 2}'),
+  ('019644a0-4000-7000-8000-000000000016', 'Supermicro', 'SYS-531MC-H8TNR', 'SYS-531MC-H8TNR', 'server', '3U', 3, 25.0, 1200,
+   '{"series": "Microcloud", "board": "X13SCD-F", "nodes": 8, "cpu_sockets_per_node": 1, "dimm_slots_per_node": 4, "drive_bays_per_node": 2}'),
+  ('019644a0-4000-7000-8000-000000000017', 'Supermicro', '3015MR-H8TNR', 'SYS-3015MR-H8TNR', 'server', '3U', 3, 25.0, 1200,
+   '{"series": "Microcloud", "board": "H13SRD-F", "nodes": 8, "cpu_sockets_per_node": 1, "dimm_slots_per_node": 4, "drive_bays_per_node": 2}'),
+  ('019644a0-4000-7000-8000-000000000018', 'Supermicro', 'AS-2115HV-TNRT', 'AS-2115HV-TNRT', 'server', '2U', 2, 24.0, 1000,
+   '{"series": "Workstation", "board": "H13SRH", "cpu_sockets": 1, "dimm_slots": 12, "drive_bays": 8}'),
+  -- metal-stack switches
+  ('019644a0-4000-7000-8000-000000000019', 'Edgecore', 'AS4625-54T', 'AS4625-54T', 'switch', '1U', 1, 8.0, 150,
+   '{"series": "AS4600", "os": "SONiC", "ports_rj45_1g": 48, "ports_sfp28_25g": 6}'),
+  ('019644a0-4000-7000-8000-00000000001a', 'Edgecore', 'AS4630-54TE', 'AS4630-54TE', 'switch', '1U', 1, 8.5, 200,
+   '{"series": "AS4600", "os": "SONiC", "ports_rj45_2_5g": 48, "ports_sfp28_25g": 4, "ports_qsfp28_100g": 2}'),
+  ('019644a0-4000-7000-8000-00000000001b', 'Edgecore', 'AS7712-32X', 'AS7712-32X', 'switch', '1U', 1, 9.5, 350,
+   '{"series": "AS7700", "os": "SONiC", "ports_qsfp28_100g": 32}'),
+  ('019644a0-4000-7000-8000-00000000001c', 'Edgecore', 'AS7726-32X', 'AS7726-32X', 'switch', '1U', 1, 9.5, 350,
+   '{"series": "AS7700", "os": "SONiC", "ports_qsfp28_100g": 32}'),
+  -- metal-stack NICs
+  ('019644a0-4000-7000-8000-00000000001d', 'Intel', 'XXV710-DA2', 'XXV710-DA2', 'nic', NULL, NULL, 0.2, 15,
+   '{"ports": 2, "speed": "25Gbps", "interface": "SFP28", "pcie": "3.0 x8"}'),
+  ('019644a0-4000-7000-8000-00000000001e', 'Intel', 'E810-DA2', 'E810-XXVDA2', 'nic', NULL, NULL, 0.2, 15,
+   '{"ports": 2, "speed": "25Gbps", "interface": "SFP28", "pcie": "4.0 x8"}'),
+  ('019644a0-4000-7000-8000-00000000001f', 'Intel', 'E810-CQDA2', 'E810-CQDA2', 'nic', NULL, NULL, 0.2, 20,
+   '{"ports": 2, "speed": "100Gbps", "interface": "QSFP28", "pcie": "4.0 x16"}'),
+  ('019644a0-4000-7000-8000-000000000020', 'Mellanox', 'ConnectX-5', 'MCX512A-ACAT', 'nic', NULL, NULL, 0.2, 15,
+   '{"ports": 2, "speed": "25Gbps", "interface": "SFP28", "pcie": "3.0 x16"}');
 
 -- ============================================================
 -- Port definitions
 -- ============================================================
-
--- Dell R760 ports
-INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
-  ('019644a0-5000-7000-8000-000000000001', '019644a0-4000-7000-8000-000000000001', 'iDRAC', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 1),
-  ('019644a0-5000-7000-8000-000000000002', '019644a0-4000-7000-8000-000000000001', 'NIC Slot 1', 'slot', NULL, NULL, NULL, 'in', 2),
-  ('019644a0-5000-7000-8000-000000000003', '019644a0-4000-7000-8000-000000000001', 'NIC Slot 2', 'slot', NULL, NULL, NULL, 'in', 3),
-  ('019644a0-5000-7000-8000-000000000004', '019644a0-4000-7000-8000-000000000001', 'PSU 1', 'power_in', 'C14', NULL, 800, 'in', 4),
-  ('019644a0-5000-7000-8000-000000000005', '019644a0-4000-7000-8000-000000000001', 'PSU 2', 'power_in', 'C14', NULL, 800, 'in', 5),
-  ('019644a0-5000-7000-8000-000000000006', '019644a0-4000-7000-8000-000000000001', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 6);
-
--- Dell R660 ports
-INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
-  ('019644a0-5000-7000-8000-000000000011', '019644a0-4000-7000-8000-000000000002', 'iDRAC', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 1),
-  ('019644a0-5000-7000-8000-000000000012', '019644a0-4000-7000-8000-000000000002', 'NIC Slot 1', 'slot', NULL, NULL, NULL, 'in', 2),
-  ('019644a0-5000-7000-8000-000000000013', '019644a0-4000-7000-8000-000000000002', 'PSU 1', 'power_in', 'C14', NULL, 700, 'in', 3),
-  ('019644a0-5000-7000-8000-000000000014', '019644a0-4000-7000-8000-000000000002', 'PSU 2', 'power_in', 'C14', NULL, 700, 'in', 4),
-  ('019644a0-5000-7000-8000-000000000015', '019644a0-4000-7000-8000-000000000002', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 5);
-
--- Arista 7050CX3-32S (ToR switch) ports
-INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
-  ('019644a0-5000-7000-8000-000000000021', '019644a0-4000-7000-8000-000000000003', 'Ethernet1', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 1),
-  ('019644a0-5000-7000-8000-000000000022', '019644a0-4000-7000-8000-000000000003', 'Ethernet2', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 2),
-  ('019644a0-5000-7000-8000-000000000023', '019644a0-4000-7000-8000-000000000003', 'Ethernet3', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 3),
-  ('019644a0-5000-7000-8000-000000000024', '019644a0-4000-7000-8000-000000000003', 'Ethernet4', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 4),
-  ('019644a0-5000-7000-8000-000000000025', '019644a0-4000-7000-8000-000000000003', 'Management1', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 33),
-  ('019644a0-5000-7000-8000-000000000026', '019644a0-4000-7000-8000-000000000003', 'PSU 1', 'power_in', 'C14', NULL, 350, 'in', 34),
-  ('019644a0-5000-7000-8000-000000000027', '019644a0-4000-7000-8000-000000000003', 'PSU 2', 'power_in', 'C14', NULL, 350, 'in', 35),
-  ('019644a0-5000-7000-8000-000000000028', '019644a0-4000-7000-8000-000000000003', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 36);
-
--- Arista 7060CX2-32S (spine switch) ports
-INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
-  ('019644a0-5000-7000-8000-000000000031', '019644a0-4000-7000-8000-000000000004', 'Ethernet1', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 1),
-  ('019644a0-5000-7000-8000-000000000032', '019644a0-4000-7000-8000-000000000004', 'Ethernet2', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 2),
-  ('019644a0-5000-7000-8000-000000000033', '019644a0-4000-7000-8000-000000000004', 'Ethernet3', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 3),
-  ('019644a0-5000-7000-8000-000000000034', '019644a0-4000-7000-8000-000000000004', 'Ethernet4', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 4),
-  ('019644a0-5000-7000-8000-000000000035', '019644a0-4000-7000-8000-000000000004', 'Management1', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 33),
-  ('019644a0-5000-7000-8000-000000000036', '019644a0-4000-7000-8000-000000000004', 'PSU 1', 'power_in', 'C14', NULL, 450, 'in', 34),
-  ('019644a0-5000-7000-8000-000000000037', '019644a0-4000-7000-8000-000000000004', 'PSU 2', 'power_in', 'C14', NULL, 450, 'in', 35),
-  ('019644a0-5000-7000-8000-000000000038', '019644a0-4000-7000-8000-000000000004', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 36);
 
 -- APC PDU ports
 INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
@@ -133,49 +118,202 @@ INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type
   ('019644a0-5000-7000-8000-000000000051', '019644a0-4000-7000-8000-00000000000b', 'Port 1', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 1),
   ('019644a0-5000-7000-8000-000000000052', '019644a0-4000-7000-8000-00000000000b', 'Port 2', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 2);
 
--- Opengear console server ports
+-- Supermicro SYS-2029BT-HNR (Big-Twin 2U, 4 nodes) ports
 INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
-  ('019644a0-5000-7000-8000-000000000061', '019644a0-4000-7000-8000-000000000009', 'Serial 1', 'console', 'RJ45', NULL, NULL, 'bidir', 1),
-  ('019644a0-5000-7000-8000-000000000062', '019644a0-4000-7000-8000-000000000009', 'Serial 2', 'console', 'RJ45', NULL, NULL, 'bidir', 2),
-  ('019644a0-5000-7000-8000-000000000063', '019644a0-4000-7000-8000-000000000009', 'Serial 3', 'console', 'RJ45', NULL, NULL, 'bidir', 3),
-  ('019644a0-5000-7000-8000-000000000064', '019644a0-4000-7000-8000-000000000009', 'Serial 4', 'console', 'RJ45', NULL, NULL, 'bidir', 4),
-  ('019644a0-5000-7000-8000-000000000065', '019644a0-4000-7000-8000-000000000009', 'ETH 1', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 49),
-  ('019644a0-5000-7000-8000-000000000066', '019644a0-4000-7000-8000-000000000009', 'PSU 1', 'power_in', 'C14', NULL, 60, 'in', 50);
+  ('019644a0-5000-7000-8000-000000000100', '019644a0-4000-7000-8000-000000000010', 'IPMI', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-000000000101', '019644a0-4000-7000-8000-000000000010', 'NIC Slot 1', 'slot', NULL, NULL, NULL, 'in', 2),
+  ('019644a0-5000-7000-8000-000000000102', '019644a0-4000-7000-8000-000000000010', 'NIC Slot 2', 'slot', NULL, NULL, NULL, 'in', 3),
+  ('019644a0-5000-7000-8000-000000000103', '019644a0-4000-7000-8000-000000000010', 'PSU 1', 'power_in', 'C14', NULL, 1100, 'in', 4),
+  ('019644a0-5000-7000-8000-000000000104', '019644a0-4000-7000-8000-000000000010', 'PSU 2', 'power_in', 'C14', NULL, 1100, 'in', 5),
+  ('019644a0-5000-7000-8000-000000000105', '019644a0-4000-7000-8000-000000000010', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 6);
+
+-- Supermicro SYS-220BT-HNTR (Big-Twin 2U, 4 nodes) ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-000000000110', '019644a0-4000-7000-8000-000000000011', 'IPMI', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-000000000111', '019644a0-4000-7000-8000-000000000011', 'NIC Slot 1', 'slot', NULL, NULL, NULL, 'in', 2),
+  ('019644a0-5000-7000-8000-000000000112', '019644a0-4000-7000-8000-000000000011', 'NIC Slot 2', 'slot', NULL, NULL, NULL, 'in', 3),
+  ('019644a0-5000-7000-8000-000000000113', '019644a0-4000-7000-8000-000000000011', 'PSU 1', 'power_in', 'C14', NULL, 1100, 'in', 4),
+  ('019644a0-5000-7000-8000-000000000114', '019644a0-4000-7000-8000-000000000011', 'PSU 2', 'power_in', 'C14', NULL, 1100, 'in', 5),
+  ('019644a0-5000-7000-8000-000000000115', '019644a0-4000-7000-8000-000000000011', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 6);
+
+-- Supermicro SSG-5019D8-TR12P (1U storage) ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-000000000120', '019644a0-4000-7000-8000-000000000012', 'IPMI', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-000000000121', '019644a0-4000-7000-8000-000000000012', 'NIC Slot 1', 'slot', NULL, NULL, NULL, 'in', 2),
+  ('019644a0-5000-7000-8000-000000000122', '019644a0-4000-7000-8000-000000000012', 'PSU 1', 'power_in', 'C14', NULL, 400, 'in', 3),
+  ('019644a0-5000-7000-8000-000000000123', '019644a0-4000-7000-8000-000000000012', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 4);
+
+-- Supermicro 2029UZ-TN20R25M (2U storage) ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-000000000130', '019644a0-4000-7000-8000-000000000013', 'IPMI', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-000000000131', '019644a0-4000-7000-8000-000000000013', 'NIC Slot 1', 'slot', NULL, NULL, NULL, 'in', 2),
+  ('019644a0-5000-7000-8000-000000000132', '019644a0-4000-7000-8000-000000000013', 'NIC Slot 2', 'slot', NULL, NULL, NULL, 'in', 3),
+  ('019644a0-5000-7000-8000-000000000133', '019644a0-4000-7000-8000-000000000013', 'PSU 1', 'power_in', 'C14', NULL, 800, 'in', 4),
+  ('019644a0-5000-7000-8000-000000000134', '019644a0-4000-7000-8000-000000000013', 'PSU 2', 'power_in', 'C14', NULL, 800, 'in', 5),
+  ('019644a0-5000-7000-8000-000000000135', '019644a0-4000-7000-8000-000000000013', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 6);
+
+-- Supermicro SYS-621C-TN12R (2U) ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-000000000140', '019644a0-4000-7000-8000-000000000014', 'IPMI', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-000000000141', '019644a0-4000-7000-8000-000000000014', 'NIC Slot 1', 'slot', NULL, NULL, NULL, 'in', 2),
+  ('019644a0-5000-7000-8000-000000000142', '019644a0-4000-7000-8000-000000000014', 'NIC Slot 2', 'slot', NULL, NULL, NULL, 'in', 3),
+  ('019644a0-5000-7000-8000-000000000143', '019644a0-4000-7000-8000-000000000014', 'PSU 1', 'power_in', 'C14', NULL, 600, 'in', 4),
+  ('019644a0-5000-7000-8000-000000000144', '019644a0-4000-7000-8000-000000000014', 'PSU 2', 'power_in', 'C14', NULL, 600, 'in', 5),
+  ('019644a0-5000-7000-8000-000000000145', '019644a0-4000-7000-8000-000000000014', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 6);
+
+-- Supermicro 5039MD8-H8TNR (Microcloud 3U, 8 nodes) ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-000000000150', '019644a0-4000-7000-8000-000000000015', 'IPMI', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-000000000151', '019644a0-4000-7000-8000-000000000015', 'NIC Slot 1', 'slot', NULL, NULL, NULL, 'in', 2),
+  ('019644a0-5000-7000-8000-000000000152', '019644a0-4000-7000-8000-000000000015', 'PSU 1', 'power_in', 'C14', NULL, 600, 'in', 3),
+  ('019644a0-5000-7000-8000-000000000153', '019644a0-4000-7000-8000-000000000015', 'PSU 2', 'power_in', 'C14', NULL, 600, 'in', 4),
+  ('019644a0-5000-7000-8000-000000000154', '019644a0-4000-7000-8000-000000000015', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 5);
+
+-- Supermicro SYS-531MC-H8TNR (Microcloud 3U, 8 nodes) ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-000000000160', '019644a0-4000-7000-8000-000000000016', 'IPMI', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-000000000161', '019644a0-4000-7000-8000-000000000016', 'NIC Slot 1', 'slot', NULL, NULL, NULL, 'in', 2),
+  ('019644a0-5000-7000-8000-000000000162', '019644a0-4000-7000-8000-000000000016', 'PSU 1', 'power_in', 'C14', NULL, 600, 'in', 3),
+  ('019644a0-5000-7000-8000-000000000163', '019644a0-4000-7000-8000-000000000016', 'PSU 2', 'power_in', 'C14', NULL, 600, 'in', 4),
+  ('019644a0-5000-7000-8000-000000000164', '019644a0-4000-7000-8000-000000000016', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 5);
+
+-- Supermicro 3015MR-H8TNR (Microcloud 3U, 8 nodes) ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-000000000170', '019644a0-4000-7000-8000-000000000017', 'IPMI', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-000000000171', '019644a0-4000-7000-8000-000000000017', 'NIC Slot 1', 'slot', NULL, NULL, NULL, 'in', 2),
+  ('019644a0-5000-7000-8000-000000000172', '019644a0-4000-7000-8000-000000000017', 'PSU 1', 'power_in', 'C14', NULL, 600, 'in', 3),
+  ('019644a0-5000-7000-8000-000000000173', '019644a0-4000-7000-8000-000000000017', 'PSU 2', 'power_in', 'C14', NULL, 600, 'in', 4),
+  ('019644a0-5000-7000-8000-000000000174', '019644a0-4000-7000-8000-000000000017', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 5);
+
+-- Supermicro AS-2115HV-TNRT (Workstation 2U) ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-000000000180', '019644a0-4000-7000-8000-000000000018', 'IPMI', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-000000000181', '019644a0-4000-7000-8000-000000000018', 'NIC Slot 1', 'slot', NULL, NULL, NULL, 'in', 2),
+  ('019644a0-5000-7000-8000-000000000182', '019644a0-4000-7000-8000-000000000018', 'NIC Slot 2', 'slot', NULL, NULL, NULL, 'in', 3),
+  ('019644a0-5000-7000-8000-000000000183', '019644a0-4000-7000-8000-000000000018', 'PSU 1', 'power_in', 'C14', NULL, 500, 'in', 4),
+  ('019644a0-5000-7000-8000-000000000184', '019644a0-4000-7000-8000-000000000018', 'PSU 2', 'power_in', 'C14', NULL, 500, 'in', 5),
+  ('019644a0-5000-7000-8000-000000000185', '019644a0-4000-7000-8000-000000000018', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 6);
+
+-- Edgecore AS4625-54T (management/leaf switch) ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-000000000190', '019644a0-4000-7000-8000-000000000019', 'Ethernet1', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-000000000191', '019644a0-4000-7000-8000-000000000019', 'Ethernet2', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 2),
+  ('019644a0-5000-7000-8000-000000000192', '019644a0-4000-7000-8000-000000000019', 'Ethernet3', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 3),
+  ('019644a0-5000-7000-8000-000000000193', '019644a0-4000-7000-8000-000000000019', 'Ethernet4', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 4),
+  ('019644a0-5000-7000-8000-000000000194', '019644a0-4000-7000-8000-000000000019', 'Ethernet49', 'network', 'SFP28', '25Gbps', NULL, 'bidir', 49),
+  ('019644a0-5000-7000-8000-000000000195', '019644a0-4000-7000-8000-000000000019', 'Ethernet50', 'network', 'SFP28', '25Gbps', NULL, 'bidir', 50),
+  ('019644a0-5000-7000-8000-000000000196', '019644a0-4000-7000-8000-000000000019', 'Management1', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 55),
+  ('019644a0-5000-7000-8000-000000000197', '019644a0-4000-7000-8000-000000000019', 'PSU 1', 'power_in', 'C14', NULL, 150, 'in', 56),
+  ('019644a0-5000-7000-8000-000000000198', '019644a0-4000-7000-8000-000000000019', 'PSU 2', 'power_in', 'C14', NULL, 150, 'in', 57),
+  ('019644a0-5000-7000-8000-000000000199', '019644a0-4000-7000-8000-000000000019', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 58);
+
+-- Edgecore AS4630-54TE (management switch) ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-0000000001a0', '019644a0-4000-7000-8000-00000000001a', 'Ethernet1', 'network', 'RJ45', '2.5Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-0000000001a1', '019644a0-4000-7000-8000-00000000001a', 'Ethernet2', 'network', 'RJ45', '2.5Gbps', NULL, 'bidir', 2),
+  ('019644a0-5000-7000-8000-0000000001a2', '019644a0-4000-7000-8000-00000000001a', 'Ethernet3', 'network', 'RJ45', '2.5Gbps', NULL, 'bidir', 3),
+  ('019644a0-5000-7000-8000-0000000001a3', '019644a0-4000-7000-8000-00000000001a', 'Ethernet4', 'network', 'RJ45', '2.5Gbps', NULL, 'bidir', 4),
+  ('019644a0-5000-7000-8000-0000000001a4', '019644a0-4000-7000-8000-00000000001a', 'Ethernet49', 'network', 'SFP28', '25Gbps', NULL, 'bidir', 49),
+  ('019644a0-5000-7000-8000-0000000001a5', '019644a0-4000-7000-8000-00000000001a', 'Ethernet50', 'network', 'SFP28', '25Gbps', NULL, 'bidir', 50),
+  ('019644a0-5000-7000-8000-0000000001a6', '019644a0-4000-7000-8000-00000000001a', 'Ethernet53', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 53),
+  ('019644a0-5000-7000-8000-0000000001a7', '019644a0-4000-7000-8000-00000000001a', 'Ethernet54', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 54),
+  ('019644a0-5000-7000-8000-0000000001a8', '019644a0-4000-7000-8000-00000000001a', 'Management1', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 55),
+  ('019644a0-5000-7000-8000-0000000001a9', '019644a0-4000-7000-8000-00000000001a', 'PSU 1', 'power_in', 'C14', NULL, 200, 'in', 56),
+  ('019644a0-5000-7000-8000-0000000001aa', '019644a0-4000-7000-8000-00000000001a', 'PSU 2', 'power_in', 'C14', NULL, 200, 'in', 57),
+  ('019644a0-5000-7000-8000-0000000001ab', '019644a0-4000-7000-8000-00000000001a', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 58);
+
+-- Edgecore AS7712-32X (spine switch) ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-0000000001b0', '019644a0-4000-7000-8000-00000000001b', 'Ethernet1', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-0000000001b1', '019644a0-4000-7000-8000-00000000001b', 'Ethernet2', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 2),
+  ('019644a0-5000-7000-8000-0000000001b2', '019644a0-4000-7000-8000-00000000001b', 'Ethernet3', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 3),
+  ('019644a0-5000-7000-8000-0000000001b3', '019644a0-4000-7000-8000-00000000001b', 'Ethernet4', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 4),
+  ('019644a0-5000-7000-8000-0000000001b4', '019644a0-4000-7000-8000-00000000001b', 'Management1', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 33),
+  ('019644a0-5000-7000-8000-0000000001b5', '019644a0-4000-7000-8000-00000000001b', 'PSU 1', 'power_in', 'C14', NULL, 350, 'in', 34),
+  ('019644a0-5000-7000-8000-0000000001b6', '019644a0-4000-7000-8000-00000000001b', 'PSU 2', 'power_in', 'C14', NULL, 350, 'in', 35),
+  ('019644a0-5000-7000-8000-0000000001b7', '019644a0-4000-7000-8000-00000000001b', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 36);
+
+-- Edgecore AS7726-32X (spine switch) ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-0000000001c0', '019644a0-4000-7000-8000-00000000001c', 'Ethernet1', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-0000000001c1', '019644a0-4000-7000-8000-00000000001c', 'Ethernet2', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 2),
+  ('019644a0-5000-7000-8000-0000000001c2', '019644a0-4000-7000-8000-00000000001c', 'Ethernet3', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 3),
+  ('019644a0-5000-7000-8000-0000000001c3', '019644a0-4000-7000-8000-00000000001c', 'Ethernet4', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 4),
+  ('019644a0-5000-7000-8000-0000000001c4', '019644a0-4000-7000-8000-00000000001c', 'Management1', 'network', 'RJ45', '1Gbps', NULL, 'bidir', 33),
+  ('019644a0-5000-7000-8000-0000000001c5', '019644a0-4000-7000-8000-00000000001c', 'PSU 1', 'power_in', 'C14', NULL, 350, 'in', 34),
+  ('019644a0-5000-7000-8000-0000000001c6', '019644a0-4000-7000-8000-00000000001c', 'PSU 2', 'power_in', 'C14', NULL, 350, 'in', 35),
+  ('019644a0-5000-7000-8000-0000000001c7', '019644a0-4000-7000-8000-00000000001c', 'Console', 'console', 'RJ45', NULL, NULL, 'bidir', 36);
+
+-- Intel XXV710-DA2 NIC ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-0000000001d0', '019644a0-4000-7000-8000-00000000001d', 'Port 1', 'network', 'SFP28', '25Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-0000000001d1', '019644a0-4000-7000-8000-00000000001d', 'Port 2', 'network', 'SFP28', '25Gbps', NULL, 'bidir', 2);
+
+-- Intel E810-DA2 NIC ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-0000000001e0', '019644a0-4000-7000-8000-00000000001e', 'Port 1', 'network', 'SFP28', '25Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-0000000001e1', '019644a0-4000-7000-8000-00000000001e', 'Port 2', 'network', 'SFP28', '25Gbps', NULL, 'bidir', 2);
+
+-- Intel E810-CQDA2 NIC ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-0000000001f0', '019644a0-4000-7000-8000-00000000001f', 'Port 1', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-0000000001f1', '019644a0-4000-7000-8000-00000000001f', 'Port 2', 'network', 'QSFP28', '100Gbps', NULL, 'bidir', 2);
+
+-- Mellanox ConnectX-5 NIC ports
+INSERT INTO port_definitions (id, device_catalog_id, name, port_type, media_type, speed, max_power_w, direction, ordinal) VALUES
+  ('019644a0-5000-7000-8000-000000000200', '019644a0-4000-7000-8000-000000000020', 'Port 1', 'network', 'SFP28', '25Gbps', NULL, 'bidir', 1),
+  ('019644a0-5000-7000-8000-000000000201', '019644a0-4000-7000-8000-000000000020', 'Port 2', 'network', 'SFP28', '25Gbps', NULL, 'bidir', 2);
 
 -- ============================================================
 -- Port compatibilities
 -- ============================================================
 INSERT INTO port_compatibilities (id, port_definition_id, compatible_category, compatible_catalog_id) VALUES
-  -- R760 NIC slots accept NICs
-  ('019644a0-5100-7000-8000-000000000001', '019644a0-5000-7000-8000-000000000002', 'nic', NULL),
-  ('019644a0-5100-7000-8000-000000000002', '019644a0-5000-7000-8000-000000000003', 'nic', NULL),
-  -- R660 NIC slot accepts NICs
-  ('019644a0-5100-7000-8000-000000000003', '019644a0-5000-7000-8000-000000000012', 'nic', NULL);
+  -- Supermicro SYS-2029BT-HNR NIC slots accept NICs
+  ('019644a0-5100-7000-8000-000000000010', '019644a0-5000-7000-8000-000000000101', 'nic', NULL),
+  ('019644a0-5100-7000-8000-000000000011', '019644a0-5000-7000-8000-000000000102', 'nic', NULL),
+  -- Supermicro SYS-220BT-HNTR NIC slots accept NICs
+  ('019644a0-5100-7000-8000-000000000012', '019644a0-5000-7000-8000-000000000111', 'nic', NULL),
+  ('019644a0-5100-7000-8000-000000000013', '019644a0-5000-7000-8000-000000000112', 'nic', NULL),
+  -- Supermicro SSG-5019D8-TR12P NIC slot accepts NICs
+  ('019644a0-5100-7000-8000-000000000014', '019644a0-5000-7000-8000-000000000121', 'nic', NULL),
+  -- Supermicro 2029UZ-TN20R25M NIC slots accept NICs
+  ('019644a0-5100-7000-8000-000000000015', '019644a0-5000-7000-8000-000000000131', 'nic', NULL),
+  ('019644a0-5100-7000-8000-000000000016', '019644a0-5000-7000-8000-000000000132', 'nic', NULL),
+  -- Supermicro SYS-621C-TN12R NIC slots accept NICs
+  ('019644a0-5100-7000-8000-000000000017', '019644a0-5000-7000-8000-000000000141', 'nic', NULL),
+  ('019644a0-5100-7000-8000-000000000018', '019644a0-5000-7000-8000-000000000142', 'nic', NULL),
+  -- Supermicro 5039MD8-H8TNR NIC slot accepts NICs
+  ('019644a0-5100-7000-8000-000000000019', '019644a0-5000-7000-8000-000000000151', 'nic', NULL),
+  -- Supermicro SYS-531MC-H8TNR NIC slot accepts NICs
+  ('019644a0-5100-7000-8000-00000000001a', '019644a0-5000-7000-8000-000000000161', 'nic', NULL),
+  -- Supermicro 3015MR-H8TNR NIC slot accepts NICs
+  ('019644a0-5100-7000-8000-00000000001b', '019644a0-5000-7000-8000-000000000171', 'nic', NULL),
+  -- Supermicro AS-2115HV-TNRT NIC slots accept NICs
+  ('019644a0-5100-7000-8000-00000000001c', '019644a0-5000-7000-8000-000000000181', 'nic', NULL),
+  ('019644a0-5100-7000-8000-00000000001d', '019644a0-5000-7000-8000-000000000182', 'nic', NULL);
 
 -- ============================================================
 -- Assets
 -- ============================================================
 INSERT INTO assets (id, device_catalog_id, serial_number, asset_tag, purchase_date, warranty_expiry, status) VALUES
-  -- Servers (4x R760, 2x R660)
-  ('019644a0-6000-7000-8000-000000000001', '019644a0-4000-7000-8000-000000000001', 'SVR-R760-00001', 'AMS-SVR-001', '2025-03-15', '2028-03-15', 'deployed'),
-  ('019644a0-6000-7000-8000-000000000002', '019644a0-4000-7000-8000-000000000001', 'SVR-R760-00002', 'AMS-SVR-002', '2025-03-15', '2028-03-15', 'deployed'),
-  ('019644a0-6000-7000-8000-000000000003', '019644a0-4000-7000-8000-000000000001', 'SVR-R760-00003', 'AMS-SVR-003', '2025-06-01', '2028-06-01', 'deployed'),
-  ('019644a0-6000-7000-8000-000000000004', '019644a0-4000-7000-8000-000000000001', 'SVR-R760-00004', 'AMS-SVR-004', '2025-06-01', '2028-06-01', 'deployed'),
-  ('019644a0-6000-7000-8000-000000000005', '019644a0-4000-7000-8000-000000000002', 'SVR-R660-00001', 'AMS-SVR-005', '2025-06-01', '2028-06-01', 'deployed'),
-  ('019644a0-6000-7000-8000-000000000006', '019644a0-4000-7000-8000-000000000002', 'SVR-R660-00002', 'AMS-SVR-006', '2025-06-01', '2028-06-01', 'in_stock'),
-  -- ToR switches (2x 7050CX3)
-  ('019644a0-6000-7000-8000-000000000011', '019644a0-4000-7000-8000-000000000003', 'SW-7050-00001', 'AMS-SW-001', '2025-02-01', '2028-02-01', 'deployed'),
-  ('019644a0-6000-7000-8000-000000000012', '019644a0-4000-7000-8000-000000000003', 'SW-7050-00002', 'AMS-SW-002', '2025-02-01', '2028-02-01', 'deployed'),
-  -- Spine switches (2x 7060CX2)
-  ('019644a0-6000-7000-8000-000000000013', '019644a0-4000-7000-8000-000000000004', 'SW-7060-00001', 'AMS-SW-003', '2025-02-01', '2028-02-01', 'deployed'),
-  ('019644a0-6000-7000-8000-000000000014', '019644a0-4000-7000-8000-000000000004', 'SW-7060-00002', 'AMS-SW-004', '2025-02-01', '2028-02-01', 'deployed'),
+  -- Servers (4x SYS-621C-TN12R, 2x SSG-5019D8-TR12P)
+  ('019644a0-6000-7000-8000-000000000001', '019644a0-4000-7000-8000-000000000014', 'SVR-621C-00001', 'AMS-SVR-001', '2025-03-15', '2028-03-15', 'deployed'),
+  ('019644a0-6000-7000-8000-000000000002', '019644a0-4000-7000-8000-000000000014', 'SVR-621C-00002', 'AMS-SVR-002', '2025-03-15', '2028-03-15', 'deployed'),
+  ('019644a0-6000-7000-8000-000000000003', '019644a0-4000-7000-8000-000000000014', 'SVR-621C-00003', 'AMS-SVR-003', '2025-06-01', '2028-06-01', 'deployed'),
+  ('019644a0-6000-7000-8000-000000000004', '019644a0-4000-7000-8000-000000000014', 'SVR-621C-00004', 'AMS-SVR-004', '2025-06-01', '2028-06-01', 'deployed'),
+  ('019644a0-6000-7000-8000-000000000005', '019644a0-4000-7000-8000-000000000012', 'SVR-5019D-00001', 'AMS-SVR-005', '2025-06-01', '2028-06-01', 'deployed'),
+  ('019644a0-6000-7000-8000-000000000006', '019644a0-4000-7000-8000-000000000012', 'SVR-5019D-00002', 'AMS-SVR-006', '2025-06-01', '2028-06-01', 'in_stock'),
+  -- ToR switches (2x AS4630-54TE)
+  ('019644a0-6000-7000-8000-000000000011', '019644a0-4000-7000-8000-00000000001a', 'SW-4630-00001', 'AMS-SW-001', '2025-02-01', '2028-02-01', 'deployed'),
+  ('019644a0-6000-7000-8000-000000000012', '019644a0-4000-7000-8000-00000000001a', 'SW-4630-00002', 'AMS-SW-002', '2025-02-01', '2028-02-01', 'deployed'),
+  -- Spine switches (2x AS7712-32X)
+  ('019644a0-6000-7000-8000-000000000013', '019644a0-4000-7000-8000-00000000001b', 'SW-7712-00001', 'AMS-SW-003', '2025-02-01', '2028-02-01', 'deployed'),
+  ('019644a0-6000-7000-8000-000000000014', '019644a0-4000-7000-8000-00000000001b', 'SW-7712-00002', 'AMS-SW-004', '2025-02-01', '2028-02-01', 'deployed'),
   -- PDUs (4x APC)
   ('019644a0-6000-7000-8000-000000000021', '019644a0-4000-7000-8000-000000000005', 'PDU-APC-00001', 'AMS-PDU-001', '2025-01-10', '2028-01-10', 'deployed'),
   ('019644a0-6000-7000-8000-000000000022', '019644a0-4000-7000-8000-000000000005', 'PDU-APC-00002', 'AMS-PDU-002', '2025-01-10', '2028-01-10', 'deployed'),
   ('019644a0-6000-7000-8000-000000000023', '019644a0-4000-7000-8000-000000000005', 'PDU-APC-00003', 'AMS-PDU-003', '2025-01-10', '2028-01-10', 'deployed'),
   ('019644a0-6000-7000-8000-000000000024', '019644a0-4000-7000-8000-000000000005', 'PDU-APC-00004', 'AMS-PDU-004', '2025-01-10', '2028-01-10', 'deployed'),
-  -- Console server
-  ('019644a0-6000-7000-8000-000000000031', '019644a0-4000-7000-8000-000000000009', 'CON-OG-00001', 'AMS-CON-001', '2025-01-10', '2028-01-10', 'deployed'),
   -- NICs (installed in servers)
   ('019644a0-6000-7000-8000-000000000041', '019644a0-4000-7000-8000-00000000000b', 'NIC-CX6-00001', 'AMS-NIC-001', '2025-03-15', '2028-03-15', 'deployed'),
   ('019644a0-6000-7000-8000-000000000042', '019644a0-4000-7000-8000-00000000000b', 'NIC-CX6-00002', 'AMS-NIC-002', '2025-03-15', '2028-03-15', 'deployed'),
@@ -187,23 +325,23 @@ INSERT INTO assets (id, device_catalog_id, serial_number, asset_tag, purchase_da
   ('019644a0-6000-7000-8000-000000000053', '019644a0-4000-7000-8000-00000000000a', NULL, 'AMS-DAC-003', '2025-02-01', NULL, 'deployed'),
   ('019644a0-6000-7000-8000-000000000054', '019644a0-4000-7000-8000-00000000000a', NULL, 'AMS-DAC-004', '2025-02-01', NULL, 'deployed'),
   -- Spare server (RMA)
-  ('019644a0-6000-7000-8000-000000000061', '019644a0-4000-7000-8000-000000000001', 'SVR-R760-00005', 'AMS-SVR-007', '2025-03-15', '2028-03-15', 'rma');
+  ('019644a0-6000-7000-8000-000000000061', '019644a0-4000-7000-8000-000000000014', 'SVR-621C-00005', 'AMS-SVR-007', '2025-03-15', '2028-03-15', 'rma');
 
 -- ============================================================
 -- Asset events
 -- ============================================================
 INSERT INTO asset_events (id, asset_id, event_type, details) VALUES
   -- Server 1 lifecycle
-  ('019644a0-6100-7000-8000-000000000001', '019644a0-6000-7000-8000-000000000001', 'received', 'Received from Dell, PO #2025-0042'),
+  ('019644a0-6100-7000-8000-000000000001', '019644a0-6000-7000-8000-000000000001', 'received', 'Received from Supermicro, PO #2025-0042'),
   ('019644a0-6100-7000-8000-000000000002', '019644a0-6000-7000-8000-000000000001', 'deployed', 'Installed in AMS-01 / Hall A / Row A / A01 U1'),
   -- Server 2 lifecycle
-  ('019644a0-6100-7000-8000-000000000003', '019644a0-6000-7000-8000-000000000002', 'received', 'Received from Dell, PO #2025-0042'),
-  ('019644a0-6100-7000-8000-000000000004', '019644a0-6000-7000-8000-000000000002', 'deployed', 'Installed in AMS-01 / Hall A / Row A / A01 U2'),
+  ('019644a0-6100-7000-8000-000000000003', '019644a0-6000-7000-8000-000000000002', 'received', 'Received from Supermicro, PO #2025-0042'),
+  ('019644a0-6100-7000-8000-000000000004', '019644a0-6000-7000-8000-000000000002', 'deployed', 'Installed in AMS-01 / Hall A / Row A / A01 U3'),
   -- Spare server RMA
-  ('019644a0-6100-7000-8000-000000000011', '019644a0-6000-7000-8000-000000000061', 'received', 'Received from Dell, PO #2025-0042'),
+  ('019644a0-6100-7000-8000-000000000011', '019644a0-6000-7000-8000-000000000061', 'received', 'Received from Supermicro, PO #2025-0042'),
   ('019644a0-6100-7000-8000-000000000012', '019644a0-6000-7000-8000-000000000061', 'deployed', 'Installed in AMS-01 / Hall A / Row A / A02 U1'),
   ('019644a0-6100-7000-8000-000000000013', '019644a0-6000-7000-8000-000000000061', 'note', 'Intermittent memory errors on DIMM slot B2'),
-  ('019644a0-6100-7000-8000-000000000014', '019644a0-6000-7000-8000-000000000061', 'rma_sent', 'Dell RMA #RMA-2026-1234, memory controller fault');
+  ('019644a0-6100-7000-8000-000000000014', '019644a0-6000-7000-8000-000000000061', 'rma_sent', 'Supermicro RMA #RMA-2026-1234, memory controller fault');
 
 -- ============================================================
 -- Logical designs
@@ -217,17 +355,16 @@ INSERT INTO logical_designs (id, name, version, status) VALUES
 -- ============================================================
 INSERT INTO logical_devices (id, logical_design_id, label, role, device_catalog_id) VALUES
   -- AMS-01 design
-  ('019644a0-7100-7000-8000-000000000001', '019644a0-7000-7000-8000-000000000001', 'spine-01', 'spine', '019644a0-4000-7000-8000-000000000004'),
-  ('019644a0-7100-7000-8000-000000000002', '019644a0-7000-7000-8000-000000000001', 'spine-02', 'spine', '019644a0-4000-7000-8000-000000000004'),
-  ('019644a0-7100-7000-8000-000000000003', '019644a0-7000-7000-8000-000000000001', 'tor-a01', 'tor', '019644a0-4000-7000-8000-000000000003'),
-  ('019644a0-7100-7000-8000-000000000004', '019644a0-7000-7000-8000-000000000001', 'tor-a02', 'tor', '019644a0-4000-7000-8000-000000000003'),
-  ('019644a0-7100-7000-8000-000000000005', '019644a0-7000-7000-8000-000000000001', 'compute-01', 'compute', '019644a0-4000-7000-8000-000000000001'),
-  ('019644a0-7100-7000-8000-000000000006', '019644a0-7000-7000-8000-000000000001', 'compute-02', 'compute', '019644a0-4000-7000-8000-000000000001'),
-  ('019644a0-7100-7000-8000-000000000007', '019644a0-7000-7000-8000-000000000001', 'compute-03', 'compute', '019644a0-4000-7000-8000-000000000001'),
-  ('019644a0-7100-7000-8000-000000000008', '019644a0-7000-7000-8000-000000000001', 'compute-04', 'compute', '019644a0-4000-7000-8000-000000000001'),
+  ('019644a0-7100-7000-8000-000000000001', '019644a0-7000-7000-8000-000000000001', 'spine-01', 'spine', '019644a0-4000-7000-8000-00000000001b'),
+  ('019644a0-7100-7000-8000-000000000002', '019644a0-7000-7000-8000-000000000001', 'spine-02', 'spine', '019644a0-4000-7000-8000-00000000001b'),
+  ('019644a0-7100-7000-8000-000000000003', '019644a0-7000-7000-8000-000000000001', 'tor-a01', 'tor', '019644a0-4000-7000-8000-00000000001a'),
+  ('019644a0-7100-7000-8000-000000000004', '019644a0-7000-7000-8000-000000000001', 'tor-a02', 'tor', '019644a0-4000-7000-8000-00000000001a'),
+  ('019644a0-7100-7000-8000-000000000005', '019644a0-7000-7000-8000-000000000001', 'compute-01', 'compute', '019644a0-4000-7000-8000-000000000014'),
+  ('019644a0-7100-7000-8000-000000000006', '019644a0-7000-7000-8000-000000000001', 'compute-02', 'compute', '019644a0-4000-7000-8000-000000000014'),
+  ('019644a0-7100-7000-8000-000000000007', '019644a0-7000-7000-8000-000000000001', 'compute-03', 'compute', '019644a0-4000-7000-8000-000000000014'),
+  ('019644a0-7100-7000-8000-000000000008', '019644a0-7000-7000-8000-000000000001', 'compute-04', 'compute', '019644a0-4000-7000-8000-000000000014'),
   ('019644a0-7100-7000-8000-000000000009', '019644a0-7000-7000-8000-000000000001', 'pdu-a', 'pdu', '019644a0-4000-7000-8000-000000000005'),
-  ('019644a0-7100-7000-8000-00000000000a', '019644a0-7000-7000-8000-000000000001', 'pdu-b', 'pdu', '019644a0-4000-7000-8000-000000000005'),
-  ('019644a0-7100-7000-8000-00000000000b', '019644a0-7000-7000-8000-000000000001', 'console-01', 'console_server', '019644a0-4000-7000-8000-000000000009');
+  ('019644a0-7100-7000-8000-00000000000a', '019644a0-7000-7000-8000-000000000001', 'pdu-b', 'pdu', '019644a0-4000-7000-8000-000000000005');
 
 -- ============================================================
 -- Logical device layouts (positions for UI visualization)
@@ -242,8 +379,7 @@ INSERT INTO logical_device_layouts (id, logical_device_id, position_x, position_
   ('019644a0-7200-7000-8000-000000000007', '019644a0-7100-7000-8000-000000000007', 350, 400),
   ('019644a0-7200-7000-8000-000000000008', '019644a0-7100-7000-8000-000000000008', 500, 400),
   ('019644a0-7200-7000-8000-000000000009', '019644a0-7100-7000-8000-000000000009', 50, 100),
-  ('019644a0-7200-7000-8000-00000000000a', '019644a0-7100-7000-8000-00000000000a', 550, 100),
-  ('019644a0-7200-7000-8000-00000000000b', '019644a0-7100-7000-8000-00000000000b', 300, 550);
+  ('019644a0-7200-7000-8000-00000000000a', '019644a0-7100-7000-8000-00000000000a', 550, 100);
 
 -- ============================================================
 -- Logical connections (leaf-spine fabric links + power)
@@ -268,68 +404,62 @@ INSERT INTO logical_connections (id, logical_design_id, a_logical_device_id, b_l
   -- Power: PDU-B feeds spines and last two computes
   ('019644a0-7300-7000-8000-000000000024', '019644a0-7000-7000-8000-000000000001', '019644a0-7100-7000-8000-00000000000a', '019644a0-7100-7000-8000-000000000002', 'power'),
   ('019644a0-7300-7000-8000-000000000025', '019644a0-7000-7000-8000-000000000001', '019644a0-7100-7000-8000-00000000000a', '019644a0-7100-7000-8000-000000000007', 'power'),
-  ('019644a0-7300-7000-8000-000000000026', '019644a0-7000-7000-8000-000000000001', '019644a0-7100-7000-8000-00000000000a', '019644a0-7100-7000-8000-000000000008', 'power'),
-  -- Console: console server connects to all switches
-  ('019644a0-7300-7000-8000-000000000031', '019644a0-7000-7000-8000-000000000001', '019644a0-7100-7000-8000-00000000000b', '019644a0-7100-7000-8000-000000000001', 'console'),
-  ('019644a0-7300-7000-8000-000000000032', '019644a0-7000-7000-8000-000000000001', '019644a0-7100-7000-8000-00000000000b', '019644a0-7100-7000-8000-000000000002', 'console'),
-  ('019644a0-7300-7000-8000-000000000033', '019644a0-7000-7000-8000-000000000001', '019644a0-7100-7000-8000-00000000000b', '019644a0-7100-7000-8000-000000000003', 'console'),
-  ('019644a0-7300-7000-8000-000000000034', '019644a0-7000-7000-8000-000000000001', '019644a0-7100-7000-8000-00000000000b', '019644a0-7100-7000-8000-000000000004', 'console');
+  ('019644a0-7300-7000-8000-000000000026', '019644a0-7000-7000-8000-000000000001', '019644a0-7100-7000-8000-00000000000a', '019644a0-7100-7000-8000-000000000008', 'power');
 
 -- ============================================================
 -- Placements (physical installation of assets)
 -- ============================================================
 INSERT INTO placements (id, asset_id, rack_id, start_unit, slot_type, parent_placement_id, port_definition_id, logical_device_id) VALUES
-  -- Rack A01: spine-01 at U42, tor-a01 at U41, servers at U1-U4, console at U40
+  -- Rack A01: spine-01 at U42, tor-a01 at U41, servers at U1-U4 (2U each)
   ('019644a0-8000-7000-8000-000000000001', '019644a0-6000-7000-8000-000000000013', '019644a0-3000-7000-8000-000000000001', 42, 'unit', NULL, NULL, '019644a0-7100-7000-8000-000000000001'),
   ('019644a0-8000-7000-8000-000000000002', '019644a0-6000-7000-8000-000000000011', '019644a0-3000-7000-8000-000000000001', 41, 'unit', NULL, NULL, '019644a0-7100-7000-8000-000000000003'),
   ('019644a0-8000-7000-8000-000000000003', '019644a0-6000-7000-8000-000000000001', '019644a0-3000-7000-8000-000000000001', 1, 'unit', NULL, NULL, '019644a0-7100-7000-8000-000000000005'),
-  ('019644a0-8000-7000-8000-000000000004', '019644a0-6000-7000-8000-000000000002', '019644a0-3000-7000-8000-000000000001', 2, 'unit', NULL, NULL, '019644a0-7100-7000-8000-000000000006'),
-  ('019644a0-8000-7000-8000-000000000005', '019644a0-6000-7000-8000-000000000031', '019644a0-3000-7000-8000-000000000001', 40, 'unit', NULL, NULL, '019644a0-7100-7000-8000-00000000000b'),
+  ('019644a0-8000-7000-8000-000000000004', '019644a0-6000-7000-8000-000000000002', '019644a0-3000-7000-8000-000000000001', 3, 'unit', NULL, NULL, '019644a0-7100-7000-8000-000000000006'),
   -- PDUs in A01 (zero-U mount)
   ('019644a0-8000-7000-8000-000000000006', '019644a0-6000-7000-8000-000000000021', '019644a0-3000-7000-8000-000000000001', NULL, 'zero_u', NULL, NULL, '019644a0-7100-7000-8000-000000000009'),
   ('019644a0-8000-7000-8000-000000000007', '019644a0-6000-7000-8000-000000000022', '019644a0-3000-7000-8000-000000000001', NULL, 'zero_u', NULL, NULL, '019644a0-7100-7000-8000-00000000000a'),
 
-  -- Rack A02: spine-02 at U42, tor-a02 at U41, servers at U1-U2
+  -- Rack A02: spine-02 at U42, tor-a02 at U41, servers at U1-U4 (2U each)
   ('019644a0-8000-7000-8000-000000000011', '019644a0-6000-7000-8000-000000000014', '019644a0-3000-7000-8000-000000000002', 42, 'unit', NULL, NULL, '019644a0-7100-7000-8000-000000000002'),
   ('019644a0-8000-7000-8000-000000000012', '019644a0-6000-7000-8000-000000000012', '019644a0-3000-7000-8000-000000000002', 41, 'unit', NULL, NULL, '019644a0-7100-7000-8000-000000000004'),
   ('019644a0-8000-7000-8000-000000000013', '019644a0-6000-7000-8000-000000000003', '019644a0-3000-7000-8000-000000000002', 1, 'unit', NULL, NULL, '019644a0-7100-7000-8000-000000000007'),
-  ('019644a0-8000-7000-8000-000000000014', '019644a0-6000-7000-8000-000000000004', '019644a0-3000-7000-8000-000000000002', 2, 'unit', NULL, NULL, '019644a0-7100-7000-8000-000000000008'),
+  ('019644a0-8000-7000-8000-000000000014', '019644a0-6000-7000-8000-000000000004', '019644a0-3000-7000-8000-000000000002', 3, 'unit', NULL, NULL, '019644a0-7100-7000-8000-000000000008'),
   -- PDUs in A02 (zero-U mount)
   ('019644a0-8000-7000-8000-000000000015', '019644a0-6000-7000-8000-000000000023', '019644a0-3000-7000-8000-000000000002', NULL, 'zero_u', NULL, NULL, NULL),
   ('019644a0-8000-7000-8000-000000000016', '019644a0-6000-7000-8000-000000000024', '019644a0-3000-7000-8000-000000000002', NULL, 'zero_u', NULL, NULL, NULL),
 
-  -- NIC placements (component in server, via port/slot)
-  ('019644a0-8000-7000-8000-000000000021', '019644a0-6000-7000-8000-000000000041', NULL, NULL, NULL, '019644a0-8000-7000-8000-000000000003', '019644a0-5000-7000-8000-000000000002', NULL),
-  ('019644a0-8000-7000-8000-000000000022', '019644a0-6000-7000-8000-000000000042', NULL, NULL, NULL, '019644a0-8000-7000-8000-000000000004', '019644a0-5000-7000-8000-000000000002', NULL),
-  ('019644a0-8000-7000-8000-000000000023', '019644a0-6000-7000-8000-000000000043', NULL, NULL, NULL, '019644a0-8000-7000-8000-000000000013', '019644a0-5000-7000-8000-000000000002', NULL),
-  ('019644a0-8000-7000-8000-000000000024', '019644a0-6000-7000-8000-000000000044', NULL, NULL, NULL, '019644a0-8000-7000-8000-000000000014', '019644a0-5000-7000-8000-000000000002', NULL);
+  -- NIC placements (component in server, via port/slot — SYS-621C-TN12R NIC Slot 1)
+  ('019644a0-8000-7000-8000-000000000021', '019644a0-6000-7000-8000-000000000041', NULL, NULL, NULL, '019644a0-8000-7000-8000-000000000003', '019644a0-5000-7000-8000-000000000141', NULL),
+  ('019644a0-8000-7000-8000-000000000022', '019644a0-6000-7000-8000-000000000042', NULL, NULL, NULL, '019644a0-8000-7000-8000-000000000004', '019644a0-5000-7000-8000-000000000141', NULL),
+  ('019644a0-8000-7000-8000-000000000023', '019644a0-6000-7000-8000-000000000043', NULL, NULL, NULL, '019644a0-8000-7000-8000-000000000013', '019644a0-5000-7000-8000-000000000141', NULL),
+  ('019644a0-8000-7000-8000-000000000024', '019644a0-6000-7000-8000-000000000044', NULL, NULL, NULL, '019644a0-8000-7000-8000-000000000014', '019644a0-5000-7000-8000-000000000141', NULL);
 
 -- ============================================================
 -- Physical connections (cables between devices)
 -- ============================================================
 INSERT INTO physical_connections (id, a_placement_id, a_port_definition_id, b_placement_id, b_port_definition_id, cable_asset_id, logical_connection_id) VALUES
-  -- tor-a01 Eth1 <-> spine-01 Eth1 (DAC cable)
+  -- tor-a01 Eth53 <-> spine-01 Eth1 (DAC cable)
   ('019644a0-9000-7000-8000-000000000001',
-   '019644a0-8000-7000-8000-000000000002', '019644a0-5000-7000-8000-000000000021',
-   '019644a0-8000-7000-8000-000000000001', '019644a0-5000-7000-8000-000000000031',
+   '019644a0-8000-7000-8000-000000000002', '019644a0-5000-7000-8000-0000000001a6',
+   '019644a0-8000-7000-8000-000000000001', '019644a0-5000-7000-8000-0000000001b0',
    '019644a0-6000-7000-8000-000000000051',
    '019644a0-7300-7000-8000-000000000001'),
-  -- tor-a01 Eth2 <-> spine-02 Eth1 (DAC cable)
+  -- tor-a01 Eth54 <-> spine-02 Eth1 (DAC cable)
   ('019644a0-9000-7000-8000-000000000002',
-   '019644a0-8000-7000-8000-000000000002', '019644a0-5000-7000-8000-000000000022',
-   '019644a0-8000-7000-8000-000000000011', '019644a0-5000-7000-8000-000000000031',
+   '019644a0-8000-7000-8000-000000000002', '019644a0-5000-7000-8000-0000000001a7',
+   '019644a0-8000-7000-8000-000000000011', '019644a0-5000-7000-8000-0000000001b0',
    '019644a0-6000-7000-8000-000000000052',
    '019644a0-7300-7000-8000-000000000002'),
-  -- tor-a02 Eth1 <-> spine-01 Eth2 (DAC cable)
+  -- tor-a02 Eth53 <-> spine-01 Eth2 (DAC cable)
   ('019644a0-9000-7000-8000-000000000003',
-   '019644a0-8000-7000-8000-000000000012', '019644a0-5000-7000-8000-000000000021',
-   '019644a0-8000-7000-8000-000000000001', '019644a0-5000-7000-8000-000000000032',
+   '019644a0-8000-7000-8000-000000000012', '019644a0-5000-7000-8000-0000000001a6',
+   '019644a0-8000-7000-8000-000000000001', '019644a0-5000-7000-8000-0000000001b1',
    '019644a0-6000-7000-8000-000000000053',
    '019644a0-7300-7000-8000-000000000003'),
-  -- tor-a02 Eth2 <-> spine-02 Eth2 (DAC cable)
+  -- tor-a02 Eth54 <-> spine-02 Eth2 (DAC cable)
   ('019644a0-9000-7000-8000-000000000004',
-   '019644a0-8000-7000-8000-000000000012', '019644a0-5000-7000-8000-000000000022',
-   '019644a0-8000-7000-8000-000000000011', '019644a0-5000-7000-8000-000000000032',
+   '019644a0-8000-7000-8000-000000000012', '019644a0-5000-7000-8000-0000000001a7',
+   '019644a0-8000-7000-8000-000000000011', '019644a0-5000-7000-8000-0000000001b1',
    '019644a0-6000-7000-8000-000000000054',
    '019644a0-7300-7000-8000-000000000004');
 
@@ -343,10 +473,10 @@ INSERT INTO notes (id, body, rack_id) VALUES
   ('019644a0-a000-7000-8000-000000000002', 'Rack A01 is at full power capacity on PDU-A feed. Do not add more equipment without verifying power budget.', '019644a0-3000-7000-8000-000000000001');
 
 INSERT INTO notes (id, body, asset_id) VALUES
-  ('019644a0-a000-7000-8000-000000000003', 'This server had a BIOS update to v2.8.1 applied on 2025-04-10 to resolve PCIe link training issues with ConnectX-6 NICs.', '019644a0-6000-7000-8000-000000000001');
+  ('019644a0-a000-7000-8000-000000000003', 'This server had a BMC firmware update to v1.4.2 applied on 2025-04-10 to resolve PCIe link training issues with ConnectX-6 NICs.', '019644a0-6000-7000-8000-000000000001');
 
 INSERT INTO notes (id, body, logical_design_id) VALUES
-  ('019644a0-a000-7000-8000-000000000004', 'Leaf-spine design follows Arista validated design guide for 100G fabric. BGP unnumbered on all fabric links.', '019644a0-7000-7000-8000-000000000001');
+  ('019644a0-a000-7000-8000-000000000004', 'Leaf-spine design follows SONiC-based 100G fabric reference architecture. BGP unnumbered on all fabric links.', '019644a0-7000-7000-8000-000000000001');
 
 
 -- ############################################################
