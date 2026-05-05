@@ -3,32 +3,25 @@
 // option features.field_presence = IMPLICIT;
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from '@bufbuild/protobuf/codegenv2';
-import { fileDesc, messageDesc, serviceDesc } from '@bufbuild/protobuf/codegenv2';
-import { file_buf_validate_validate } from '../buf/validate/validate_pb';
-import type { Timestamp } from '@bufbuild/protobuf/wkt';
-import {
-  file_google_protobuf_go_features,
-  file_google_protobuf_timestamp,
-} from '@bufbuild/protobuf/wkt';
-import type { Message } from '@bufbuild/protobuf';
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import { file_buf_validate_validate } from "../buf/validate/validate_pb";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_go_features, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
+import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file v1/connection.proto.
  */
-export const file_v1_connection: GenFile =
-  /*@__PURE__*/
-  fileDesc(
-    'ChN2MS9jb25uZWN0aW9uLnByb3RvEgdkY2ltLnYxIsMCChJQaHlzaWNhbENvbm5lY3Rpb24SCgoCaWQYCiABKAkSGwoTc291cmNlX3BsYWNlbWVudF9pZBgUIAEoCRIYChBzb3VyY2VfcG9ydF9uYW1lGB4gASgJEhsKE3RhcmdldF9wbGFjZW1lbnRfaWQYKCABKAkSGAoQdGFyZ2V0X3BvcnRfbmFtZRgyIAEoCRIdCg5jYWJsZV9hc3NldF9pZBg8IAEoCUIFqgECCAESJAoVbG9naWNhbF9jb25uZWN0aW9uX2lkGEYgASgJQgWqAQIIARINCgVub3RlcxhQIAEoCRIrCgdjcmVhdGVkGFogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCgdkZWxldGVkGGQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIFqgECCAEiiQIKH0NyZWF0ZVBoeXNpY2FsQ29ubmVjdGlvblJlcXVlc3QSJQoTc291cmNlX3BsYWNlbWVudF9pZBgKIAEoCUIIukgFcgOwAQESIQoQc291cmNlX3BvcnRfbmFtZRgUIAEoCUIHukgEcgIQARIlChN0YXJnZXRfcGxhY2VtZW50X2lkGB4gASgJQgi6SAVyA7ABARIhChB0YXJnZXRfcG9ydF9uYW1lGCggASgJQge6SARyAhABEh0KDmNhYmxlX2Fzc2V0X2lkGDIgASgJQgWqAQIIARIkChVsb2dpY2FsX2Nvbm5lY3Rpb25faWQYPCABKAlCBaoBAggBEg0KBW5vdGVzGEYgASgJIlMKIENyZWF0ZVBoeXNpY2FsQ29ubmVjdGlvblJlc3BvbnNlEi8KCmNvbm5lY3Rpb24YCiABKAsyGy5kY2ltLnYxLlBoeXNpY2FsQ29ubmVjdGlvbiI0ChxHZXRQaHlzaWNhbENvbm5lY3Rpb25SZXF1ZXN0EhQKAmlkGAogASgJQgi6SAVyA7ABASJQCh1HZXRQaHlzaWNhbENvbm5lY3Rpb25SZXNwb25zZRIvCgpjb25uZWN0aW9uGAogASgLMhsuZGNpbS52MS5QaHlzaWNhbENvbm5lY3Rpb24ikgEKH1VwZGF0ZVBoeXNpY2FsQ29ubmVjdGlvblJlcXVlc3QSFAoCaWQYCiABKAlCCLpIBXIDsAEBEh0KDmNhYmxlX2Fzc2V0X2lkGBQgASgJQgWqAQIIARIkChVsb2dpY2FsX2Nvbm5lY3Rpb25faWQYHiABKAlCBaoBAggBEhQKBW5vdGVzGCggASgJQgWqAQIIASJTCiBVcGRhdGVQaHlzaWNhbENvbm5lY3Rpb25SZXNwb25zZRIvCgpjb25uZWN0aW9uGAogASgLMhsuZGNpbS52MS5QaHlzaWNhbENvbm5lY3Rpb24iNwofRGVsZXRlUGh5c2ljYWxDb25uZWN0aW9uUmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQEiIgogRGVsZXRlUGh5c2ljYWxDb25uZWN0aW9uUmVzcG9uc2UiQwohTGlzdENvbm5lY3Rpb25zQnlQbGFjZW1lbnRSZXF1ZXN0Eh4KDHBsYWNlbWVudF9pZBgKIAEoCUIIukgFcgOwAQEiVgoiTGlzdENvbm5lY3Rpb25zQnlQbGFjZW1lbnRSZXNwb25zZRIwCgtjb25uZWN0aW9ucxgKIAMoCzIbLmRjaW0udjEuUGh5c2ljYWxDb25uZWN0aW9uMs0EChlQaHlzaWNhbENvbm5lY3Rpb25TZXJ2aWNlEm8KGENyZWF0ZVBoeXNpY2FsQ29ubmVjdGlvbhIoLmRjaW0udjEuQ3JlYXRlUGh5c2ljYWxDb25uZWN0aW9uUmVxdWVzdBopLmRjaW0udjEuQ3JlYXRlUGh5c2ljYWxDb25uZWN0aW9uUmVzcG9uc2USZgoVR2V0UGh5c2ljYWxDb25uZWN0aW9uEiUuZGNpbS52MS5HZXRQaHlzaWNhbENvbm5lY3Rpb25SZXF1ZXN0GiYuZGNpbS52MS5HZXRQaHlzaWNhbENvbm5lY3Rpb25SZXNwb25zZRJvChhVcGRhdGVQaHlzaWNhbENvbm5lY3Rpb24SKC5kY2ltLnYxLlVwZGF0ZVBoeXNpY2FsQ29ubmVjdGlvblJlcXVlc3QaKS5kY2ltLnYxLlVwZGF0ZVBoeXNpY2FsQ29ubmVjdGlvblJlc3BvbnNlEm8KGERlbGV0ZVBoeXNpY2FsQ29ubmVjdGlvbhIoLmRjaW0udjEuRGVsZXRlUGh5c2ljYWxDb25uZWN0aW9uUmVxdWVzdBopLmRjaW0udjEuRGVsZXRlUGh5c2ljYWxDb25uZWN0aW9uUmVzcG9uc2USdQoaTGlzdENvbm5lY3Rpb25zQnlQbGFjZW1lbnQSKi5kY2ltLnYxLkxpc3RDb25uZWN0aW9uc0J5UGxhY2VtZW50UmVxdWVzdBorLmRjaW0udjEuTGlzdENvbm5lY3Rpb25zQnlQbGFjZW1lbnRSZXNwb25zZUJFWjlnaXRodWIuY29tL2Z1bmRhbWVudC1vc3MvZGNpbS9hcGkvcGtnL3Byb3RvL2dlbi92MTtkY2ltdjGSAwcIAtI+AhADYghlZGl0aW9uc3DoBw',
-    [file_buf_validate_validate, file_google_protobuf_go_features, file_google_protobuf_timestamp],
-  );
+export const file_v1_connection: GenFile = /*@__PURE__*/
+  fileDesc("ChN2MS9jb25uZWN0aW9uLnByb3RvEgdkY2ltLnYxIsMCChJQaHlzaWNhbENvbm5lY3Rpb24SCgoCaWQYCiABKAkSGwoTc291cmNlX3BsYWNlbWVudF9pZBgUIAEoCRIYChBzb3VyY2VfcG9ydF9uYW1lGB4gASgJEhsKE3RhcmdldF9wbGFjZW1lbnRfaWQYKCABKAkSGAoQdGFyZ2V0X3BvcnRfbmFtZRgyIAEoCRIdCg5jYWJsZV9hc3NldF9pZBg8IAEoCUIFqgECCAESJAoVbG9naWNhbF9jb25uZWN0aW9uX2lkGEYgASgJQgWqAQIIARINCgVub3RlcxhQIAEoCRIrCgdjcmVhdGVkGFogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCgdkZWxldGVkGGQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIFqgECCAEiiQIKH0NyZWF0ZVBoeXNpY2FsQ29ubmVjdGlvblJlcXVlc3QSJQoTc291cmNlX3BsYWNlbWVudF9pZBgKIAEoCUIIukgFcgOwAQESIQoQc291cmNlX3BvcnRfbmFtZRgUIAEoCUIHukgEcgIQARIlChN0YXJnZXRfcGxhY2VtZW50X2lkGB4gASgJQgi6SAVyA7ABARIhChB0YXJnZXRfcG9ydF9uYW1lGCggASgJQge6SARyAhABEh0KDmNhYmxlX2Fzc2V0X2lkGDIgASgJQgWqAQIIARIkChVsb2dpY2FsX2Nvbm5lY3Rpb25faWQYPCABKAlCBaoBAggBEg0KBW5vdGVzGEYgASgJIlMKIENyZWF0ZVBoeXNpY2FsQ29ubmVjdGlvblJlc3BvbnNlEi8KCmNvbm5lY3Rpb24YCiABKAsyGy5kY2ltLnYxLlBoeXNpY2FsQ29ubmVjdGlvbiI0ChxHZXRQaHlzaWNhbENvbm5lY3Rpb25SZXF1ZXN0EhQKAmlkGAogASgJQgi6SAVyA7ABASJQCh1HZXRQaHlzaWNhbENvbm5lY3Rpb25SZXNwb25zZRIvCgpjb25uZWN0aW9uGAogASgLMhsuZGNpbS52MS5QaHlzaWNhbENvbm5lY3Rpb24ikgEKH1VwZGF0ZVBoeXNpY2FsQ29ubmVjdGlvblJlcXVlc3QSFAoCaWQYCiABKAlCCLpIBXIDsAEBEh0KDmNhYmxlX2Fzc2V0X2lkGBQgASgJQgWqAQIIARIkChVsb2dpY2FsX2Nvbm5lY3Rpb25faWQYHiABKAlCBaoBAggBEhQKBW5vdGVzGCggASgJQgWqAQIIASJTCiBVcGRhdGVQaHlzaWNhbENvbm5lY3Rpb25SZXNwb25zZRIvCgpjb25uZWN0aW9uGAogASgLMhsuZGNpbS52MS5QaHlzaWNhbENvbm5lY3Rpb24iNwofRGVsZXRlUGh5c2ljYWxDb25uZWN0aW9uUmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQEiIgogRGVsZXRlUGh5c2ljYWxDb25uZWN0aW9uUmVzcG9uc2UiQwohTGlzdENvbm5lY3Rpb25zQnlQbGFjZW1lbnRSZXF1ZXN0Eh4KDHBsYWNlbWVudF9pZBgKIAEoCUIIukgFcgOwAQEiVgoiTGlzdENvbm5lY3Rpb25zQnlQbGFjZW1lbnRSZXNwb25zZRIwCgtjb25uZWN0aW9ucxgKIAMoCzIbLmRjaW0udjEuUGh5c2ljYWxDb25uZWN0aW9uMs0EChlQaHlzaWNhbENvbm5lY3Rpb25TZXJ2aWNlEm8KGENyZWF0ZVBoeXNpY2FsQ29ubmVjdGlvbhIoLmRjaW0udjEuQ3JlYXRlUGh5c2ljYWxDb25uZWN0aW9uUmVxdWVzdBopLmRjaW0udjEuQ3JlYXRlUGh5c2ljYWxDb25uZWN0aW9uUmVzcG9uc2USZgoVR2V0UGh5c2ljYWxDb25uZWN0aW9uEiUuZGNpbS52MS5HZXRQaHlzaWNhbENvbm5lY3Rpb25SZXF1ZXN0GiYuZGNpbS52MS5HZXRQaHlzaWNhbENvbm5lY3Rpb25SZXNwb25zZRJvChhVcGRhdGVQaHlzaWNhbENvbm5lY3Rpb24SKC5kY2ltLnYxLlVwZGF0ZVBoeXNpY2FsQ29ubmVjdGlvblJlcXVlc3QaKS5kY2ltLnYxLlVwZGF0ZVBoeXNpY2FsQ29ubmVjdGlvblJlc3BvbnNlEm8KGERlbGV0ZVBoeXNpY2FsQ29ubmVjdGlvbhIoLmRjaW0udjEuRGVsZXRlUGh5c2ljYWxDb25uZWN0aW9uUmVxdWVzdBopLmRjaW0udjEuRGVsZXRlUGh5c2ljYWxDb25uZWN0aW9uUmVzcG9uc2USdQoaTGlzdENvbm5lY3Rpb25zQnlQbGFjZW1lbnQSKi5kY2ltLnYxLkxpc3RDb25uZWN0aW9uc0J5UGxhY2VtZW50UmVxdWVzdBorLmRjaW0udjEuTGlzdENvbm5lY3Rpb25zQnlQbGFjZW1lbnRSZXNwb25zZUJFWjlnaXRodWIuY29tL2Z1bmRhbWVudC1vc3MvZGNpbS9hcGkvcGtnL3Byb3RvL2dlbi92MTtkY2ltdjGSAwcIAtI+AhADYghlZGl0aW9uc3DoBw", [file_buf_validate_validate, file_google_protobuf_go_features, file_google_protobuf_timestamp]);
 
 /**
  * PhysicalConnection records a cable between two placement ports (core.physical_connections).
  *
  * @generated from message dcim.v1.PhysicalConnection
  */
-export type PhysicalConnection = Message<'dcim.v1.PhysicalConnection'> & {
+export type PhysicalConnection = Message<"dcim.v1.PhysicalConnection"> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -88,14 +81,13 @@ export type PhysicalConnection = Message<'dcim.v1.PhysicalConnection'> & {
  * Describes the message dcim.v1.PhysicalConnection.
  * Use `create(PhysicalConnectionSchema)` to create a new message.
  */
-export const PhysicalConnectionSchema: GenMessage<PhysicalConnection> =
-  /*@__PURE__*/
+export const PhysicalConnectionSchema: GenMessage<PhysicalConnection> = /*@__PURE__*/
   messageDesc(file_v1_connection, 0);
 
 /**
  * @generated from message dcim.v1.CreatePhysicalConnectionRequest
  */
-export type CreatePhysicalConnectionRequest = Message<'dcim.v1.CreatePhysicalConnectionRequest'> & {
+export type CreatePhysicalConnectionRequest = Message<"dcim.v1.CreatePhysicalConnectionRequest"> & {
   /**
    * @generated from field: string source_placement_id = 10;
    */
@@ -136,33 +128,30 @@ export type CreatePhysicalConnectionRequest = Message<'dcim.v1.CreatePhysicalCon
  * Describes the message dcim.v1.CreatePhysicalConnectionRequest.
  * Use `create(CreatePhysicalConnectionRequestSchema)` to create a new message.
  */
-export const CreatePhysicalConnectionRequestSchema: GenMessage<CreatePhysicalConnectionRequest> =
-  /*@__PURE__*/
+export const CreatePhysicalConnectionRequestSchema: GenMessage<CreatePhysicalConnectionRequest> = /*@__PURE__*/
   messageDesc(file_v1_connection, 1);
 
 /**
  * @generated from message dcim.v1.CreatePhysicalConnectionResponse
  */
-export type CreatePhysicalConnectionResponse =
-  Message<'dcim.v1.CreatePhysicalConnectionResponse'> & {
-    /**
-     * @generated from field: dcim.v1.PhysicalConnection connection = 10;
-     */
-    connection?: PhysicalConnection;
-  };
+export type CreatePhysicalConnectionResponse = Message<"dcim.v1.CreatePhysicalConnectionResponse"> & {
+  /**
+   * @generated from field: dcim.v1.PhysicalConnection connection = 10;
+   */
+  connection?: PhysicalConnection;
+};
 
 /**
  * Describes the message dcim.v1.CreatePhysicalConnectionResponse.
  * Use `create(CreatePhysicalConnectionResponseSchema)` to create a new message.
  */
-export const CreatePhysicalConnectionResponseSchema: GenMessage<CreatePhysicalConnectionResponse> =
-  /*@__PURE__*/
+export const CreatePhysicalConnectionResponseSchema: GenMessage<CreatePhysicalConnectionResponse> = /*@__PURE__*/
   messageDesc(file_v1_connection, 2);
 
 /**
  * @generated from message dcim.v1.GetPhysicalConnectionRequest
  */
-export type GetPhysicalConnectionRequest = Message<'dcim.v1.GetPhysicalConnectionRequest'> & {
+export type GetPhysicalConnectionRequest = Message<"dcim.v1.GetPhysicalConnectionRequest"> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -173,14 +162,13 @@ export type GetPhysicalConnectionRequest = Message<'dcim.v1.GetPhysicalConnectio
  * Describes the message dcim.v1.GetPhysicalConnectionRequest.
  * Use `create(GetPhysicalConnectionRequestSchema)` to create a new message.
  */
-export const GetPhysicalConnectionRequestSchema: GenMessage<GetPhysicalConnectionRequest> =
-  /*@__PURE__*/
+export const GetPhysicalConnectionRequestSchema: GenMessage<GetPhysicalConnectionRequest> = /*@__PURE__*/
   messageDesc(file_v1_connection, 3);
 
 /**
  * @generated from message dcim.v1.GetPhysicalConnectionResponse
  */
-export type GetPhysicalConnectionResponse = Message<'dcim.v1.GetPhysicalConnectionResponse'> & {
+export type GetPhysicalConnectionResponse = Message<"dcim.v1.GetPhysicalConnectionResponse"> & {
   /**
    * @generated from field: dcim.v1.PhysicalConnection connection = 10;
    */
@@ -191,14 +179,13 @@ export type GetPhysicalConnectionResponse = Message<'dcim.v1.GetPhysicalConnecti
  * Describes the message dcim.v1.GetPhysicalConnectionResponse.
  * Use `create(GetPhysicalConnectionResponseSchema)` to create a new message.
  */
-export const GetPhysicalConnectionResponseSchema: GenMessage<GetPhysicalConnectionResponse> =
-  /*@__PURE__*/
+export const GetPhysicalConnectionResponseSchema: GenMessage<GetPhysicalConnectionResponse> = /*@__PURE__*/
   messageDesc(file_v1_connection, 4);
 
 /**
  * @generated from message dcim.v1.UpdatePhysicalConnectionRequest
  */
-export type UpdatePhysicalConnectionRequest = Message<'dcim.v1.UpdatePhysicalConnectionRequest'> & {
+export type UpdatePhysicalConnectionRequest = Message<"dcim.v1.UpdatePhysicalConnectionRequest"> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -224,33 +211,30 @@ export type UpdatePhysicalConnectionRequest = Message<'dcim.v1.UpdatePhysicalCon
  * Describes the message dcim.v1.UpdatePhysicalConnectionRequest.
  * Use `create(UpdatePhysicalConnectionRequestSchema)` to create a new message.
  */
-export const UpdatePhysicalConnectionRequestSchema: GenMessage<UpdatePhysicalConnectionRequest> =
-  /*@__PURE__*/
+export const UpdatePhysicalConnectionRequestSchema: GenMessage<UpdatePhysicalConnectionRequest> = /*@__PURE__*/
   messageDesc(file_v1_connection, 5);
 
 /**
  * @generated from message dcim.v1.UpdatePhysicalConnectionResponse
  */
-export type UpdatePhysicalConnectionResponse =
-  Message<'dcim.v1.UpdatePhysicalConnectionResponse'> & {
-    /**
-     * @generated from field: dcim.v1.PhysicalConnection connection = 10;
-     */
-    connection?: PhysicalConnection;
-  };
+export type UpdatePhysicalConnectionResponse = Message<"dcim.v1.UpdatePhysicalConnectionResponse"> & {
+  /**
+   * @generated from field: dcim.v1.PhysicalConnection connection = 10;
+   */
+  connection?: PhysicalConnection;
+};
 
 /**
  * Describes the message dcim.v1.UpdatePhysicalConnectionResponse.
  * Use `create(UpdatePhysicalConnectionResponseSchema)` to create a new message.
  */
-export const UpdatePhysicalConnectionResponseSchema: GenMessage<UpdatePhysicalConnectionResponse> =
-  /*@__PURE__*/
+export const UpdatePhysicalConnectionResponseSchema: GenMessage<UpdatePhysicalConnectionResponse> = /*@__PURE__*/
   messageDesc(file_v1_connection, 6);
 
 /**
  * @generated from message dcim.v1.DeletePhysicalConnectionRequest
  */
-export type DeletePhysicalConnectionRequest = Message<'dcim.v1.DeletePhysicalConnectionRequest'> & {
+export type DeletePhysicalConnectionRequest = Message<"dcim.v1.DeletePhysicalConnectionRequest"> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -261,60 +245,54 @@ export type DeletePhysicalConnectionRequest = Message<'dcim.v1.DeletePhysicalCon
  * Describes the message dcim.v1.DeletePhysicalConnectionRequest.
  * Use `create(DeletePhysicalConnectionRequestSchema)` to create a new message.
  */
-export const DeletePhysicalConnectionRequestSchema: GenMessage<DeletePhysicalConnectionRequest> =
-  /*@__PURE__*/
+export const DeletePhysicalConnectionRequestSchema: GenMessage<DeletePhysicalConnectionRequest> = /*@__PURE__*/
   messageDesc(file_v1_connection, 7);
 
 /**
  * @generated from message dcim.v1.DeletePhysicalConnectionResponse
  */
-export type DeletePhysicalConnectionResponse =
-  Message<'dcim.v1.DeletePhysicalConnectionResponse'> & {};
+export type DeletePhysicalConnectionResponse = Message<"dcim.v1.DeletePhysicalConnectionResponse"> & {
+};
 
 /**
  * Describes the message dcim.v1.DeletePhysicalConnectionResponse.
  * Use `create(DeletePhysicalConnectionResponseSchema)` to create a new message.
  */
-export const DeletePhysicalConnectionResponseSchema: GenMessage<DeletePhysicalConnectionResponse> =
-  /*@__PURE__*/
+export const DeletePhysicalConnectionResponseSchema: GenMessage<DeletePhysicalConnectionResponse> = /*@__PURE__*/
   messageDesc(file_v1_connection, 8);
 
 /**
  * @generated from message dcim.v1.ListConnectionsByPlacementRequest
  */
-export type ListConnectionsByPlacementRequest =
-  Message<'dcim.v1.ListConnectionsByPlacementRequest'> & {
-    /**
-     * @generated from field: string placement_id = 10;
-     */
-    placementId: string;
-  };
+export type ListConnectionsByPlacementRequest = Message<"dcim.v1.ListConnectionsByPlacementRequest"> & {
+  /**
+   * @generated from field: string placement_id = 10;
+   */
+  placementId: string;
+};
 
 /**
  * Describes the message dcim.v1.ListConnectionsByPlacementRequest.
  * Use `create(ListConnectionsByPlacementRequestSchema)` to create a new message.
  */
-export const ListConnectionsByPlacementRequestSchema: GenMessage<ListConnectionsByPlacementRequest> =
-  /*@__PURE__*/
+export const ListConnectionsByPlacementRequestSchema: GenMessage<ListConnectionsByPlacementRequest> = /*@__PURE__*/
   messageDesc(file_v1_connection, 9);
 
 /**
  * @generated from message dcim.v1.ListConnectionsByPlacementResponse
  */
-export type ListConnectionsByPlacementResponse =
-  Message<'dcim.v1.ListConnectionsByPlacementResponse'> & {
-    /**
-     * @generated from field: repeated dcim.v1.PhysicalConnection connections = 10;
-     */
-    connections: PhysicalConnection[];
-  };
+export type ListConnectionsByPlacementResponse = Message<"dcim.v1.ListConnectionsByPlacementResponse"> & {
+  /**
+   * @generated from field: repeated dcim.v1.PhysicalConnection connections = 10;
+   */
+  connections: PhysicalConnection[];
+};
 
 /**
  * Describes the message dcim.v1.ListConnectionsByPlacementResponse.
  * Use `create(ListConnectionsByPlacementResponseSchema)` to create a new message.
  */
-export const ListConnectionsByPlacementResponseSchema: GenMessage<ListConnectionsByPlacementResponse> =
-  /*@__PURE__*/
+export const ListConnectionsByPlacementResponseSchema: GenMessage<ListConnectionsByPlacementResponse> = /*@__PURE__*/
   messageDesc(file_v1_connection, 10);
 
 /**
@@ -325,40 +303,42 @@ export const PhysicalConnectionService: GenService<{
    * @generated from rpc dcim.v1.PhysicalConnectionService.CreatePhysicalConnection
    */
   createPhysicalConnection: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof CreatePhysicalConnectionRequestSchema;
     output: typeof CreatePhysicalConnectionResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.PhysicalConnectionService.GetPhysicalConnection
    */
   getPhysicalConnection: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof GetPhysicalConnectionRequestSchema;
     output: typeof GetPhysicalConnectionResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.PhysicalConnectionService.UpdatePhysicalConnection
    */
   updatePhysicalConnection: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof UpdatePhysicalConnectionRequestSchema;
     output: typeof UpdatePhysicalConnectionResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.PhysicalConnectionService.DeletePhysicalConnection
    */
   deletePhysicalConnection: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof DeletePhysicalConnectionRequestSchema;
     output: typeof DeletePhysicalConnectionResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.PhysicalConnectionService.ListConnectionsByPlacement
    */
   listConnectionsByPlacement: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof ListConnectionsByPlacementRequestSchema;
     output: typeof ListConnectionsByPlacementResponseSchema;
-  };
-}> = /*@__PURE__*/ serviceDesc(file_v1_connection, 0);
+  },
+}> = /*@__PURE__*/
+  serviceDesc(file_v1_connection, 0);
+

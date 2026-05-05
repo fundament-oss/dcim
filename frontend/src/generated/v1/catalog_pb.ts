@@ -3,42 +3,29 @@
 // option features.field_presence = IMPLICIT;
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from '@bufbuild/protobuf/codegenv2';
-import { fileDesc, messageDesc, serviceDesc } from '@bufbuild/protobuf/codegenv2';
-import { file_buf_validate_validate } from '../buf/validate/validate_pb';
-import type { Timestamp } from '@bufbuild/protobuf/wkt';
-import {
-  file_google_protobuf_go_features,
-  file_google_protobuf_timestamp,
-} from '@bufbuild/protobuf/wkt';
-import type { Asset } from './asset_pb';
-import { file_v1_asset } from './asset_pb';
-import type { AssetCategory, PortDirection, PortType } from './common_pb';
-import { file_v1_common } from './common_pb';
-import type { Message } from '@bufbuild/protobuf';
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import { file_buf_validate_validate } from "../buf/validate/validate_pb";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_go_features, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
+import type { Asset } from "./asset_pb";
+import { file_v1_asset } from "./asset_pb";
+import type { AssetCategory, PortDirection, PortType } from "./common_pb";
+import { file_v1_common } from "./common_pb";
+import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file v1/catalog.proto.
  */
-export const file_v1_catalog: GenFile =
-  /*@__PURE__*/
-  fileDesc(
-    'ChB2MS9jYXRhbG9nLnByb3RvEgdkY2ltLnYxIpkDCg1EZXZpY2VDYXRhbG9nEgoKAmlkGAogASgJEhQKDG1hbnVmYWN0dXJlchgUIAEoCRINCgVtb2RlbBgeIAEoCRITCgtwYXJ0X251bWJlchgoIAEoCRIoCghjYXRlZ29yeRgyIAEoDjIWLmRjaW0udjEuQXNzZXRDYXRlZ29yeRITCgtmb3JtX2ZhY3Rvchg8IAEoCRIZCgpyYWNrX3VuaXRzGEYgASgFQgWqAQIIARIRCgl3ZWlnaHRfa2cYUCABKAESFAoMcG93ZXJfZHJhd193GFogASgBEjAKBXNwZWNzGGQgAygLMiEuZGNpbS52MS5EZXZpY2VDYXRhbG9nLlNwZWNzRW50cnkSKwoHY3JlYXRlZBhuIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMgoHZGVsZXRlZBh4IAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBaoBAggBGiwKClNwZWNzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASLtAQoOUG9ydERlZmluaXRpb24SCgoCaWQYCiABKAkSGQoRZGV2aWNlX2NhdGFsb2dfaWQYFCABKAkSDAoEbmFtZRgeIAEoCRIkCglwb3J0X3R5cGUYKCABKA4yES5kY2ltLnYxLlBvcnRUeXBlEhIKCm1lZGlhX3R5cGUYMiABKAkSFAoFc3BlZWQYPCABKAlCBaoBAggBEhoKC21heF9wb3dlcl93GEYgASgBQgWqAQIIARIpCglkaXJlY3Rpb24YUCABKA4yFi5kY2ltLnYxLlBvcnREaXJlY3Rpb24SDwoHb3JkaW5hbBhaIAEoBSJdChFQb3J0Q29tcGF0aWJpbGl0eRIaChJwb3J0X2RlZmluaXRpb25faWQYCiABKAkSHQoVY29tcGF0aWJsZV9jYXRhbG9nX2lkGBQgASgJEg0KBW5vdGVzGB4gASgJIlwKEkxpc3RDYXRhbG9nUmVxdWVzdBI2Cg9jYXRlZ29yeV9maWx0ZXIYCiABKA4yFi5kY2ltLnYxLkFzc2V0Q2F0ZWdvcnlCBaoBAggBEg4KBnNlYXJjaBgUIAEoCSLPAQoTTGlzdENhdGFsb2dSZXNwb25zZRI8CgdlbnRyaWVzGAogAygLMisuZGNpbS52MS5MaXN0Q2F0YWxvZ1Jlc3BvbnNlLkNhdGFsb2dTdW1tYXJ5GnoKDkNhdGFsb2dTdW1tYXJ5EiUKBWVudHJ5GAogASgLMhYuZGNpbS52MS5EZXZpY2VDYXRhbG9nEg0KBXRvdGFsGBQgASgFEhAKCGRlcGxveWVkGB4gASgFEhAKCGluX3N0b2NrGCggASgFEg4KBmlzc3VlcxgyIAEoBSIuChZHZXRDYXRhbG9nRW50cnlSZXF1ZXN0EhQKAmlkGAogASgJQgi6SAVyA7ABASJAChdHZXRDYXRhbG9nRW50cnlSZXNwb25zZRIlCgVlbnRyeRgKIAEoCzIWLmRjaW0udjEuRGV2aWNlQ2F0YWxvZyLrAgoZQ3JlYXRlQ2F0YWxvZ0VudHJ5UmVxdWVzdBIdCgxtYW51ZmFjdHVyZXIYCiABKAlCB7pIBHICEAESFgoFbW9kZWwYFCABKAlCB7pIBHICEAESHAoLcGFydF9udW1iZXIYHiABKAlCB7pIBHICEAESNAoIY2F0ZWdvcnkYKCABKA4yFi5kY2ltLnYxLkFzc2V0Q2F0ZWdvcnlCCrpIB4IBBBABIAASEwoLZm9ybV9mYWN0b3IYMiABKAkSGQoKcmFja191bml0cxg8IAEoBUIFqgECCAESEQoJd2VpZ2h0X2tnGEYgASgBEhQKDHBvd2VyX2RyYXdfdxhQIAEoARI8CgVzcGVjcxhaIAMoCzItLmRjaW0udjEuQ3JlYXRlQ2F0YWxvZ0VudHJ5UmVxdWVzdC5TcGVjc0VudHJ5GiwKClNwZWNzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASJDChpDcmVhdGVDYXRhbG9nRW50cnlSZXNwb25zZRIlCgVlbnRyeRgKIAEoCzIWLmRjaW0udjEuRGV2aWNlQ2F0YWxvZyKQAwoZVXBkYXRlQ2F0YWxvZ0VudHJ5UmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQESGwoMbWFudWZhY3R1cmVyGBQgASgJQgWqAQIIARIUCgVtb2RlbBgeIAEoCUIFqgECCAESGgoLcGFydF9udW1iZXIYKCABKAlCBaoBAggBEjQKCGNhdGVnb3J5GDIgASgOMhYuZGNpbS52MS5Bc3NldENhdGVnb3J5Qgq6SAeCAQQQASAAEhoKC2Zvcm1fZmFjdG9yGDwgASgJQgWqAQIIARIZCgpyYWNrX3VuaXRzGEYgASgFQgWqAQIIARIYCgl3ZWlnaHRfa2cYUCABKAFCBaoBAggBEhsKDHBvd2VyX2RyYXdfdxhaIAEoAUIFqgECCAESPAoFc3BlY3MYZCADKAsyLS5kY2ltLnYxLlVwZGF0ZUNhdGFsb2dFbnRyeVJlcXVlc3QuU3BlY3NFbnRyeRosCgpTcGVjc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEiQwoaVXBkYXRlQ2F0YWxvZ0VudHJ5UmVzcG9uc2USJQoFZW50cnkYCiABKAsyFi5kY2ltLnYxLkRldmljZUNhdGFsb2ciMQoZRGVsZXRlQ2F0YWxvZ0VudHJ5UmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQEiHAoaRGVsZXRlQ2F0YWxvZ0VudHJ5UmVzcG9uc2UiRgofTGlzdEFzc2V0c0J5Q2F0YWxvZ0VudHJ5UmVxdWVzdBIjChFkZXZpY2VfY2F0YWxvZ19pZBgKIAEoCUIIukgFcgOwAQEiQgogTGlzdEFzc2V0c0J5Q2F0YWxvZ0VudHJ5UmVzcG9uc2USHgoGYXNzZXRzGAogAygLMg4uZGNpbS52MS5Bc3NldCJBChpMaXN0UG9ydERlZmluaXRpb25zUmVxdWVzdBIjChFkZXZpY2VfY2F0YWxvZ19pZBgKIAEoCUIIukgFcgOwAQEiUAobTGlzdFBvcnREZWZpbml0aW9uc1Jlc3BvbnNlEjEKEHBvcnRfZGVmaW5pdGlvbnMYCiADKAsyFy5kY2ltLnYxLlBvcnREZWZpbml0aW9uIjAKGEdldFBvcnREZWZpbml0aW9uUmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQEiTQoZR2V0UG9ydERlZmluaXRpb25SZXNwb25zZRIwCg9wb3J0X2RlZmluaXRpb24YCiABKAsyFy5kY2ltLnYxLlBvcnREZWZpbml0aW9uIpkCChtDcmVhdGVQb3J0RGVmaW5pdGlvblJlcXVlc3QSIwoRZGV2aWNlX2NhdGFsb2dfaWQYCiABKAlCCLpIBXIDsAEBEhUKBG5hbWUYFCABKAlCB7pIBHICEAESMAoJcG9ydF90eXBlGB4gASgOMhEuZGNpbS52MS5Qb3J0VHlwZUIKukgHggEEEAEgABISCgptZWRpYV90eXBlGCggASgJEhQKBXNwZWVkGDIgASgJQgWqAQIIARIaCgttYXhfcG93ZXJfdxg8IAEoAUIFqgECCAESNQoJZGlyZWN0aW9uGEYgASgOMhYuZGNpbS52MS5Qb3J0RGlyZWN0aW9uQgq6SAeCAQQQASAAEg8KB29yZGluYWwYUCABKAUiUAocQ3JlYXRlUG9ydERlZmluaXRpb25SZXNwb25zZRIwCg9wb3J0X2RlZmluaXRpb24YCiABKAsyFy5kY2ltLnYxLlBvcnREZWZpbml0aW9uIowCChtVcGRhdGVQb3J0RGVmaW5pdGlvblJlcXVlc3QSFAoCaWQYCiABKAlCCLpIBXIDsAEBEhMKBG5hbWUYFCABKAlCBaoBAggBEisKCXBvcnRfdHlwZRgeIAEoDjIRLmRjaW0udjEuUG9ydFR5cGVCBaoBAggBEhkKCm1lZGlhX3R5cGUYKCABKAlCBaoBAggBEhQKBXNwZWVkGDIgASgJQgWqAQIIARIaCgttYXhfcG93ZXJfdxg8IAEoAUIFqgECCAESMAoJZGlyZWN0aW9uGEYgASgOMhYuZGNpbS52MS5Qb3J0RGlyZWN0aW9uQgWqAQIIARIWCgdvcmRpbmFsGFAgASgFQgWqAQIIASJQChxVcGRhdGVQb3J0RGVmaW5pdGlvblJlc3BvbnNlEjAKD3BvcnRfZGVmaW5pdGlvbhgKIAEoCzIXLmRjaW0udjEuUG9ydERlZmluaXRpb24iMwobRGVsZXRlUG9ydERlZmluaXRpb25SZXF1ZXN0EhQKAmlkGAogASgJQgi6SAVyA7ABASIeChxEZWxldGVQb3J0RGVmaW5pdGlvblJlc3BvbnNlIkYKHkxpc3RQb3J0Q29tcGF0aWJpbGl0aWVzUmVxdWVzdBIkChJwb3J0X2RlZmluaXRpb25faWQYCiABKAlCCLpIBXIDsAEBIlYKH0xpc3RQb3J0Q29tcGF0aWJpbGl0aWVzUmVzcG9uc2USMwoPY29tcGF0aWJpbGl0aWVzGAogAygLMhouZGNpbS52MS5Qb3J0Q29tcGF0aWJpbGl0eSJ+Ch5DcmVhdGVQb3J0Q29tcGF0aWJpbGl0eVJlcXVlc3QSJAoScG9ydF9kZWZpbml0aW9uX2lkGAogASgJQgi6SAVyA7ABARInChVjb21wYXRpYmxlX2NhdGFsb2dfaWQYFCABKAlCCLpIBXIDsAEBEg0KBW5vdGVzGB4gASgJIlQKH0NyZWF0ZVBvcnRDb21wYXRpYmlsaXR5UmVzcG9uc2USMQoNY29tcGF0aWJpbGl0eRgKIAEoCzIaLmRjaW0udjEuUG9ydENvbXBhdGliaWxpdHkibwoeRGVsZXRlUG9ydENvbXBhdGliaWxpdHlSZXF1ZXN0EiQKEnBvcnRfZGVmaW5pdGlvbl9pZBgKIAEoCUIIukgFcgOwAQESJwoVY29tcGF0aWJsZV9jYXRhbG9nX2lkGBQgASgJQgi6SAVyA7ABASIhCh9EZWxldGVQb3J0Q29tcGF0aWJpbGl0eVJlc3BvbnNlMvUKCg5DYXRhbG9nU2VydmljZRJICgtMaXN0Q2F0YWxvZxIbLmRjaW0udjEuTGlzdENhdGFsb2dSZXF1ZXN0GhwuZGNpbS52MS5MaXN0Q2F0YWxvZ1Jlc3BvbnNlElQKD0dldENhdGFsb2dFbnRyeRIfLmRjaW0udjEuR2V0Q2F0YWxvZ0VudHJ5UmVxdWVzdBogLmRjaW0udjEuR2V0Q2F0YWxvZ0VudHJ5UmVzcG9uc2USXQoSQ3JlYXRlQ2F0YWxvZ0VudHJ5EiIuZGNpbS52MS5DcmVhdGVDYXRhbG9nRW50cnlSZXF1ZXN0GiMuZGNpbS52MS5DcmVhdGVDYXRhbG9nRW50cnlSZXNwb25zZRJdChJVcGRhdGVDYXRhbG9nRW50cnkSIi5kY2ltLnYxLlVwZGF0ZUNhdGFsb2dFbnRyeVJlcXVlc3QaIy5kY2ltLnYxLlVwZGF0ZUNhdGFsb2dFbnRyeVJlc3BvbnNlEl0KEkRlbGV0ZUNhdGFsb2dFbnRyeRIiLmRjaW0udjEuRGVsZXRlQ2F0YWxvZ0VudHJ5UmVxdWVzdBojLmRjaW0udjEuRGVsZXRlQ2F0YWxvZ0VudHJ5UmVzcG9uc2USbwoYTGlzdEFzc2V0c0J5Q2F0YWxvZ0VudHJ5EiguZGNpbS52MS5MaXN0QXNzZXRzQnlDYXRhbG9nRW50cnlSZXF1ZXN0GikuZGNpbS52MS5MaXN0QXNzZXRzQnlDYXRhbG9nRW50cnlSZXNwb25zZRJgChNMaXN0UG9ydERlZmluaXRpb25zEiMuZGNpbS52MS5MaXN0UG9ydERlZmluaXRpb25zUmVxdWVzdBokLmRjaW0udjEuTGlzdFBvcnREZWZpbml0aW9uc1Jlc3BvbnNlEloKEUdldFBvcnREZWZpbml0aW9uEiEuZGNpbS52MS5HZXRQb3J0RGVmaW5pdGlvblJlcXVlc3QaIi5kY2ltLnYxLkdldFBvcnREZWZpbml0aW9uUmVzcG9uc2USYwoUQ3JlYXRlUG9ydERlZmluaXRpb24SJC5kY2ltLnYxLkNyZWF0ZVBvcnREZWZpbml0aW9uUmVxdWVzdBolLmRjaW0udjEuQ3JlYXRlUG9ydERlZmluaXRpb25SZXNwb25zZRJjChRVcGRhdGVQb3J0RGVmaW5pdGlvbhIkLmRjaW0udjEuVXBkYXRlUG9ydERlZmluaXRpb25SZXF1ZXN0GiUuZGNpbS52MS5VcGRhdGVQb3J0RGVmaW5pdGlvblJlc3BvbnNlEmMKFERlbGV0ZVBvcnREZWZpbml0aW9uEiQuZGNpbS52MS5EZWxldGVQb3J0RGVmaW5pdGlvblJlcXVlc3QaJS5kY2ltLnYxLkRlbGV0ZVBvcnREZWZpbml0aW9uUmVzcG9uc2USbAoXTGlzdFBvcnRDb21wYXRpYmlsaXRpZXMSJy5kY2ltLnYxLkxpc3RQb3J0Q29tcGF0aWJpbGl0aWVzUmVxdWVzdBooLmRjaW0udjEuTGlzdFBvcnRDb21wYXRpYmlsaXRpZXNSZXNwb25zZRJsChdDcmVhdGVQb3J0Q29tcGF0aWJpbGl0eRInLmRjaW0udjEuQ3JlYXRlUG9ydENvbXBhdGliaWxpdHlSZXF1ZXN0GiguZGNpbS52MS5DcmVhdGVQb3J0Q29tcGF0aWJpbGl0eVJlc3BvbnNlEmwKF0RlbGV0ZVBvcnRDb21wYXRpYmlsaXR5EicuZGNpbS52MS5EZWxldGVQb3J0Q29tcGF0aWJpbGl0eVJlcXVlc3QaKC5kY2ltLnYxLkRlbGV0ZVBvcnRDb21wYXRpYmlsaXR5UmVzcG9uc2VCRVo5Z2l0aHViLmNvbS9mdW5kYW1lbnQtb3NzL2RjaW0vYXBpL3BrZy9wcm90by9nZW4vdjE7ZGNpbXYxkgMHCALSPgIQA2IIZWRpdGlvbnNw6Ac',
-    [
-      file_buf_validate_validate,
-      file_google_protobuf_go_features,
-      file_google_protobuf_timestamp,
-      file_v1_asset,
-      file_v1_common,
-    ],
-  );
+export const file_v1_catalog: GenFile = /*@__PURE__*/
+  fileDesc("ChB2MS9jYXRhbG9nLnByb3RvEgdkY2ltLnYxIpkDCg1EZXZpY2VDYXRhbG9nEgoKAmlkGAogASgJEhQKDG1hbnVmYWN0dXJlchgUIAEoCRINCgVtb2RlbBgeIAEoCRITCgtwYXJ0X251bWJlchgoIAEoCRIoCghjYXRlZ29yeRgyIAEoDjIWLmRjaW0udjEuQXNzZXRDYXRlZ29yeRITCgtmb3JtX2ZhY3Rvchg8IAEoCRIZCgpyYWNrX3VuaXRzGEYgASgFQgWqAQIIARIRCgl3ZWlnaHRfa2cYUCABKAESFAoMcG93ZXJfZHJhd193GFogASgBEjAKBXNwZWNzGGQgAygLMiEuZGNpbS52MS5EZXZpY2VDYXRhbG9nLlNwZWNzRW50cnkSKwoHY3JlYXRlZBhuIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMgoHZGVsZXRlZBh4IAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBaoBAggBGiwKClNwZWNzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASLtAQoOUG9ydERlZmluaXRpb24SCgoCaWQYCiABKAkSGQoRZGV2aWNlX2NhdGFsb2dfaWQYFCABKAkSDAoEbmFtZRgeIAEoCRIkCglwb3J0X3R5cGUYKCABKA4yES5kY2ltLnYxLlBvcnRUeXBlEhIKCm1lZGlhX3R5cGUYMiABKAkSFAoFc3BlZWQYPCABKAlCBaoBAggBEhoKC21heF9wb3dlcl93GEYgASgBQgWqAQIIARIpCglkaXJlY3Rpb24YUCABKA4yFi5kY2ltLnYxLlBvcnREaXJlY3Rpb24SDwoHb3JkaW5hbBhaIAEoBSJdChFQb3J0Q29tcGF0aWJpbGl0eRIaChJwb3J0X2RlZmluaXRpb25faWQYCiABKAkSHQoVY29tcGF0aWJsZV9jYXRhbG9nX2lkGBQgASgJEg0KBW5vdGVzGB4gASgJIlwKEkxpc3RDYXRhbG9nUmVxdWVzdBI2Cg9jYXRlZ29yeV9maWx0ZXIYCiABKA4yFi5kY2ltLnYxLkFzc2V0Q2F0ZWdvcnlCBaoBAggBEg4KBnNlYXJjaBgUIAEoCSLPAQoTTGlzdENhdGFsb2dSZXNwb25zZRI8CgdlbnRyaWVzGAogAygLMisuZGNpbS52MS5MaXN0Q2F0YWxvZ1Jlc3BvbnNlLkNhdGFsb2dTdW1tYXJ5GnoKDkNhdGFsb2dTdW1tYXJ5EiUKBWVudHJ5GAogASgLMhYuZGNpbS52MS5EZXZpY2VDYXRhbG9nEg0KBXRvdGFsGBQgASgFEhAKCGRlcGxveWVkGB4gASgFEhAKCGluX3N0b2NrGCggASgFEg4KBmlzc3VlcxgyIAEoBSIuChZHZXRDYXRhbG9nRW50cnlSZXF1ZXN0EhQKAmlkGAogASgJQgi6SAVyA7ABASJAChdHZXRDYXRhbG9nRW50cnlSZXNwb25zZRIlCgVlbnRyeRgKIAEoCzIWLmRjaW0udjEuRGV2aWNlQ2F0YWxvZyLrAgoZQ3JlYXRlQ2F0YWxvZ0VudHJ5UmVxdWVzdBIdCgxtYW51ZmFjdHVyZXIYCiABKAlCB7pIBHICEAESFgoFbW9kZWwYFCABKAlCB7pIBHICEAESHAoLcGFydF9udW1iZXIYHiABKAlCB7pIBHICEAESNAoIY2F0ZWdvcnkYKCABKA4yFi5kY2ltLnYxLkFzc2V0Q2F0ZWdvcnlCCrpIB4IBBBABIAASEwoLZm9ybV9mYWN0b3IYMiABKAkSGQoKcmFja191bml0cxg8IAEoBUIFqgECCAESEQoJd2VpZ2h0X2tnGEYgASgBEhQKDHBvd2VyX2RyYXdfdxhQIAEoARI8CgVzcGVjcxhaIAMoCzItLmRjaW0udjEuQ3JlYXRlQ2F0YWxvZ0VudHJ5UmVxdWVzdC5TcGVjc0VudHJ5GiwKClNwZWNzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASJDChpDcmVhdGVDYXRhbG9nRW50cnlSZXNwb25zZRIlCgVlbnRyeRgKIAEoCzIWLmRjaW0udjEuRGV2aWNlQ2F0YWxvZyKQAwoZVXBkYXRlQ2F0YWxvZ0VudHJ5UmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQESGwoMbWFudWZhY3R1cmVyGBQgASgJQgWqAQIIARIUCgVtb2RlbBgeIAEoCUIFqgECCAESGgoLcGFydF9udW1iZXIYKCABKAlCBaoBAggBEjQKCGNhdGVnb3J5GDIgASgOMhYuZGNpbS52MS5Bc3NldENhdGVnb3J5Qgq6SAeCAQQQASAAEhoKC2Zvcm1fZmFjdG9yGDwgASgJQgWqAQIIARIZCgpyYWNrX3VuaXRzGEYgASgFQgWqAQIIARIYCgl3ZWlnaHRfa2cYUCABKAFCBaoBAggBEhsKDHBvd2VyX2RyYXdfdxhaIAEoAUIFqgECCAESPAoFc3BlY3MYZCADKAsyLS5kY2ltLnYxLlVwZGF0ZUNhdGFsb2dFbnRyeVJlcXVlc3QuU3BlY3NFbnRyeRosCgpTcGVjc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEiQwoaVXBkYXRlQ2F0YWxvZ0VudHJ5UmVzcG9uc2USJQoFZW50cnkYCiABKAsyFi5kY2ltLnYxLkRldmljZUNhdGFsb2ciMQoZRGVsZXRlQ2F0YWxvZ0VudHJ5UmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQEiHAoaRGVsZXRlQ2F0YWxvZ0VudHJ5UmVzcG9uc2UiRgofTGlzdEFzc2V0c0J5Q2F0YWxvZ0VudHJ5UmVxdWVzdBIjChFkZXZpY2VfY2F0YWxvZ19pZBgKIAEoCUIIukgFcgOwAQEiQgogTGlzdEFzc2V0c0J5Q2F0YWxvZ0VudHJ5UmVzcG9uc2USHgoGYXNzZXRzGAogAygLMg4uZGNpbS52MS5Bc3NldCJBChpMaXN0UG9ydERlZmluaXRpb25zUmVxdWVzdBIjChFkZXZpY2VfY2F0YWxvZ19pZBgKIAEoCUIIukgFcgOwAQEiUAobTGlzdFBvcnREZWZpbml0aW9uc1Jlc3BvbnNlEjEKEHBvcnRfZGVmaW5pdGlvbnMYCiADKAsyFy5kY2ltLnYxLlBvcnREZWZpbml0aW9uIjAKGEdldFBvcnREZWZpbml0aW9uUmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQEiTQoZR2V0UG9ydERlZmluaXRpb25SZXNwb25zZRIwCg9wb3J0X2RlZmluaXRpb24YCiABKAsyFy5kY2ltLnYxLlBvcnREZWZpbml0aW9uIpkCChtDcmVhdGVQb3J0RGVmaW5pdGlvblJlcXVlc3QSIwoRZGV2aWNlX2NhdGFsb2dfaWQYCiABKAlCCLpIBXIDsAEBEhUKBG5hbWUYFCABKAlCB7pIBHICEAESMAoJcG9ydF90eXBlGB4gASgOMhEuZGNpbS52MS5Qb3J0VHlwZUIKukgHggEEEAEgABISCgptZWRpYV90eXBlGCggASgJEhQKBXNwZWVkGDIgASgJQgWqAQIIARIaCgttYXhfcG93ZXJfdxg8IAEoAUIFqgECCAESNQoJZGlyZWN0aW9uGEYgASgOMhYuZGNpbS52MS5Qb3J0RGlyZWN0aW9uQgq6SAeCAQQQASAAEg8KB29yZGluYWwYUCABKAUiUAocQ3JlYXRlUG9ydERlZmluaXRpb25SZXNwb25zZRIwCg9wb3J0X2RlZmluaXRpb24YCiABKAsyFy5kY2ltLnYxLlBvcnREZWZpbml0aW9uIowCChtVcGRhdGVQb3J0RGVmaW5pdGlvblJlcXVlc3QSFAoCaWQYCiABKAlCCLpIBXIDsAEBEhMKBG5hbWUYFCABKAlCBaoBAggBEisKCXBvcnRfdHlwZRgeIAEoDjIRLmRjaW0udjEuUG9ydFR5cGVCBaoBAggBEhkKCm1lZGlhX3R5cGUYKCABKAlCBaoBAggBEhQKBXNwZWVkGDIgASgJQgWqAQIIARIaCgttYXhfcG93ZXJfdxg8IAEoAUIFqgECCAESMAoJZGlyZWN0aW9uGEYgASgOMhYuZGNpbS52MS5Qb3J0RGlyZWN0aW9uQgWqAQIIARIWCgdvcmRpbmFsGFAgASgFQgWqAQIIASJQChxVcGRhdGVQb3J0RGVmaW5pdGlvblJlc3BvbnNlEjAKD3BvcnRfZGVmaW5pdGlvbhgKIAEoCzIXLmRjaW0udjEuUG9ydERlZmluaXRpb24iMwobRGVsZXRlUG9ydERlZmluaXRpb25SZXF1ZXN0EhQKAmlkGAogASgJQgi6SAVyA7ABASIeChxEZWxldGVQb3J0RGVmaW5pdGlvblJlc3BvbnNlIkYKHkxpc3RQb3J0Q29tcGF0aWJpbGl0aWVzUmVxdWVzdBIkChJwb3J0X2RlZmluaXRpb25faWQYCiABKAlCCLpIBXIDsAEBIlYKH0xpc3RQb3J0Q29tcGF0aWJpbGl0aWVzUmVzcG9uc2USMwoPY29tcGF0aWJpbGl0aWVzGAogAygLMhouZGNpbS52MS5Qb3J0Q29tcGF0aWJpbGl0eSJ+Ch5DcmVhdGVQb3J0Q29tcGF0aWJpbGl0eVJlcXVlc3QSJAoScG9ydF9kZWZpbml0aW9uX2lkGAogASgJQgi6SAVyA7ABARInChVjb21wYXRpYmxlX2NhdGFsb2dfaWQYFCABKAlCCLpIBXIDsAEBEg0KBW5vdGVzGB4gASgJIlQKH0NyZWF0ZVBvcnRDb21wYXRpYmlsaXR5UmVzcG9uc2USMQoNY29tcGF0aWJpbGl0eRgKIAEoCzIaLmRjaW0udjEuUG9ydENvbXBhdGliaWxpdHkibwoeRGVsZXRlUG9ydENvbXBhdGliaWxpdHlSZXF1ZXN0EiQKEnBvcnRfZGVmaW5pdGlvbl9pZBgKIAEoCUIIukgFcgOwAQESJwoVY29tcGF0aWJsZV9jYXRhbG9nX2lkGBQgASgJQgi6SAVyA7ABASIhCh9EZWxldGVQb3J0Q29tcGF0aWJpbGl0eVJlc3BvbnNlMvUKCg5DYXRhbG9nU2VydmljZRJICgtMaXN0Q2F0YWxvZxIbLmRjaW0udjEuTGlzdENhdGFsb2dSZXF1ZXN0GhwuZGNpbS52MS5MaXN0Q2F0YWxvZ1Jlc3BvbnNlElQKD0dldENhdGFsb2dFbnRyeRIfLmRjaW0udjEuR2V0Q2F0YWxvZ0VudHJ5UmVxdWVzdBogLmRjaW0udjEuR2V0Q2F0YWxvZ0VudHJ5UmVzcG9uc2USXQoSQ3JlYXRlQ2F0YWxvZ0VudHJ5EiIuZGNpbS52MS5DcmVhdGVDYXRhbG9nRW50cnlSZXF1ZXN0GiMuZGNpbS52MS5DcmVhdGVDYXRhbG9nRW50cnlSZXNwb25zZRJdChJVcGRhdGVDYXRhbG9nRW50cnkSIi5kY2ltLnYxLlVwZGF0ZUNhdGFsb2dFbnRyeVJlcXVlc3QaIy5kY2ltLnYxLlVwZGF0ZUNhdGFsb2dFbnRyeVJlc3BvbnNlEl0KEkRlbGV0ZUNhdGFsb2dFbnRyeRIiLmRjaW0udjEuRGVsZXRlQ2F0YWxvZ0VudHJ5UmVxdWVzdBojLmRjaW0udjEuRGVsZXRlQ2F0YWxvZ0VudHJ5UmVzcG9uc2USbwoYTGlzdEFzc2V0c0J5Q2F0YWxvZ0VudHJ5EiguZGNpbS52MS5MaXN0QXNzZXRzQnlDYXRhbG9nRW50cnlSZXF1ZXN0GikuZGNpbS52MS5MaXN0QXNzZXRzQnlDYXRhbG9nRW50cnlSZXNwb25zZRJgChNMaXN0UG9ydERlZmluaXRpb25zEiMuZGNpbS52MS5MaXN0UG9ydERlZmluaXRpb25zUmVxdWVzdBokLmRjaW0udjEuTGlzdFBvcnREZWZpbml0aW9uc1Jlc3BvbnNlEloKEUdldFBvcnREZWZpbml0aW9uEiEuZGNpbS52MS5HZXRQb3J0RGVmaW5pdGlvblJlcXVlc3QaIi5kY2ltLnYxLkdldFBvcnREZWZpbml0aW9uUmVzcG9uc2USYwoUQ3JlYXRlUG9ydERlZmluaXRpb24SJC5kY2ltLnYxLkNyZWF0ZVBvcnREZWZpbml0aW9uUmVxdWVzdBolLmRjaW0udjEuQ3JlYXRlUG9ydERlZmluaXRpb25SZXNwb25zZRJjChRVcGRhdGVQb3J0RGVmaW5pdGlvbhIkLmRjaW0udjEuVXBkYXRlUG9ydERlZmluaXRpb25SZXF1ZXN0GiUuZGNpbS52MS5VcGRhdGVQb3J0RGVmaW5pdGlvblJlc3BvbnNlEmMKFERlbGV0ZVBvcnREZWZpbml0aW9uEiQuZGNpbS52MS5EZWxldGVQb3J0RGVmaW5pdGlvblJlcXVlc3QaJS5kY2ltLnYxLkRlbGV0ZVBvcnREZWZpbml0aW9uUmVzcG9uc2USbAoXTGlzdFBvcnRDb21wYXRpYmlsaXRpZXMSJy5kY2ltLnYxLkxpc3RQb3J0Q29tcGF0aWJpbGl0aWVzUmVxdWVzdBooLmRjaW0udjEuTGlzdFBvcnRDb21wYXRpYmlsaXRpZXNSZXNwb25zZRJsChdDcmVhdGVQb3J0Q29tcGF0aWJpbGl0eRInLmRjaW0udjEuQ3JlYXRlUG9ydENvbXBhdGliaWxpdHlSZXF1ZXN0GiguZGNpbS52MS5DcmVhdGVQb3J0Q29tcGF0aWJpbGl0eVJlc3BvbnNlEmwKF0RlbGV0ZVBvcnRDb21wYXRpYmlsaXR5EicuZGNpbS52MS5EZWxldGVQb3J0Q29tcGF0aWJpbGl0eVJlcXVlc3QaKC5kY2ltLnYxLkRlbGV0ZVBvcnRDb21wYXRpYmlsaXR5UmVzcG9uc2VCRVo5Z2l0aHViLmNvbS9mdW5kYW1lbnQtb3NzL2RjaW0vYXBpL3BrZy9wcm90by9nZW4vdjE7ZGNpbXYxkgMHCALSPgIQA2IIZWRpdGlvbnNw6Ac", [file_buf_validate_validate, file_google_protobuf_go_features, file_google_protobuf_timestamp, file_v1_asset, file_v1_common]);
 
 /**
  * DeviceCatalog is a device type definition (core.device_catalogs).
  *
  * @generated from message dcim.v1.DeviceCatalog
  */
-export type DeviceCatalog = Message<'dcim.v1.DeviceCatalog'> & {
+export type DeviceCatalog = Message<"dcim.v1.DeviceCatalog"> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -106,8 +93,7 @@ export type DeviceCatalog = Message<'dcim.v1.DeviceCatalog'> & {
  * Describes the message dcim.v1.DeviceCatalog.
  * Use `create(DeviceCatalogSchema)` to create a new message.
  */
-export const DeviceCatalogSchema: GenMessage<DeviceCatalog> =
-  /*@__PURE__*/
+export const DeviceCatalogSchema: GenMessage<DeviceCatalog> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 0);
 
 /**
@@ -115,7 +101,7 @@ export const DeviceCatalogSchema: GenMessage<DeviceCatalog> =
  *
  * @generated from message dcim.v1.PortDefinition
  */
-export type PortDefinition = Message<'dcim.v1.PortDefinition'> & {
+export type PortDefinition = Message<"dcim.v1.PortDefinition"> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -170,8 +156,7 @@ export type PortDefinition = Message<'dcim.v1.PortDefinition'> & {
  * Describes the message dcim.v1.PortDefinition.
  * Use `create(PortDefinitionSchema)` to create a new message.
  */
-export const PortDefinitionSchema: GenMessage<PortDefinition> =
-  /*@__PURE__*/
+export const PortDefinitionSchema: GenMessage<PortDefinition> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 1);
 
 /**
@@ -179,7 +164,7 @@ export const PortDefinitionSchema: GenMessage<PortDefinition> =
  *
  * @generated from message dcim.v1.PortCompatibility
  */
-export type PortCompatibility = Message<'dcim.v1.PortCompatibility'> & {
+export type PortCompatibility = Message<"dcim.v1.PortCompatibility"> & {
   /**
    * @generated from field: string port_definition_id = 10;
    */
@@ -200,14 +185,13 @@ export type PortCompatibility = Message<'dcim.v1.PortCompatibility'> & {
  * Describes the message dcim.v1.PortCompatibility.
  * Use `create(PortCompatibilitySchema)` to create a new message.
  */
-export const PortCompatibilitySchema: GenMessage<PortCompatibility> =
-  /*@__PURE__*/
+export const PortCompatibilitySchema: GenMessage<PortCompatibility> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 2);
 
 /**
  * @generated from message dcim.v1.ListCatalogRequest
  */
-export type ListCatalogRequest = Message<'dcim.v1.ListCatalogRequest'> & {
+export type ListCatalogRequest = Message<"dcim.v1.ListCatalogRequest"> & {
   /**
    * @generated from field: dcim.v1.AssetCategory category_filter = 10 [features.field_presence = EXPLICIT];
    */
@@ -223,14 +207,13 @@ export type ListCatalogRequest = Message<'dcim.v1.ListCatalogRequest'> & {
  * Describes the message dcim.v1.ListCatalogRequest.
  * Use `create(ListCatalogRequestSchema)` to create a new message.
  */
-export const ListCatalogRequestSchema: GenMessage<ListCatalogRequest> =
-  /*@__PURE__*/
+export const ListCatalogRequestSchema: GenMessage<ListCatalogRequest> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 3);
 
 /**
  * @generated from message dcim.v1.ListCatalogResponse
  */
-export type ListCatalogResponse = Message<'dcim.v1.ListCatalogResponse'> & {
+export type ListCatalogResponse = Message<"dcim.v1.ListCatalogResponse"> & {
   /**
    * @generated from field: repeated dcim.v1.ListCatalogResponse.CatalogSummary entries = 10;
    */
@@ -241,53 +224,50 @@ export type ListCatalogResponse = Message<'dcim.v1.ListCatalogResponse'> & {
  * Describes the message dcim.v1.ListCatalogResponse.
  * Use `create(ListCatalogResponseSchema)` to create a new message.
  */
-export const ListCatalogResponseSchema: GenMessage<ListCatalogResponse> =
-  /*@__PURE__*/
+export const ListCatalogResponseSchema: GenMessage<ListCatalogResponse> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 4);
 
 /**
  * @generated from message dcim.v1.ListCatalogResponse.CatalogSummary
  */
-export type ListCatalogResponse_CatalogSummary =
-  Message<'dcim.v1.ListCatalogResponse.CatalogSummary'> & {
-    /**
-     * @generated from field: dcim.v1.DeviceCatalog entry = 10;
-     */
-    entry?: DeviceCatalog;
+export type ListCatalogResponse_CatalogSummary = Message<"dcim.v1.ListCatalogResponse.CatalogSummary"> & {
+  /**
+   * @generated from field: dcim.v1.DeviceCatalog entry = 10;
+   */
+  entry?: DeviceCatalog;
 
-    /**
-     * @generated from field: int32 total = 20;
-     */
-    total: number;
+  /**
+   * @generated from field: int32 total = 20;
+   */
+  total: number;
 
-    /**
-     * @generated from field: int32 deployed = 30;
-     */
-    deployed: number;
+  /**
+   * @generated from field: int32 deployed = 30;
+   */
+  deployed: number;
 
-    /**
-     * @generated from field: int32 in_stock = 40;
-     */
-    inStock: number;
+  /**
+   * @generated from field: int32 in_stock = 40;
+   */
+  inStock: number;
 
-    /**
-     * @generated from field: int32 issues = 50;
-     */
-    issues: number;
-  };
+  /**
+   * @generated from field: int32 issues = 50;
+   */
+  issues: number;
+};
 
 /**
  * Describes the message dcim.v1.ListCatalogResponse.CatalogSummary.
  * Use `create(ListCatalogResponse_CatalogSummarySchema)` to create a new message.
  */
-export const ListCatalogResponse_CatalogSummarySchema: GenMessage<ListCatalogResponse_CatalogSummary> =
-  /*@__PURE__*/
+export const ListCatalogResponse_CatalogSummarySchema: GenMessage<ListCatalogResponse_CatalogSummary> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 4, 0);
 
 /**
  * @generated from message dcim.v1.GetCatalogEntryRequest
  */
-export type GetCatalogEntryRequest = Message<'dcim.v1.GetCatalogEntryRequest'> & {
+export type GetCatalogEntryRequest = Message<"dcim.v1.GetCatalogEntryRequest"> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -298,14 +278,13 @@ export type GetCatalogEntryRequest = Message<'dcim.v1.GetCatalogEntryRequest'> &
  * Describes the message dcim.v1.GetCatalogEntryRequest.
  * Use `create(GetCatalogEntryRequestSchema)` to create a new message.
  */
-export const GetCatalogEntryRequestSchema: GenMessage<GetCatalogEntryRequest> =
-  /*@__PURE__*/
+export const GetCatalogEntryRequestSchema: GenMessage<GetCatalogEntryRequest> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 5);
 
 /**
  * @generated from message dcim.v1.GetCatalogEntryResponse
  */
-export type GetCatalogEntryResponse = Message<'dcim.v1.GetCatalogEntryResponse'> & {
+export type GetCatalogEntryResponse = Message<"dcim.v1.GetCatalogEntryResponse"> & {
   /**
    * @generated from field: dcim.v1.DeviceCatalog entry = 10;
    */
@@ -316,14 +295,13 @@ export type GetCatalogEntryResponse = Message<'dcim.v1.GetCatalogEntryResponse'>
  * Describes the message dcim.v1.GetCatalogEntryResponse.
  * Use `create(GetCatalogEntryResponseSchema)` to create a new message.
  */
-export const GetCatalogEntryResponseSchema: GenMessage<GetCatalogEntryResponse> =
-  /*@__PURE__*/
+export const GetCatalogEntryResponseSchema: GenMessage<GetCatalogEntryResponse> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 6);
 
 /**
  * @generated from message dcim.v1.CreateCatalogEntryRequest
  */
-export type CreateCatalogEntryRequest = Message<'dcim.v1.CreateCatalogEntryRequest'> & {
+export type CreateCatalogEntryRequest = Message<"dcim.v1.CreateCatalogEntryRequest"> & {
   /**
    * @generated from field: string manufacturer = 10;
    */
@@ -374,14 +352,13 @@ export type CreateCatalogEntryRequest = Message<'dcim.v1.CreateCatalogEntryReque
  * Describes the message dcim.v1.CreateCatalogEntryRequest.
  * Use `create(CreateCatalogEntryRequestSchema)` to create a new message.
  */
-export const CreateCatalogEntryRequestSchema: GenMessage<CreateCatalogEntryRequest> =
-  /*@__PURE__*/
+export const CreateCatalogEntryRequestSchema: GenMessage<CreateCatalogEntryRequest> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 7);
 
 /**
  * @generated from message dcim.v1.CreateCatalogEntryResponse
  */
-export type CreateCatalogEntryResponse = Message<'dcim.v1.CreateCatalogEntryResponse'> & {
+export type CreateCatalogEntryResponse = Message<"dcim.v1.CreateCatalogEntryResponse"> & {
   /**
    * @generated from field: dcim.v1.DeviceCatalog entry = 10;
    */
@@ -392,14 +369,13 @@ export type CreateCatalogEntryResponse = Message<'dcim.v1.CreateCatalogEntryResp
  * Describes the message dcim.v1.CreateCatalogEntryResponse.
  * Use `create(CreateCatalogEntryResponseSchema)` to create a new message.
  */
-export const CreateCatalogEntryResponseSchema: GenMessage<CreateCatalogEntryResponse> =
-  /*@__PURE__*/
+export const CreateCatalogEntryResponseSchema: GenMessage<CreateCatalogEntryResponse> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 8);
 
 /**
  * @generated from message dcim.v1.UpdateCatalogEntryRequest
  */
-export type UpdateCatalogEntryRequest = Message<'dcim.v1.UpdateCatalogEntryRequest'> & {
+export type UpdateCatalogEntryRequest = Message<"dcim.v1.UpdateCatalogEntryRequest"> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -455,14 +431,13 @@ export type UpdateCatalogEntryRequest = Message<'dcim.v1.UpdateCatalogEntryReque
  * Describes the message dcim.v1.UpdateCatalogEntryRequest.
  * Use `create(UpdateCatalogEntryRequestSchema)` to create a new message.
  */
-export const UpdateCatalogEntryRequestSchema: GenMessage<UpdateCatalogEntryRequest> =
-  /*@__PURE__*/
+export const UpdateCatalogEntryRequestSchema: GenMessage<UpdateCatalogEntryRequest> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 9);
 
 /**
  * @generated from message dcim.v1.UpdateCatalogEntryResponse
  */
-export type UpdateCatalogEntryResponse = Message<'dcim.v1.UpdateCatalogEntryResponse'> & {
+export type UpdateCatalogEntryResponse = Message<"dcim.v1.UpdateCatalogEntryResponse"> & {
   /**
    * @generated from field: dcim.v1.DeviceCatalog entry = 10;
    */
@@ -473,14 +448,13 @@ export type UpdateCatalogEntryResponse = Message<'dcim.v1.UpdateCatalogEntryResp
  * Describes the message dcim.v1.UpdateCatalogEntryResponse.
  * Use `create(UpdateCatalogEntryResponseSchema)` to create a new message.
  */
-export const UpdateCatalogEntryResponseSchema: GenMessage<UpdateCatalogEntryResponse> =
-  /*@__PURE__*/
+export const UpdateCatalogEntryResponseSchema: GenMessage<UpdateCatalogEntryResponse> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 10);
 
 /**
  * @generated from message dcim.v1.DeleteCatalogEntryRequest
  */
-export type DeleteCatalogEntryRequest = Message<'dcim.v1.DeleteCatalogEntryRequest'> & {
+export type DeleteCatalogEntryRequest = Message<"dcim.v1.DeleteCatalogEntryRequest"> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -491,27 +465,26 @@ export type DeleteCatalogEntryRequest = Message<'dcim.v1.DeleteCatalogEntryReque
  * Describes the message dcim.v1.DeleteCatalogEntryRequest.
  * Use `create(DeleteCatalogEntryRequestSchema)` to create a new message.
  */
-export const DeleteCatalogEntryRequestSchema: GenMessage<DeleteCatalogEntryRequest> =
-  /*@__PURE__*/
+export const DeleteCatalogEntryRequestSchema: GenMessage<DeleteCatalogEntryRequest> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 11);
 
 /**
  * @generated from message dcim.v1.DeleteCatalogEntryResponse
  */
-export type DeleteCatalogEntryResponse = Message<'dcim.v1.DeleteCatalogEntryResponse'> & {};
+export type DeleteCatalogEntryResponse = Message<"dcim.v1.DeleteCatalogEntryResponse"> & {
+};
 
 /**
  * Describes the message dcim.v1.DeleteCatalogEntryResponse.
  * Use `create(DeleteCatalogEntryResponseSchema)` to create a new message.
  */
-export const DeleteCatalogEntryResponseSchema: GenMessage<DeleteCatalogEntryResponse> =
-  /*@__PURE__*/
+export const DeleteCatalogEntryResponseSchema: GenMessage<DeleteCatalogEntryResponse> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 12);
 
 /**
  * @generated from message dcim.v1.ListAssetsByCatalogEntryRequest
  */
-export type ListAssetsByCatalogEntryRequest = Message<'dcim.v1.ListAssetsByCatalogEntryRequest'> & {
+export type ListAssetsByCatalogEntryRequest = Message<"dcim.v1.ListAssetsByCatalogEntryRequest"> & {
   /**
    * @generated from field: string device_catalog_id = 10;
    */
@@ -522,33 +495,30 @@ export type ListAssetsByCatalogEntryRequest = Message<'dcim.v1.ListAssetsByCatal
  * Describes the message dcim.v1.ListAssetsByCatalogEntryRequest.
  * Use `create(ListAssetsByCatalogEntryRequestSchema)` to create a new message.
  */
-export const ListAssetsByCatalogEntryRequestSchema: GenMessage<ListAssetsByCatalogEntryRequest> =
-  /*@__PURE__*/
+export const ListAssetsByCatalogEntryRequestSchema: GenMessage<ListAssetsByCatalogEntryRequest> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 13);
 
 /**
  * @generated from message dcim.v1.ListAssetsByCatalogEntryResponse
  */
-export type ListAssetsByCatalogEntryResponse =
-  Message<'dcim.v1.ListAssetsByCatalogEntryResponse'> & {
-    /**
-     * @generated from field: repeated dcim.v1.Asset assets = 10;
-     */
-    assets: Asset[];
-  };
+export type ListAssetsByCatalogEntryResponse = Message<"dcim.v1.ListAssetsByCatalogEntryResponse"> & {
+  /**
+   * @generated from field: repeated dcim.v1.Asset assets = 10;
+   */
+  assets: Asset[];
+};
 
 /**
  * Describes the message dcim.v1.ListAssetsByCatalogEntryResponse.
  * Use `create(ListAssetsByCatalogEntryResponseSchema)` to create a new message.
  */
-export const ListAssetsByCatalogEntryResponseSchema: GenMessage<ListAssetsByCatalogEntryResponse> =
-  /*@__PURE__*/
+export const ListAssetsByCatalogEntryResponseSchema: GenMessage<ListAssetsByCatalogEntryResponse> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 14);
 
 /**
  * @generated from message dcim.v1.ListPortDefinitionsRequest
  */
-export type ListPortDefinitionsRequest = Message<'dcim.v1.ListPortDefinitionsRequest'> & {
+export type ListPortDefinitionsRequest = Message<"dcim.v1.ListPortDefinitionsRequest"> & {
   /**
    * @generated from field: string device_catalog_id = 10;
    */
@@ -559,14 +529,13 @@ export type ListPortDefinitionsRequest = Message<'dcim.v1.ListPortDefinitionsReq
  * Describes the message dcim.v1.ListPortDefinitionsRequest.
  * Use `create(ListPortDefinitionsRequestSchema)` to create a new message.
  */
-export const ListPortDefinitionsRequestSchema: GenMessage<ListPortDefinitionsRequest> =
-  /*@__PURE__*/
+export const ListPortDefinitionsRequestSchema: GenMessage<ListPortDefinitionsRequest> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 15);
 
 /**
  * @generated from message dcim.v1.ListPortDefinitionsResponse
  */
-export type ListPortDefinitionsResponse = Message<'dcim.v1.ListPortDefinitionsResponse'> & {
+export type ListPortDefinitionsResponse = Message<"dcim.v1.ListPortDefinitionsResponse"> & {
   /**
    * @generated from field: repeated dcim.v1.PortDefinition port_definitions = 10;
    */
@@ -577,14 +546,13 @@ export type ListPortDefinitionsResponse = Message<'dcim.v1.ListPortDefinitionsRe
  * Describes the message dcim.v1.ListPortDefinitionsResponse.
  * Use `create(ListPortDefinitionsResponseSchema)` to create a new message.
  */
-export const ListPortDefinitionsResponseSchema: GenMessage<ListPortDefinitionsResponse> =
-  /*@__PURE__*/
+export const ListPortDefinitionsResponseSchema: GenMessage<ListPortDefinitionsResponse> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 16);
 
 /**
  * @generated from message dcim.v1.GetPortDefinitionRequest
  */
-export type GetPortDefinitionRequest = Message<'dcim.v1.GetPortDefinitionRequest'> & {
+export type GetPortDefinitionRequest = Message<"dcim.v1.GetPortDefinitionRequest"> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -595,14 +563,13 @@ export type GetPortDefinitionRequest = Message<'dcim.v1.GetPortDefinitionRequest
  * Describes the message dcim.v1.GetPortDefinitionRequest.
  * Use `create(GetPortDefinitionRequestSchema)` to create a new message.
  */
-export const GetPortDefinitionRequestSchema: GenMessage<GetPortDefinitionRequest> =
-  /*@__PURE__*/
+export const GetPortDefinitionRequestSchema: GenMessage<GetPortDefinitionRequest> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 17);
 
 /**
  * @generated from message dcim.v1.GetPortDefinitionResponse
  */
-export type GetPortDefinitionResponse = Message<'dcim.v1.GetPortDefinitionResponse'> & {
+export type GetPortDefinitionResponse = Message<"dcim.v1.GetPortDefinitionResponse"> & {
   /**
    * @generated from field: dcim.v1.PortDefinition port_definition = 10;
    */
@@ -613,14 +580,13 @@ export type GetPortDefinitionResponse = Message<'dcim.v1.GetPortDefinitionRespon
  * Describes the message dcim.v1.GetPortDefinitionResponse.
  * Use `create(GetPortDefinitionResponseSchema)` to create a new message.
  */
-export const GetPortDefinitionResponseSchema: GenMessage<GetPortDefinitionResponse> =
-  /*@__PURE__*/
+export const GetPortDefinitionResponseSchema: GenMessage<GetPortDefinitionResponse> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 18);
 
 /**
  * @generated from message dcim.v1.CreatePortDefinitionRequest
  */
-export type CreatePortDefinitionRequest = Message<'dcim.v1.CreatePortDefinitionRequest'> & {
+export type CreatePortDefinitionRequest = Message<"dcim.v1.CreatePortDefinitionRequest"> & {
   /**
    * @generated from field: string device_catalog_id = 10;
    */
@@ -666,14 +632,13 @@ export type CreatePortDefinitionRequest = Message<'dcim.v1.CreatePortDefinitionR
  * Describes the message dcim.v1.CreatePortDefinitionRequest.
  * Use `create(CreatePortDefinitionRequestSchema)` to create a new message.
  */
-export const CreatePortDefinitionRequestSchema: GenMessage<CreatePortDefinitionRequest> =
-  /*@__PURE__*/
+export const CreatePortDefinitionRequestSchema: GenMessage<CreatePortDefinitionRequest> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 19);
 
 /**
  * @generated from message dcim.v1.CreatePortDefinitionResponse
  */
-export type CreatePortDefinitionResponse = Message<'dcim.v1.CreatePortDefinitionResponse'> & {
+export type CreatePortDefinitionResponse = Message<"dcim.v1.CreatePortDefinitionResponse"> & {
   /**
    * @generated from field: dcim.v1.PortDefinition port_definition = 10;
    */
@@ -684,14 +649,13 @@ export type CreatePortDefinitionResponse = Message<'dcim.v1.CreatePortDefinition
  * Describes the message dcim.v1.CreatePortDefinitionResponse.
  * Use `create(CreatePortDefinitionResponseSchema)` to create a new message.
  */
-export const CreatePortDefinitionResponseSchema: GenMessage<CreatePortDefinitionResponse> =
-  /*@__PURE__*/
+export const CreatePortDefinitionResponseSchema: GenMessage<CreatePortDefinitionResponse> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 20);
 
 /**
  * @generated from message dcim.v1.UpdatePortDefinitionRequest
  */
-export type UpdatePortDefinitionRequest = Message<'dcim.v1.UpdatePortDefinitionRequest'> & {
+export type UpdatePortDefinitionRequest = Message<"dcim.v1.UpdatePortDefinitionRequest"> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -737,14 +701,13 @@ export type UpdatePortDefinitionRequest = Message<'dcim.v1.UpdatePortDefinitionR
  * Describes the message dcim.v1.UpdatePortDefinitionRequest.
  * Use `create(UpdatePortDefinitionRequestSchema)` to create a new message.
  */
-export const UpdatePortDefinitionRequestSchema: GenMessage<UpdatePortDefinitionRequest> =
-  /*@__PURE__*/
+export const UpdatePortDefinitionRequestSchema: GenMessage<UpdatePortDefinitionRequest> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 21);
 
 /**
  * @generated from message dcim.v1.UpdatePortDefinitionResponse
  */
-export type UpdatePortDefinitionResponse = Message<'dcim.v1.UpdatePortDefinitionResponse'> & {
+export type UpdatePortDefinitionResponse = Message<"dcim.v1.UpdatePortDefinitionResponse"> & {
   /**
    * @generated from field: dcim.v1.PortDefinition port_definition = 10;
    */
@@ -755,14 +718,13 @@ export type UpdatePortDefinitionResponse = Message<'dcim.v1.UpdatePortDefinition
  * Describes the message dcim.v1.UpdatePortDefinitionResponse.
  * Use `create(UpdatePortDefinitionResponseSchema)` to create a new message.
  */
-export const UpdatePortDefinitionResponseSchema: GenMessage<UpdatePortDefinitionResponse> =
-  /*@__PURE__*/
+export const UpdatePortDefinitionResponseSchema: GenMessage<UpdatePortDefinitionResponse> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 22);
 
 /**
  * @generated from message dcim.v1.DeletePortDefinitionRequest
  */
-export type DeletePortDefinitionRequest = Message<'dcim.v1.DeletePortDefinitionRequest'> & {
+export type DeletePortDefinitionRequest = Message<"dcim.v1.DeletePortDefinitionRequest"> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -773,27 +735,26 @@ export type DeletePortDefinitionRequest = Message<'dcim.v1.DeletePortDefinitionR
  * Describes the message dcim.v1.DeletePortDefinitionRequest.
  * Use `create(DeletePortDefinitionRequestSchema)` to create a new message.
  */
-export const DeletePortDefinitionRequestSchema: GenMessage<DeletePortDefinitionRequest> =
-  /*@__PURE__*/
+export const DeletePortDefinitionRequestSchema: GenMessage<DeletePortDefinitionRequest> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 23);
 
 /**
  * @generated from message dcim.v1.DeletePortDefinitionResponse
  */
-export type DeletePortDefinitionResponse = Message<'dcim.v1.DeletePortDefinitionResponse'> & {};
+export type DeletePortDefinitionResponse = Message<"dcim.v1.DeletePortDefinitionResponse"> & {
+};
 
 /**
  * Describes the message dcim.v1.DeletePortDefinitionResponse.
  * Use `create(DeletePortDefinitionResponseSchema)` to create a new message.
  */
-export const DeletePortDefinitionResponseSchema: GenMessage<DeletePortDefinitionResponse> =
-  /*@__PURE__*/
+export const DeletePortDefinitionResponseSchema: GenMessage<DeletePortDefinitionResponse> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 24);
 
 /**
  * @generated from message dcim.v1.ListPortCompatibilitiesRequest
  */
-export type ListPortCompatibilitiesRequest = Message<'dcim.v1.ListPortCompatibilitiesRequest'> & {
+export type ListPortCompatibilitiesRequest = Message<"dcim.v1.ListPortCompatibilitiesRequest"> & {
   /**
    * @generated from field: string port_definition_id = 10;
    */
@@ -804,14 +765,13 @@ export type ListPortCompatibilitiesRequest = Message<'dcim.v1.ListPortCompatibil
  * Describes the message dcim.v1.ListPortCompatibilitiesRequest.
  * Use `create(ListPortCompatibilitiesRequestSchema)` to create a new message.
  */
-export const ListPortCompatibilitiesRequestSchema: GenMessage<ListPortCompatibilitiesRequest> =
-  /*@__PURE__*/
+export const ListPortCompatibilitiesRequestSchema: GenMessage<ListPortCompatibilitiesRequest> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 25);
 
 /**
  * @generated from message dcim.v1.ListPortCompatibilitiesResponse
  */
-export type ListPortCompatibilitiesResponse = Message<'dcim.v1.ListPortCompatibilitiesResponse'> & {
+export type ListPortCompatibilitiesResponse = Message<"dcim.v1.ListPortCompatibilitiesResponse"> & {
   /**
    * @generated from field: repeated dcim.v1.PortCompatibility compatibilities = 10;
    */
@@ -822,14 +782,13 @@ export type ListPortCompatibilitiesResponse = Message<'dcim.v1.ListPortCompatibi
  * Describes the message dcim.v1.ListPortCompatibilitiesResponse.
  * Use `create(ListPortCompatibilitiesResponseSchema)` to create a new message.
  */
-export const ListPortCompatibilitiesResponseSchema: GenMessage<ListPortCompatibilitiesResponse> =
-  /*@__PURE__*/
+export const ListPortCompatibilitiesResponseSchema: GenMessage<ListPortCompatibilitiesResponse> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 26);
 
 /**
  * @generated from message dcim.v1.CreatePortCompatibilityRequest
  */
-export type CreatePortCompatibilityRequest = Message<'dcim.v1.CreatePortCompatibilityRequest'> & {
+export type CreatePortCompatibilityRequest = Message<"dcim.v1.CreatePortCompatibilityRequest"> & {
   /**
    * @generated from field: string port_definition_id = 10;
    */
@@ -850,14 +809,13 @@ export type CreatePortCompatibilityRequest = Message<'dcim.v1.CreatePortCompatib
  * Describes the message dcim.v1.CreatePortCompatibilityRequest.
  * Use `create(CreatePortCompatibilityRequestSchema)` to create a new message.
  */
-export const CreatePortCompatibilityRequestSchema: GenMessage<CreatePortCompatibilityRequest> =
-  /*@__PURE__*/
+export const CreatePortCompatibilityRequestSchema: GenMessage<CreatePortCompatibilityRequest> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 27);
 
 /**
  * @generated from message dcim.v1.CreatePortCompatibilityResponse
  */
-export type CreatePortCompatibilityResponse = Message<'dcim.v1.CreatePortCompatibilityResponse'> & {
+export type CreatePortCompatibilityResponse = Message<"dcim.v1.CreatePortCompatibilityResponse"> & {
   /**
    * @generated from field: dcim.v1.PortCompatibility compatibility = 10;
    */
@@ -868,14 +826,13 @@ export type CreatePortCompatibilityResponse = Message<'dcim.v1.CreatePortCompati
  * Describes the message dcim.v1.CreatePortCompatibilityResponse.
  * Use `create(CreatePortCompatibilityResponseSchema)` to create a new message.
  */
-export const CreatePortCompatibilityResponseSchema: GenMessage<CreatePortCompatibilityResponse> =
-  /*@__PURE__*/
+export const CreatePortCompatibilityResponseSchema: GenMessage<CreatePortCompatibilityResponse> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 28);
 
 /**
  * @generated from message dcim.v1.DeletePortCompatibilityRequest
  */
-export type DeletePortCompatibilityRequest = Message<'dcim.v1.DeletePortCompatibilityRequest'> & {
+export type DeletePortCompatibilityRequest = Message<"dcim.v1.DeletePortCompatibilityRequest"> & {
   /**
    * @generated from field: string port_definition_id = 10;
    */
@@ -891,22 +848,20 @@ export type DeletePortCompatibilityRequest = Message<'dcim.v1.DeletePortCompatib
  * Describes the message dcim.v1.DeletePortCompatibilityRequest.
  * Use `create(DeletePortCompatibilityRequestSchema)` to create a new message.
  */
-export const DeletePortCompatibilityRequestSchema: GenMessage<DeletePortCompatibilityRequest> =
-  /*@__PURE__*/
+export const DeletePortCompatibilityRequestSchema: GenMessage<DeletePortCompatibilityRequest> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 29);
 
 /**
  * @generated from message dcim.v1.DeletePortCompatibilityResponse
  */
-export type DeletePortCompatibilityResponse =
-  Message<'dcim.v1.DeletePortCompatibilityResponse'> & {};
+export type DeletePortCompatibilityResponse = Message<"dcim.v1.DeletePortCompatibilityResponse"> & {
+};
 
 /**
  * Describes the message dcim.v1.DeletePortCompatibilityResponse.
  * Use `create(DeletePortCompatibilityResponseSchema)` to create a new message.
  */
-export const DeletePortCompatibilityResponseSchema: GenMessage<DeletePortCompatibilityResponse> =
-  /*@__PURE__*/
+export const DeletePortCompatibilityResponseSchema: GenMessage<DeletePortCompatibilityResponse> = /*@__PURE__*/
   messageDesc(file_v1_catalog, 30);
 
 /**
@@ -919,116 +874,118 @@ export const CatalogService: GenService<{
    * @generated from rpc dcim.v1.CatalogService.ListCatalog
    */
   listCatalog: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof ListCatalogRequestSchema;
     output: typeof ListCatalogResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.CatalogService.GetCatalogEntry
    */
   getCatalogEntry: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof GetCatalogEntryRequestSchema;
     output: typeof GetCatalogEntryResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.CatalogService.CreateCatalogEntry
    */
   createCatalogEntry: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof CreateCatalogEntryRequestSchema;
     output: typeof CreateCatalogEntryResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.CatalogService.UpdateCatalogEntry
    */
   updateCatalogEntry: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof UpdateCatalogEntryRequestSchema;
     output: typeof UpdateCatalogEntryResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.CatalogService.DeleteCatalogEntry
    */
   deleteCatalogEntry: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof DeleteCatalogEntryRequestSchema;
     output: typeof DeleteCatalogEntryResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.CatalogService.ListAssetsByCatalogEntry
    */
   listAssetsByCatalogEntry: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof ListAssetsByCatalogEntryRequestSchema;
     output: typeof ListAssetsByCatalogEntryResponseSchema;
-  };
+  },
   /**
    * Port definitions
    *
    * @generated from rpc dcim.v1.CatalogService.ListPortDefinitions
    */
   listPortDefinitions: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof ListPortDefinitionsRequestSchema;
     output: typeof ListPortDefinitionsResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.CatalogService.GetPortDefinition
    */
   getPortDefinition: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof GetPortDefinitionRequestSchema;
     output: typeof GetPortDefinitionResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.CatalogService.CreatePortDefinition
    */
   createPortDefinition: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof CreatePortDefinitionRequestSchema;
     output: typeof CreatePortDefinitionResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.CatalogService.UpdatePortDefinition
    */
   updatePortDefinition: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof UpdatePortDefinitionRequestSchema;
     output: typeof UpdatePortDefinitionResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.CatalogService.DeletePortDefinition
    */
   deletePortDefinition: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof DeletePortDefinitionRequestSchema;
     output: typeof DeletePortDefinitionResponseSchema;
-  };
+  },
   /**
    * Port compatibilities
    *
    * @generated from rpc dcim.v1.CatalogService.ListPortCompatibilities
    */
   listPortCompatibilities: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof ListPortCompatibilitiesRequestSchema;
     output: typeof ListPortCompatibilitiesResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.CatalogService.CreatePortCompatibility
    */
   createPortCompatibility: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof CreatePortCompatibilityRequestSchema;
     output: typeof CreatePortCompatibilityResponseSchema;
-  };
+  },
   /**
    * @generated from rpc dcim.v1.CatalogService.DeletePortCompatibility
    */
   deletePortCompatibility: {
-    methodKind: 'unary';
+    methodKind: "unary";
     input: typeof DeletePortCompatibilityRequestSchema;
     output: typeof DeletePortCompatibilityResponseSchema;
-  };
-}> = /*@__PURE__*/ serviceDesc(file_v1_catalog, 0);
+  },
+}> = /*@__PURE__*/
+  serviceDesc(file_v1_catalog, 0);
+

@@ -21,9 +21,9 @@ import (
 )
 
 type config struct {
-	Database   psqldb.Config
-	ListenAddr string `env:"LISTEN_ADDR" envDefault:":8080"`
-	LogLevel   string `env:"LOG_LEVEL" envDefault:"info"`
+	Database           psqldb.Config
+	ListenAddr         string `env:"LISTEN_ADDR" envDefault:":8080"`
+	LogLevel           string `env:"LOG_LEVEL" envDefault:"info"`
 	CORSAllowedOrigins string `env:"CORS_ALLOWED_ORIGINS"`
 }
 
