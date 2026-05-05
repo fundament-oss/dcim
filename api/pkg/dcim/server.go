@@ -8,19 +8,25 @@ import (
 	"connectrpc.com/connect"
 	"connectrpc.com/grpcreflect"
 	"connectrpc.com/validate"
+	db "github.com/fundament-oss/dcim/api/pkg/db/gen"
 	"github.com/fundament-oss/dcim/api/pkg/proto/gen/v1/dcimv1connect"
 	"github.com/fundament-oss/fundament/common/connectrecovery"
+	"github.com/fundament-oss/fundament/common/psqldb"
 	"github.com/svrana/go-connect-middleware/interceptors/logging"
 )
 
 type Server struct {
 	logger  *slog.Logger
+	db      *psqldb.DB
+	queries *db.Queries
 	handler http.Handler
 }
 
-func New(logger *slog.Logger) *Server {
+func New(logger *slog.Logger, database *psqldb.DB) *Server {
 	s := &Server{
-		logger: logger,
+		logger:  logger,
+		db:      database,
+		queries: db.New(database.Pool),
 	}
 
 	mux := http.NewServeMux()

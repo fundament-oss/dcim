@@ -12,21 +12,28 @@ import (
 
 	"github.com/caarlos0/env/v11"
 	"github.com/fundament-oss/dcim/api/pkg/dcim"
+	"github.com/fundament-oss/fundament/common/psqldb"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
 
 type config struct {
-	DatabaseURL string `env:"DATABASE_URL,required"`
-	ListenAddr  string `env:"LISTEN_ADDR" envDefault:":8080"`
-	LogLevel    string `env:"LOG_LEVEL" envDefault:"info"`
+	Database   psqldb.Config
+	ListenAddr string `env:"LISTEN_ADDR" envDefault:":8080"`
+	LogLevel   string `env:"LOG_LEVEL" envDefault:"info"`
 }
 
 func main() {
+	if err := run(); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
+}
+
+func run() error {
 	cfg, err := env.ParseAs[config]()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "config: %v\n", err)
-		os.Exit(1)
+		return fmt.Errorf("config: %w", err)
 	}
 
 	level := slog.LevelInfo
@@ -34,7 +41,15 @@ func main() {
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: level}))
 	slog.SetDefault(logger)
 
-	server := dcim.New(logger)
+	ctx := context.Background()
+
+	database, err := psqldb.New(ctx, logger, cfg.Database)
+	if err != nil {
+		return fmt.Errorf("database: %w", err)
+	}
+	defer database.Close()
+
+	server := dcim.New(logger, database)
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /livez", func(w http.ResponseWriter, _ *http.Request) {
@@ -67,4 +82,6 @@ func main() {
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	_ = srv.Shutdown(shutdownCtx)
+
+	return nil
 }
