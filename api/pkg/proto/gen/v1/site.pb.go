@@ -807,10 +807,10 @@ func (b0 CreateSiteRequest_builder) Build() *CreateSiteRequest {
 }
 
 type CreateSiteResponse struct {
-	state           protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Site *Site                  `protobuf:"bytes,10,opt,name=site"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	state             protoimpl.MessageState `protogen:"opaque.v1"`
+	xxx_hidden_SiteId string                 `protobuf:"bytes,10,opt,name=site_id,json=siteId"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
 }
 
 func (x *CreateSiteResponse) Reset() {
@@ -838,39 +838,28 @@ func (x *CreateSiteResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *CreateSiteResponse) GetSite() *Site {
+func (x *CreateSiteResponse) GetSiteId() string {
 	if x != nil {
-		return x.xxx_hidden_Site
+		return x.xxx_hidden_SiteId
 	}
-	return nil
+	return ""
 }
 
-func (x *CreateSiteResponse) SetSite(v *Site) {
-	x.xxx_hidden_Site = v
-}
-
-func (x *CreateSiteResponse) HasSite() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_Site != nil
-}
-
-func (x *CreateSiteResponse) ClearSite() {
-	x.xxx_hidden_Site = nil
+func (x *CreateSiteResponse) SetSiteId(v string) {
+	x.xxx_hidden_SiteId = v
 }
 
 type CreateSiteResponse_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Site *Site
+	SiteId string
 }
 
 func (b0 CreateSiteResponse_builder) Build() *CreateSiteResponse {
 	m0 := &CreateSiteResponse{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_Site = b.Site
+	x.xxx_hidden_SiteId = b.SiteId
 	return m0
 }
 
@@ -1000,10 +989,9 @@ func (b0 UpdateSiteRequest_builder) Build() *UpdateSiteRequest {
 }
 
 type UpdateSiteResponse struct {
-	state           protoimpl.MessageState `protogen:"opaque.v1"`
-	xxx_hidden_Site *Site                  `protobuf:"bytes,10,opt,name=site"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"opaque.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UpdateSiteResponse) Reset() {
@@ -1031,39 +1019,15 @@ func (x *UpdateSiteResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-func (x *UpdateSiteResponse) GetSite() *Site {
-	if x != nil {
-		return x.xxx_hidden_Site
-	}
-	return nil
-}
-
-func (x *UpdateSiteResponse) SetSite(v *Site) {
-	x.xxx_hidden_Site = v
-}
-
-func (x *UpdateSiteResponse) HasSite() bool {
-	if x == nil {
-		return false
-	}
-	return x.xxx_hidden_Site != nil
-}
-
-func (x *UpdateSiteResponse) ClearSite() {
-	x.xxx_hidden_Site = nil
-}
-
 type UpdateSiteResponse_builder struct {
 	_ [0]func() // Prevents comparability and use of unkeyed literals for the builder.
 
-	Site *Site
 }
 
 func (b0 UpdateSiteResponse_builder) Build() *UpdateSiteResponse {
 	m0 := &UpdateSiteResponse{}
 	b, x := &b0, m0
 	_, _ = b, x
-	x.xxx_hidden_Site = b.Site
 	return m0
 }
 
@@ -2702,18 +2666,16 @@ const file_v1_site_proto_rawDesc = "" +
 	"\x11CreateSiteRequest\x12\x1b\n" +
 	"\x04name\x18\n" +
 	" \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x04name\x12\x18\n" +
-	"\aaddress\x18\x14 \x01(\tR\aaddress\"7\n" +
-	"\x12CreateSiteResponse\x12!\n" +
-	"\x04site\x18\n" +
-	" \x01(\v2\r.dcim.v1.SiteR\x04site\"i\n" +
+	"\aaddress\x18\x14 \x01(\tR\aaddress\"-\n" +
+	"\x12CreateSiteResponse\x12\x17\n" +
+	"\asite_id\x18\n" +
+	" \x01(\tR\x06siteId\"i\n" +
 	"\x11UpdateSiteRequest\x12\x18\n" +
 	"\x02id\x18\n" +
 	" \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\x12\x19\n" +
 	"\x04name\x18\x14 \x01(\tB\x05\xaa\x01\x02\b\x01R\x04name\x12\x1f\n" +
-	"\aaddress\x18\x1e \x01(\tB\x05\xaa\x01\x02\b\x01R\aaddress\"7\n" +
-	"\x12UpdateSiteResponse\x12!\n" +
-	"\x04site\x18\n" +
-	" \x01(\v2\r.dcim.v1.SiteR\x04site\"-\n" +
+	"\aaddress\x18\x1e \x01(\tB\x05\xaa\x01\x02\b\x01R\aaddress\"\x14\n" +
+	"\x12UpdateSiteResponse\"-\n" +
 	"\x11DeleteSiteRequest\x12\x18\n" +
 	"\x02id\x18\n" +
 	" \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"\x14\n" +
@@ -2860,51 +2822,49 @@ var file_v1_site_proto_depIdxs = []int32{
 	33, // 5: dcim.v1.RackRow.deleted:type_name -> google.protobuf.Timestamp
 	0,  // 6: dcim.v1.ListSitesResponse.sites:type_name -> dcim.v1.Site
 	0,  // 7: dcim.v1.GetSiteResponse.site:type_name -> dcim.v1.Site
-	0,  // 8: dcim.v1.CreateSiteResponse.site:type_name -> dcim.v1.Site
-	0,  // 9: dcim.v1.UpdateSiteResponse.site:type_name -> dcim.v1.Site
-	1,  // 10: dcim.v1.ListRoomsResponse.rooms:type_name -> dcim.v1.Room
-	1,  // 11: dcim.v1.GetRoomResponse.room:type_name -> dcim.v1.Room
-	1,  // 12: dcim.v1.CreateRoomResponse.room:type_name -> dcim.v1.Room
-	1,  // 13: dcim.v1.UpdateRoomResponse.room:type_name -> dcim.v1.Room
-	2,  // 14: dcim.v1.ListRackRowsResponse.rack_rows:type_name -> dcim.v1.RackRow
-	2,  // 15: dcim.v1.GetRackRowResponse.rack_row:type_name -> dcim.v1.RackRow
-	2,  // 16: dcim.v1.CreateRackRowResponse.rack_row:type_name -> dcim.v1.RackRow
-	2,  // 17: dcim.v1.UpdateRackRowResponse.rack_row:type_name -> dcim.v1.RackRow
-	3,  // 18: dcim.v1.SiteService.ListSites:input_type -> dcim.v1.ListSitesRequest
-	5,  // 19: dcim.v1.SiteService.GetSite:input_type -> dcim.v1.GetSiteRequest
-	7,  // 20: dcim.v1.SiteService.CreateSite:input_type -> dcim.v1.CreateSiteRequest
-	9,  // 21: dcim.v1.SiteService.UpdateSite:input_type -> dcim.v1.UpdateSiteRequest
-	11, // 22: dcim.v1.SiteService.DeleteSite:input_type -> dcim.v1.DeleteSiteRequest
-	13, // 23: dcim.v1.RoomService.ListRooms:input_type -> dcim.v1.ListRoomsRequest
-	15, // 24: dcim.v1.RoomService.GetRoom:input_type -> dcim.v1.GetRoomRequest
-	17, // 25: dcim.v1.RoomService.CreateRoom:input_type -> dcim.v1.CreateRoomRequest
-	19, // 26: dcim.v1.RoomService.UpdateRoom:input_type -> dcim.v1.UpdateRoomRequest
-	21, // 27: dcim.v1.RoomService.DeleteRoom:input_type -> dcim.v1.DeleteRoomRequest
-	23, // 28: dcim.v1.RackRowService.ListRackRows:input_type -> dcim.v1.ListRackRowsRequest
-	25, // 29: dcim.v1.RackRowService.GetRackRow:input_type -> dcim.v1.GetRackRowRequest
-	27, // 30: dcim.v1.RackRowService.CreateRackRow:input_type -> dcim.v1.CreateRackRowRequest
-	29, // 31: dcim.v1.RackRowService.UpdateRackRow:input_type -> dcim.v1.UpdateRackRowRequest
-	31, // 32: dcim.v1.RackRowService.DeleteRackRow:input_type -> dcim.v1.DeleteRackRowRequest
-	4,  // 33: dcim.v1.SiteService.ListSites:output_type -> dcim.v1.ListSitesResponse
-	6,  // 34: dcim.v1.SiteService.GetSite:output_type -> dcim.v1.GetSiteResponse
-	8,  // 35: dcim.v1.SiteService.CreateSite:output_type -> dcim.v1.CreateSiteResponse
-	10, // 36: dcim.v1.SiteService.UpdateSite:output_type -> dcim.v1.UpdateSiteResponse
-	12, // 37: dcim.v1.SiteService.DeleteSite:output_type -> dcim.v1.DeleteSiteResponse
-	14, // 38: dcim.v1.RoomService.ListRooms:output_type -> dcim.v1.ListRoomsResponse
-	16, // 39: dcim.v1.RoomService.GetRoom:output_type -> dcim.v1.GetRoomResponse
-	18, // 40: dcim.v1.RoomService.CreateRoom:output_type -> dcim.v1.CreateRoomResponse
-	20, // 41: dcim.v1.RoomService.UpdateRoom:output_type -> dcim.v1.UpdateRoomResponse
-	22, // 42: dcim.v1.RoomService.DeleteRoom:output_type -> dcim.v1.DeleteRoomResponse
-	24, // 43: dcim.v1.RackRowService.ListRackRows:output_type -> dcim.v1.ListRackRowsResponse
-	26, // 44: dcim.v1.RackRowService.GetRackRow:output_type -> dcim.v1.GetRackRowResponse
-	28, // 45: dcim.v1.RackRowService.CreateRackRow:output_type -> dcim.v1.CreateRackRowResponse
-	30, // 46: dcim.v1.RackRowService.UpdateRackRow:output_type -> dcim.v1.UpdateRackRowResponse
-	32, // 47: dcim.v1.RackRowService.DeleteRackRow:output_type -> dcim.v1.DeleteRackRowResponse
-	33, // [33:48] is the sub-list for method output_type
-	18, // [18:33] is the sub-list for method input_type
-	18, // [18:18] is the sub-list for extension type_name
-	18, // [18:18] is the sub-list for extension extendee
-	0,  // [0:18] is the sub-list for field type_name
+	1,  // 8: dcim.v1.ListRoomsResponse.rooms:type_name -> dcim.v1.Room
+	1,  // 9: dcim.v1.GetRoomResponse.room:type_name -> dcim.v1.Room
+	1,  // 10: dcim.v1.CreateRoomResponse.room:type_name -> dcim.v1.Room
+	1,  // 11: dcim.v1.UpdateRoomResponse.room:type_name -> dcim.v1.Room
+	2,  // 12: dcim.v1.ListRackRowsResponse.rack_rows:type_name -> dcim.v1.RackRow
+	2,  // 13: dcim.v1.GetRackRowResponse.rack_row:type_name -> dcim.v1.RackRow
+	2,  // 14: dcim.v1.CreateRackRowResponse.rack_row:type_name -> dcim.v1.RackRow
+	2,  // 15: dcim.v1.UpdateRackRowResponse.rack_row:type_name -> dcim.v1.RackRow
+	3,  // 16: dcim.v1.SiteService.ListSites:input_type -> dcim.v1.ListSitesRequest
+	5,  // 17: dcim.v1.SiteService.GetSite:input_type -> dcim.v1.GetSiteRequest
+	7,  // 18: dcim.v1.SiteService.CreateSite:input_type -> dcim.v1.CreateSiteRequest
+	9,  // 19: dcim.v1.SiteService.UpdateSite:input_type -> dcim.v1.UpdateSiteRequest
+	11, // 20: dcim.v1.SiteService.DeleteSite:input_type -> dcim.v1.DeleteSiteRequest
+	13, // 21: dcim.v1.RoomService.ListRooms:input_type -> dcim.v1.ListRoomsRequest
+	15, // 22: dcim.v1.RoomService.GetRoom:input_type -> dcim.v1.GetRoomRequest
+	17, // 23: dcim.v1.RoomService.CreateRoom:input_type -> dcim.v1.CreateRoomRequest
+	19, // 24: dcim.v1.RoomService.UpdateRoom:input_type -> dcim.v1.UpdateRoomRequest
+	21, // 25: dcim.v1.RoomService.DeleteRoom:input_type -> dcim.v1.DeleteRoomRequest
+	23, // 26: dcim.v1.RackRowService.ListRackRows:input_type -> dcim.v1.ListRackRowsRequest
+	25, // 27: dcim.v1.RackRowService.GetRackRow:input_type -> dcim.v1.GetRackRowRequest
+	27, // 28: dcim.v1.RackRowService.CreateRackRow:input_type -> dcim.v1.CreateRackRowRequest
+	29, // 29: dcim.v1.RackRowService.UpdateRackRow:input_type -> dcim.v1.UpdateRackRowRequest
+	31, // 30: dcim.v1.RackRowService.DeleteRackRow:input_type -> dcim.v1.DeleteRackRowRequest
+	4,  // 31: dcim.v1.SiteService.ListSites:output_type -> dcim.v1.ListSitesResponse
+	6,  // 32: dcim.v1.SiteService.GetSite:output_type -> dcim.v1.GetSiteResponse
+	8,  // 33: dcim.v1.SiteService.CreateSite:output_type -> dcim.v1.CreateSiteResponse
+	10, // 34: dcim.v1.SiteService.UpdateSite:output_type -> dcim.v1.UpdateSiteResponse
+	12, // 35: dcim.v1.SiteService.DeleteSite:output_type -> dcim.v1.DeleteSiteResponse
+	14, // 36: dcim.v1.RoomService.ListRooms:output_type -> dcim.v1.ListRoomsResponse
+	16, // 37: dcim.v1.RoomService.GetRoom:output_type -> dcim.v1.GetRoomResponse
+	18, // 38: dcim.v1.RoomService.CreateRoom:output_type -> dcim.v1.CreateRoomResponse
+	20, // 39: dcim.v1.RoomService.UpdateRoom:output_type -> dcim.v1.UpdateRoomResponse
+	22, // 40: dcim.v1.RoomService.DeleteRoom:output_type -> dcim.v1.DeleteRoomResponse
+	24, // 41: dcim.v1.RackRowService.ListRackRows:output_type -> dcim.v1.ListRackRowsResponse
+	26, // 42: dcim.v1.RackRowService.GetRackRow:output_type -> dcim.v1.GetRackRowResponse
+	28, // 43: dcim.v1.RackRowService.CreateRackRow:output_type -> dcim.v1.CreateRackRowResponse
+	30, // 44: dcim.v1.RackRowService.UpdateRackRow:output_type -> dcim.v1.UpdateRackRowResponse
+	32, // 45: dcim.v1.RackRowService.DeleteRackRow:output_type -> dcim.v1.DeleteRackRowResponse
+	31, // [31:46] is the sub-list for method output_type
+	16, // [16:31] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_v1_site_proto_init() }

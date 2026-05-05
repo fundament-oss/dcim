@@ -4,4 +4,5 @@ WORKDIR /src
 COPY go.mod go.sum ./
 RUN go mod download
 COPY api/ ./api/
+COPY common/ ./common/
 CMD ["air", "-c", "api/hotreload/.air.toml"]

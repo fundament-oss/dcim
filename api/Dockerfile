@@ -3,6 +3,7 @@ WORKDIR /build
 COPY go.mod go.sum ./
 RUN go mod download
 COPY api/ ./api/
+COPY common/ ./common/
 RUN CGO_ENABLED=0 go build -o /build/bin/api ./api/cmd/api
 
 FROM scratch

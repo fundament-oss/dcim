@@ -71,7 +71,7 @@ message CreateSiteRequest {
 }
 
 message CreateSiteResponse {
-  Site site = 10;
+  string site_id = 10;
 }
 
 message UpdateSiteRequest {
@@ -80,9 +80,7 @@ message UpdateSiteRequest {
   string address = 30 [features.field_presence = EXPLICIT];
 }
 
-message UpdateSiteResponse {
-  Site site = 10;
-}
+message UpdateSiteResponse {}
 
 message DeleteSiteRequest {
   string id = 10 [(buf.validate.field).string = {uuid: true}];

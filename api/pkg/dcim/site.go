@@ -7,26 +7,6 @@ import (
 	dcimv1 "github.com/fundament-oss/dcim/api/pkg/proto/gen/v1"
 )
 
-func (s *Server) ListSites(ctx context.Context, req *connect.Request[dcimv1.ListSitesRequest]) (*connect.Response[dcimv1.ListSitesResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, nil)
-}
-
-func (s *Server) GetSite(ctx context.Context, req *connect.Request[dcimv1.GetSiteRequest]) (*connect.Response[dcimv1.GetSiteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, nil)
-}
-
-func (s *Server) CreateSite(ctx context.Context, req *connect.Request[dcimv1.CreateSiteRequest]) (*connect.Response[dcimv1.CreateSiteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, nil)
-}
-
-func (s *Server) UpdateSite(ctx context.Context, req *connect.Request[dcimv1.UpdateSiteRequest]) (*connect.Response[dcimv1.UpdateSiteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, nil)
-}
-
-func (s *Server) DeleteSite(ctx context.Context, req *connect.Request[dcimv1.DeleteSiteRequest]) (*connect.Response[dcimv1.DeleteSiteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, nil)
-}
-
 func (s *Server) ListRooms(ctx context.Context, req *connect.Request[dcimv1.ListRoomsRequest]) (*connect.Response[dcimv1.ListRoomsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, nil)
 }
