@@ -454,7 +454,7 @@ export default class DatacentersComponent implements OnInit {
     } else {
       firstValueFrom(this.dcApi.createSite(updated.name, updated.address))
         .then((res) => {
-          const created = { ...updated, id: res.site?.id ?? updated.id };
+          const created = { ...updated, id: res.siteId || updated.id };
           this.mutableDcs.update((list) => [...list, created]);
           this.selectedDcId.set(created.id);
           this.editForm.set(null);
