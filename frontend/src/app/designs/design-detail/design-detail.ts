@@ -5,10 +5,12 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   effect,
   inject,
+  OnInit,
   signal,
   viewChild,
 } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import DesignFlowWrapperComponent from '../design-flow-wrapper';
 import {
   LogicalConnection,
@@ -17,12 +19,14 @@ import {
   LogicalDevice,
   LogicalDeviceLayout,
   LogicalDeviceRole,
-  MOCK_DESIGNS,
-  MOCK_LOGICAL_CONNECTIONS,
-  MOCK_LOGICAL_DEVICES,
-  MOCK_DEVICE_LAYOUTS,
   DEVICE_ROLE_COLORS,
 } from '../design.model';
+import DesignApiService from '../design-api.service';
+import connectErrorMessage from '../../../connect/error';
+
+interface NativeElementRef {
+  nativeElement: { value: string; show?: () => void; hide?: () => void };
+}
 
 interface NativeElementRef {
   nativeElement: { value: string; show?: () => void; hide?: () => void };
@@ -51,23 +55,23 @@ const ALL_ROLES: LogicalDeviceRole[] = [
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   host: { class: 'flex flex-col overflow-hidden', style: 'height: calc(100dvh - 4.25rem)' },
 })
-export default class DesignDetailComponent {
+export default class DesignDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
+
+  private readonly designApi = inject(DesignApiService);
 
   readonly designId = this.route.snapshot.paramMap.get('id') ?? '';
 
   // ── Mutable state ──────────────────────────────────────────────────────────
-  readonly mutableDesigns = signal([...MOCK_DESIGNS]);
+  readonly mutableDesign = signal<LogicalDesign | undefined>(undefined);
 
-  readonly mutableDevices = signal([...MOCK_LOGICAL_DEVICES]);
+  readonly mutableDevices = signal<LogicalDevice[]>([]);
 
-  readonly mutableConnections = signal([...MOCK_LOGICAL_CONNECTIONS]);
+  readonly mutableConnections = signal<LogicalConnection[]>([]);
 
-  readonly mutableLayouts = signal([...MOCK_DEVICE_LAYOUTS]);
+  readonly mutableLayouts = signal<LogicalDeviceLayout[]>([]);
 
-  readonly design = computed<LogicalDesign | undefined>(() =>
-    this.mutableDesigns().find((d) => d.id === this.designId),
-  );
+  readonly design = computed<LogicalDesign | undefined>(() => this.mutableDesign());
 
   readonly devices = computed(() =>
     this.mutableDevices().filter((d) => d.designId === this.designId),
@@ -152,6 +156,35 @@ export default class DesignDetailComponent {
     });
   }
 
+  ngOnInit(): void {
+    firstValueFrom(this.designApi.listDevices(this.designId))
+      .then((res) => this.mutableDevices.set(res.devices.map((d) => DesignApiService.mapDevice(d))))
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
+
+    firstValueFrom(this.designApi.listConnections(this.designId))
+      .then((res) =>
+        this.mutableConnections.set(res.connections.map((c) => DesignApiService.mapConnection(c))),
+      )
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
+
+    firstValueFrom(this.designApi.getLayout(this.designId))
+      .then((res) =>
+        this.mutableLayouts.set(res.positions.map((l) => DesignApiService.mapLayout(l))),
+      )
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
+
+    firstValueFrom(this.designApi.listDesigns())
+      .then((res) => {
+        const found = res.designs.find((d) => d.id === this.designId);
+        if (found) this.mutableDesign.set(DesignApiService.mapDesign(found));
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
+  }
+
   // ── Device actions ─────────────────────────────────────────────────────────
 
   openAddDevice(): void {
@@ -171,23 +204,29 @@ export default class DesignDetailComponent {
     if (!form) return;
     const name = this.fDeviceName()?.nativeElement.value ?? '';
     const role = (this.fDeviceRole()?.nativeElement.value ?? 'Compute') as LogicalDeviceRole;
-    const updated: LogicalDevice = {
-      id: form.id || `dev-${Date.now()}`,
-      designId: this.designId,
-      name,
-      role,
-    };
-    // TODO(api): form.id ? LogicalDeviceService.UpdateLogicalDevice(UpdateLogicalDeviceRequest) : LogicalDeviceService.CreateLogicalDevice(CreateLogicalDeviceRequest)
     if (form.id) {
-      this.mutableDevices.update((list) => list.map((d) => (d.id === form.id ? updated : d)));
+      firstValueFrom(this.designApi.updateDevice(form.id, name, role))
+        .then((res) => {
+          const updated = DesignApiService.mapDevice(res.device!);
+          this.mutableDevices.update((list) => list.map((d) => (d.id === form.id ? updated : d)));
+          this.editDevice.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     } else {
-      this.mutableDevices.update((list) => [...list, updated]);
-      this.mutableLayouts.update((list) => [
-        ...list,
-        { deviceId: updated.id, x: 200 + Math.random() * 200, y: 200 + Math.random() * 200 },
-      ]);
+      firstValueFrom(this.designApi.createDevice(this.designId, name, role))
+        .then((res) => {
+          const created = DesignApiService.mapDevice(res.device!);
+          this.mutableDevices.update((list) => [...list, created]);
+          this.mutableLayouts.update((list) => [
+            ...list,
+            { deviceId: created.id, x: 200 + Math.random() * 200, y: 200 + Math.random() * 200 },
+          ]);
+          this.editDevice.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     }
-    this.editDevice.set(null);
   }
 
   openDeleteDevice(device: LogicalDevice): void {
@@ -202,14 +241,18 @@ export default class DesignDetailComponent {
   confirmDeleteDevice(): void {
     const target = this.deleteDevice();
     if (!target) return;
-    // TODO(api): LogicalDeviceService.DeleteLogicalDevice(DeleteLogicalDeviceRequest)
-    this.mutableDevices.update((list) => list.filter((d) => d.id !== target.id));
-    this.mutableConnections.update((list) =>
-      list.filter((c) => c.sourceDeviceId !== target.id && c.targetDeviceId !== target.id),
-    );
-    this.mutableLayouts.update((list) => list.filter((l) => l.deviceId !== target.id));
-    if (this.selectedDeviceId() === target.id) this.selectedDeviceId.set(null);
-    this.deleteDevice.set(null);
+    firstValueFrom(this.designApi.deleteDevice(target.id))
+      .then(() => {
+        this.mutableDevices.update((list) => list.filter((d) => d.id !== target.id));
+        this.mutableConnections.update((list) =>
+          list.filter((c) => c.sourceDeviceId !== target.id && c.targetDeviceId !== target.id),
+        );
+        this.mutableLayouts.update((list) => list.filter((l) => l.deviceId !== target.id));
+        if (this.selectedDeviceId() === target.id) this.selectedDeviceId.set(null);
+        this.deleteDevice.set(null);
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
   }
 
   // ── Connection actions ─────────────────────────────────────────────────────
@@ -242,8 +285,8 @@ export default class DesignDetailComponent {
     const tgtDeviceId = this.fConnTgtDevice()?.nativeElement.value ?? '';
     const tgtPort = this.fConnTgtPort()?.nativeElement.value ?? '';
     const connType = (this.fConnType()?.nativeElement.value ?? 'network') as LogicalConnectionType;
-    const updated: LogicalConnection = {
-      id: form.id || `conn-${Date.now()}`,
+    const conn: LogicalConnection = {
+      id: form.id || '',
       designId: this.designId,
       sourceDeviceId: srcDeviceId,
       sourcePortRole: srcPort,
@@ -251,13 +294,27 @@ export default class DesignDetailComponent {
       targetPortRole: tgtPort,
       connectionType: connType,
     };
-    // TODO(api): form.id ? LogicalConnectionService.UpdateLogicalConnection(UpdateLogicalConnectionRequest) : LogicalConnectionService.CreateLogicalConnection(CreateLogicalConnectionRequest)
     if (form.id) {
-      this.mutableConnections.update((list) => list.map((c) => (c.id === form.id ? updated : c)));
+      firstValueFrom(this.designApi.updateConnection(conn))
+        .then((res) => {
+          const updated = DesignApiService.mapConnection(res.connection!);
+          this.mutableConnections.update((list) =>
+            list.map((c) => (c.id === form.id ? updated : c)),
+          );
+          this.editConnection.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     } else {
-      this.mutableConnections.update((list) => [...list, updated]);
+      firstValueFrom(this.designApi.createConnection(conn))
+        .then((res) => {
+          const created = DesignApiService.mapConnection(res.connection!);
+          this.mutableConnections.update((list) => [...list, created]);
+          this.editConnection.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     }
-    this.editConnection.set(null);
   }
 
   openDeleteConnection(conn: LogicalConnection): void {
@@ -272,32 +329,40 @@ export default class DesignDetailComponent {
   confirmDeleteConnection(): void {
     const target = this.deleteConnection();
     if (!target) return;
-    // TODO(api): LogicalConnectionService.DeleteLogicalConnection(DeleteLogicalConnectionRequest)
-    this.mutableConnections.update((list) => list.filter((c) => c.id !== target.id));
-    this.deleteConnection.set(null);
+    firstValueFrom(this.designApi.deleteConnection(target.id))
+      .then(() => {
+        this.mutableConnections.update((list) => list.filter((c) => c.id !== target.id));
+        this.deleteConnection.set(null);
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
   }
 
   // ── Design status transitions ──────────────────────────────────────────────
 
   activateDesign(): void {
-    // TODO(api): LogicalDesignService.UpdateLogicalDesign({ id, status: 'active' })
-    this.mutableDesigns.update((list) =>
-      list.map((d) => (d.id === this.designId ? { ...d, status: 'active' as const } : d)),
-    );
+    firstValueFrom(this.designApi.updateDesign(this.designId, 'active'))
+      .then(() => this.mutableDesign.update((d) => (d ? { ...d, status: 'active' as const } : d)))
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
   }
 
   archiveDesign(): void {
-    // TODO(api): LogicalDesignService.UpdateLogicalDesign({ id, status: 'archived' })
-    this.mutableDesigns.update((list) =>
-      list.map((d) => (d.id === this.designId ? { ...d, status: 'archived' as const } : d)),
-    );
+    firstValueFrom(this.designApi.updateDesign(this.designId, 'archived'))
+      .then(() => this.mutableDesign.update((d) => (d ? { ...d, status: 'archived' as const } : d)))
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
   }
 
   // ── Layout persistence ─────────────────────────────────────────────────────
 
   onLayoutChanged(layouts: LogicalDeviceLayout[]): void {
-    // TODO(api): LogicalDeviceLayoutService.SaveLogicalDeviceLayout(SaveLogicalDeviceLayoutRequest)
     this.mutableLayouts.set(layouts);
+
+    firstValueFrom(this.designApi.saveLayout(this.designId, layouts)).catch((err) =>
+      // eslint-disable-next-line no-console
+      console.error(connectErrorMessage(err)),
+    );
   }
 
   // ── Helpers ────────────────────────────────────────────────────────────────

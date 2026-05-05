@@ -60,6 +60,7 @@ generate:
     cd db && trek generate --stdout
     go generate -x ./...
     just fmt
+    cd frontend && buf generate
 
 # Lint all Go code
 lint:

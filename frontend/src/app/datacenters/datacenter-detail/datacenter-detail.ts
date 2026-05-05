@@ -5,19 +5,16 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   effect,
   inject,
+  OnInit,
   signal,
   viewChild,
 } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import {
-  DATACENTER_INFO,
-  DatacenterInfo,
-  MOCK_RACK_ROWS,
-  MOCK_ROOMS,
-  RackRow,
-  Room,
-} from '../datacenter.model';
+import { firstValueFrom } from 'rxjs';
+import { DATACENTER_INFO, DatacenterInfo, RackRow, Room } from '../datacenter.model';
 import { RACKS } from '../../racks/rack.model';
+import DatacenterApiService from '../datacenter-api.service';
+import connectErrorMessage from '../../../connect/error';
 
 interface NativeElementRef {
   nativeElement: { value: string; show?: () => void; hide?: () => void };
@@ -33,10 +30,11 @@ interface NativeElementRef {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   host: { class: 'flex flex-col bg-white text-slate-900' },
 })
-export default class DatacenterDetailComponent {
+export default class DatacenterDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
 
-  // TODO(api): SiteService.GetSite(GetSiteRequest)
+  private readonly dcApi = inject(DatacenterApiService);
+
   readonly dc = computed<DatacenterInfo | undefined>(() => {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
     return DATACENTER_INFO.find((d) => d.id === id);
@@ -44,8 +42,7 @@ export default class DatacenterDetailComponent {
 
   // ── Rooms ──────────────────────────────────────────────────────────────────
 
-  // TODO(api): RoomService.ListRooms({ site_id })
-  readonly mutableRooms = signal([...MOCK_ROOMS]);
+  readonly mutableRooms = signal<Room[]>([]);
 
   readonly dcRooms = computed(() => {
     const id = this.route.snapshot.paramMap.get('id') ?? '';
@@ -54,8 +51,7 @@ export default class DatacenterDetailComponent {
 
   // ── Rack rows ──────────────────────────────────────────────────────────────
 
-  // TODO(api): RackRowService.ListRackRows({ room_id })
-  readonly mutableRackRows = signal([...MOCK_RACK_ROWS]);
+  readonly mutableRackRows = signal<RackRow[]>([]);
 
   rackRowsForRoom(roomId: string): RackRow[] {
     return this.mutableRackRows().filter((rr) => rr.roomId === roomId);
@@ -123,6 +119,27 @@ export default class DatacenterDetailComponent {
     });
   }
 
+  ngOnInit(): void {
+    const siteId = this.route.snapshot.paramMap.get('id') ?? '';
+    firstValueFrom(this.dcApi.listRooms(siteId))
+      .then((res) => {
+        const rooms = res.rooms.map((r) => DatacenterApiService.mapRoom(r));
+        this.mutableRooms.set(rooms);
+        return Promise.all(
+          rooms.map((room) =>
+            firstValueFrom(this.dcApi.listRackRows(room.id)).then((rr) =>
+              rr.rackRows.map((row) => DatacenterApiService.mapRackRow(row)),
+            ),
+          ),
+        );
+      })
+      .then((allRows) => {
+        this.mutableRackRows.set(allRows.flat());
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
+  }
+
   // ── Room actions ───────────────────────────────────────────────────────────
 
   openCreateRoom(): void {
@@ -143,19 +160,25 @@ export default class DatacenterDetailComponent {
     if (!form) return;
     const name = this.fRoomName()?.nativeElement.value ?? '';
     const floor = parseInt(this.fRoomFloor()?.nativeElement.value ?? '1', 10) || 1;
-    const updated: Room = {
-      id: form.id || `room-${Date.now()}`,
-      siteId: form.siteId!,
-      name,
-      floor,
-    };
-    // TODO(api): form.id ? RoomService.UpdateRoom(UpdateRoomRequest) : RoomService.CreateRoom(CreateRoomRequest)
     if (form.id) {
-      this.mutableRooms.update((list) => list.map((r) => (r.id === form.id ? updated : r)));
+      firstValueFrom(this.dcApi.updateRoom(form.id, name, floor))
+        .then(() => {
+          const updated: Room = { id: form.id!, siteId: form.siteId!, name, floor };
+          this.mutableRooms.update((list) => list.map((r) => (r.id === form.id ? updated : r)));
+          this.editRoom.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     } else {
-      this.mutableRooms.update((list) => [...list, updated]);
+      firstValueFrom(this.dcApi.createRoom(form.siteId!, name, floor))
+        .then((res) => {
+          const created = DatacenterApiService.mapRoom(res.room!);
+          this.mutableRooms.update((list) => [...list, created]);
+          this.editRoom.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     }
-    this.editRoom.set(null);
   }
 
   openDeleteRoom(room: Room): void {
@@ -169,10 +192,14 @@ export default class DatacenterDetailComponent {
   confirmDeleteRoom(): void {
     const target = this.deleteRoom();
     if (!target) return;
-    // TODO(api): RoomService.DeleteRoom(DeleteRoomRequest)
-    this.mutableRooms.update((list) => list.filter((r) => r.id !== target.id));
-    this.mutableRackRows.update((list) => list.filter((rr) => rr.roomId !== target.id));
-    this.deleteRoom.set(null);
+    firstValueFrom(this.dcApi.deleteRoom(target.id))
+      .then(() => {
+        this.mutableRooms.update((list) => list.filter((r) => r.id !== target.id));
+        this.mutableRackRows.update((list) => list.filter((rr) => rr.roomId !== target.id));
+        this.deleteRoom.set(null);
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
   }
 
   // ── Rack row actions ───────────────────────────────────────────────────────
@@ -197,20 +224,33 @@ export default class DatacenterDetailComponent {
     const name = this.fRowName()?.nativeElement.value ?? '';
     const posX = parseInt(this.fRowX()?.nativeElement.value ?? '1', 10) || 1;
     const posY = parseInt(this.fRowY()?.nativeElement.value ?? '1', 10) || 1;
-    const updated: RackRow = {
-      id: form.id || `rr-${Date.now()}`,
-      roomId: form.roomId!,
-      name,
-      positionX: posX,
-      positionY: posY,
-    };
-    // TODO(api): form.id ? RackRowService.UpdateRackRow(UpdateRackRowRequest) : RackRowService.CreateRackRow(CreateRackRowRequest)
     if (form.id) {
-      this.mutableRackRows.update((list) => list.map((rr) => (rr.id === form.id ? updated : rr)));
+      firstValueFrom(this.dcApi.updateRackRow(form.id, name, posX, posY))
+        .then(() => {
+          const updated: RackRow = {
+            id: form.id!,
+            roomId: form.roomId!,
+            name,
+            positionX: posX,
+            positionY: posY,
+          };
+          this.mutableRackRows.update((list) =>
+            list.map((rr) => (rr.id === form.id ? updated : rr)),
+          );
+          this.editRackRow.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     } else {
-      this.mutableRackRows.update((list) => [...list, updated]);
+      firstValueFrom(this.dcApi.createRackRow(form.roomId!, name, posX, posY))
+        .then((res) => {
+          const created = DatacenterApiService.mapRackRow(res.rackRow!);
+          this.mutableRackRows.update((list) => [...list, created]);
+          this.editRackRow.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     }
-    this.editRackRow.set(null);
   }
 
   openDeleteRackRow(rr: RackRow): void {
@@ -224,8 +264,12 @@ export default class DatacenterDetailComponent {
   confirmDeleteRackRow(): void {
     const target = this.deleteRackRow();
     if (!target) return;
-    // TODO(api): RackRowService.DeleteRackRow(DeleteRackRowRequest)
-    this.mutableRackRows.update((list) => list.filter((rr) => rr.id !== target.id));
-    this.deleteRackRow.set(null);
+    firstValueFrom(this.dcApi.deleteRackRow(target.id))
+      .then(() => {
+        this.mutableRackRows.update((list) => list.filter((rr) => rr.id !== target.id));
+        this.deleteRackRow.set(null);
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
   }
 }

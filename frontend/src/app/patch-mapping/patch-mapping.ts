@@ -4,12 +4,16 @@ import {
   CUSTOM_ELEMENTS_SCHEMA,
   effect,
   ElementRef,
+  inject,
   signal,
   viewChild,
 } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import DcSelectorComponent from '../shared/dc-selector';
 import PatchMappingFlowWrapperComponent from './patch-mapping-flow-wrapper';
 import { MOCK_PHYSICAL_CONNECTIONS, PhysicalConnection } from './patch-mapping.model';
+import PatchMappingApiService from './patch-mapping-api.service';
+import connectErrorMessage from '../../connect/error';
 
 @Component({
   selector: 'app-patch-mapping',
@@ -23,6 +27,8 @@ import { MOCK_PHYSICAL_CONNECTIONS, PhysicalConnection } from './patch-mapping.m
   templateUrl: './patch-mapping.html',
 })
 export default class PatchMappingComponent {
+  private readonly patchApi = inject(PatchMappingApiService);
+
   readonly selectedDcId = signal('ams-01');
 
   // ── Mutable connection list ────────────────────────────────────────────────
@@ -84,35 +90,45 @@ export default class PatchMappingComponent {
     if (!srcDevice || !srcPort || !tgtDevice || !tgtPort) return;
 
     if (form.id) {
-      // TODO(api): PhysicalConnectionService.UpdatePhysicalConnection(UpdatePhysicalConnectionRequest)
-      this.mutableConnections.update((list) =>
-        list.map((c) =>
-          c.id === form.id
-            ? {
-                ...c,
-                sourceDeviceLabel: srcDevice,
-                sourcePortName: srcPort,
-                targetDeviceLabel: tgtDevice,
-                targetPortName: tgtPort,
-              }
-            : c,
-        ),
-      );
+      firstValueFrom(this.patchApi.updatePhysicalConnection(form.id, ''))
+        .then(() => {
+          this.mutableConnections.update((list) =>
+            list.map((c) =>
+              c.id === form.id
+                ? {
+                    ...c,
+                    sourceDeviceLabel: srcDevice,
+                    sourcePortName: srcPort,
+                    targetDeviceLabel: tgtDevice,
+                    targetPortName: tgtPort,
+                  }
+                : c,
+            ),
+          );
+          this.editConnection.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     } else {
-      // TODO(api): PhysicalConnectionService.CreatePhysicalConnection(CreatePhysicalConnectionRequest)
-      const newConn: PhysicalConnection = {
-        id: `pc-${Date.now()}`,
-        dcId: this.selectedDcId(),
-        sourcePlacementId: srcDevice.toLowerCase().replace(/\s+/g, '-'),
-        sourceDeviceLabel: srcDevice,
-        sourcePortName: srcPort,
-        targetPlacementId: tgtDevice.toLowerCase().replace(/\s+/g, '-'),
-        targetDeviceLabel: tgtDevice,
-        targetPortName: tgtPort,
-      };
-      this.mutableConnections.update((list) => [...list, newConn]);
+      const srcPlacement = srcDevice.toLowerCase().replace(/\s+/g, '-');
+      const tgtPlacement = tgtDevice.toLowerCase().replace(/\s+/g, '-');
+      firstValueFrom(
+        this.patchApi.createPhysicalConnection(srcPlacement, srcPort, tgtPlacement, tgtPort),
+      )
+        .then((res) => {
+          const created = PatchMappingApiService.mapConnection(res.connection!);
+          const newConn: PhysicalConnection = {
+            ...created,
+            dcId: this.selectedDcId(),
+            sourceDeviceLabel: srcDevice,
+            targetDeviceLabel: tgtDevice,
+          };
+          this.mutableConnections.update((list) => [...list, newConn]);
+          this.editConnection.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     }
-    this.editConnection.set(null);
   }
 
   openDeleteConnection(conn: PhysicalConnection): void {
@@ -127,9 +143,13 @@ export default class PatchMappingComponent {
   confirmDeleteConnection(): void {
     const target = this.deleteConnection();
     if (!target) return;
-    // TODO(api): PhysicalConnectionService.DeletePhysicalConnection(DeletePhysicalConnectionRequest)
-    this.mutableConnections.update((list) => list.filter((c) => c.id !== target.id));
-    this.deleteConnection.set(null);
+    firstValueFrom(this.patchApi.deletePhysicalConnection(target.id))
+      .then(() => {
+        this.mutableConnections.update((list) => list.filter((c) => c.id !== target.id));
+        this.deleteConnection.set(null);
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
   }
 
   dcConnections(): PhysicalConnection[] {

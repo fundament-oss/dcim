@@ -4,13 +4,15 @@ import {
   computed,
   CUSTOM_ELEMENTS_SCHEMA,
   effect,
-  inject,
-  signal,
-  viewChild,
+inject,
+signal,
+viewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
+import RackApiService from './rack-api.service';
+import connectErrorMessage from '../../connect/error';
 import DcSelectorComponent from '../shared/dc-selector';
 import RackDiagramComponent from './rack-diagram/rack-diagram';
 import { Rack, RACKS } from './rack.model';
@@ -145,6 +147,12 @@ interface NativeElementRef {
   nativeElement: { value: string; show?: () => void; hide?: () => void };
 }
 
+// ── NativeElementRef ──────────────────────────────────────────────────────────
+
+interface NativeElementRef {
+  nativeElement: { value: string; show?: () => void; hide?: () => void };
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 @Component({
@@ -155,6 +163,8 @@ interface NativeElementRef {
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export default class RacksComponent {
+  private readonly rackApi = inject(RackApiService);
+
   private readonly route = inject(ActivatedRoute);
 
   private readonly router = inject(Router);
@@ -281,14 +291,25 @@ export default class RacksComponent {
       totalU,
       devices: form.devices ?? [],
     };
-    // TODO(api): form.id ? RackService.UpdateRack(UpdateRackRequest) : RackService.CreateRack(CreateRackRequest)
     if (form.id) {
-      this.mutableRacks.update((list) => list.map((r) => (r.id === form.id ? updated : r)));
+      firstValueFrom(this.rackApi.updateRack(form.id, name, totalU))
+        .then(() => {
+          this.mutableRacks.update((list) => list.map((r) => (r.id === form.id ? updated : r)));
+          this.editRack.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     } else {
-      this.mutableRacks.update((list) => [...list, updated]);
-      this.router.navigate(['/racks', updated.id]);
+      firstValueFrom(this.rackApi.createRack(name, totalU, ''))
+        .then((res) => {
+          const created = { ...updated, id: res.rack?.id ?? updated.id };
+          this.mutableRacks.update((list) => [...list, created]);
+          this.router.navigate(['/racks', created.id]);
+          this.editRack.set(null);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(connectErrorMessage(err)));
     }
-    this.editRack.set(null);
   }
 
   openDeleteRack(rack: Rack): void {
@@ -302,15 +323,19 @@ export default class RacksComponent {
   confirmDeleteRack(): void {
     const target = this.deleteRack();
     if (!target) return;
-    // TODO(api): RackService.DeleteRack(DeleteRackRequest)
-    this.mutableRacks.update((list) => list.filter((r) => r.id !== target.id));
-    const remaining = this.mutableRacks().filter((r) => r.dcId === this.currentDC());
-    if (remaining.length > 0) {
-      this.router.navigate(['/racks', remaining[0].id]);
-    } else {
-      this.router.navigate(['/racks']);
-    }
-    this.deleteRack.set(null);
+    firstValueFrom(this.rackApi.deleteRack(target.id))
+      .then(() => {
+        this.mutableRacks.update((list) => list.filter((r) => r.id !== target.id));
+        const remaining = this.mutableRacks().filter((r) => r.dcId === this.currentDC());
+        if (remaining.length > 0) {
+          this.router.navigate(['/racks', remaining[0].id]);
+        } else {
+          this.router.navigate(['/racks']);
+        }
+        this.deleteRack.set(null);
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(connectErrorMessage(err)));
   }
 
   selectDC(dc: string): void {

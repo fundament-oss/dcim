@@ -5,14 +5,8 @@
   <h1 class="text-lg font-semibold text-slate-900 leading-tight m-0 flex-1">Inventory</h1>
   <div class="flex items-center gap-2 shrink-0">
     <nldd-button
-      variant="secondary"
-      text="Export CSV"
-      start-icon="arrow-down-in-bucket"
-      size="sm"
-    ></nldd-button>
-    <nldd-button
       variant="accent-filled"
-      text="New Asset"
+      text="Add asset"
       start-icon="plus-small"
       size="sm"
       (click)="openCreateAsset()"
@@ -605,7 +599,7 @@
   <div class="flex flex-col h-full">
     <div class="flex items-center justify-between px-6 py-4 border-b border-slate-200 shrink-0">
       <h2 class="text-base font-semibold text-slate-900">
-        {{ editAsset()?.id ? 'Edit Asset' : 'New Asset' }}
+        {{ editAsset()?.id ? 'Edit asset' : 'Add asset' }}
       </h2>
       <nldd-icon-button
         icon="dismiss"

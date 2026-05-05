@@ -7,20 +7,24 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 
+	connectcors "connectrpc.com/cors"
 	"github.com/caarlos0/env/v11"
 	"github.com/fundament-oss/dcim/api/pkg/dcim"
 	"github.com/fundament-oss/fundament/common/psqldb"
+	"github.com/rs/cors"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 )
 
 type config struct {
-	Database   psqldb.Config
-	ListenAddr string `env:"LISTEN_ADDR" envDefault:":8080"`
-	LogLevel   string `env:"LOG_LEVEL" envDefault:"info"`
+	Database           psqldb.Config
+	ListenAddr         string `env:"LISTEN_ADDR" envDefault:":8080"`
+	LogLevel           string `env:"LOG_LEVEL" envDefault:"info"`
+	CORSAllowedOrigins string `env:"CORS_ALLOWED_ORIGINS"`
 }
 
 func main() {
@@ -60,9 +64,17 @@ func run() error {
 	})
 	mux.Handle("/", server.Handler())
 
+	allowedOrigins := strings.Split(cfg.CORSAllowedOrigins, ",")
+	c := cors.New(cors.Options{
+		AllowedOrigins: allowedOrigins,
+		AllowedMethods: connectcors.AllowedMethods(),
+		AllowedHeaders: connectcors.AllowedHeaders(),
+		ExposedHeaders: connectcors.ExposedHeaders(),
+	})
+
 	srv := &http.Server{
 		Addr:              cfg.ListenAddr,
-		Handler:           h2c.NewHandler(mux, &http2.Server{}),
+		Handler:           h2c.NewHandler(c.Handler(mux), &http2.Server{}),
 		ReadHeaderTimeout: 10 * time.Second,
 	}
 
