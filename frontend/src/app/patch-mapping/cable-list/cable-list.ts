@@ -17,7 +17,7 @@ import {
   CableType,
   PORT_TYPE_LABEL,
 } from '../cable.model';
-import DcSelectorComponent from '../../shared/dc-selector';
+import { DATACENTER_INFO, DatacenterStatus } from '../../datacenters/datacenter.model';
 
 interface DeviceOption {
   id: string;
@@ -27,7 +27,7 @@ interface DeviceOption {
 @Component({
   selector: 'app-cable-list',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DcSelectorComponent],
+  imports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './cable-list.html',
 })
@@ -111,6 +111,17 @@ export default class CableListComponent {
     () =>
       !!(this.filterDeviceId() || this.filterStatus() || this.filterType() || this.searchText()),
   );
+
+  readonly DATACENTER_INFO = DATACENTER_INFO;
+
+  readonly dcStatusDotClass = (status: DatacenterStatus): string => {
+    const map: Record<DatacenterStatus, string> = {
+      operational: 'bg-teal-500',
+      degraded: 'bg-amber-500',
+      maintenance: 'bg-slate-400',
+    };
+    return map[status] ?? '';
+  };
 
   readonly statusDotClass = (status: CableStatus): string => {
     const map: Record<CableStatus, string> = {
