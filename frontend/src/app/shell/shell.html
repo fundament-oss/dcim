@@ -104,21 +104,6 @@
       </a>
 
       <a
-        routerLink="/designs"
-        routerLinkActive
-        #designsLink="routerLinkActive"
-        class="inline-flex items-center gap-2 px-4 text-sm border-b-[3px] transition-colors"
-        [class]="
-          designsLink.isActive
-            ? 'text-slate-900 font-medium border-accent-600'
-            : 'text-slate-500 border-transparent hover:text-slate-900'
-        "
-      >
-        <nldd-icon name="pencil-on-square" class="w-4.5 h-4.5" aria-hidden="true"></nldd-icon>
-        Designs
-      </a>
-
-      <a
         routerLink="/task-management-admin"
         routerLinkActive
         #tasksLink="routerLinkActive"
