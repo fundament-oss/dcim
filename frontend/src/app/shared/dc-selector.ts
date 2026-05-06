@@ -5,24 +5,24 @@ import { DATACENTER_INFO, DatacenterStatus } from '../datacenters/datacenter.mod
   selector: 'app-dc-selector',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <nav class="flex h-10 items-center gap-0.5" aria-label="Datacenter selection">
+    <nav aria-label="Datacenter selection">
       @for (dc of datacenters; track dc.id) {
         <button
           (click)="dcSelected.emit(dc.id)"
-          class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition-colors cursor-pointer"
+          class="w-full flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-inset focus:ring-accent-500"
           [class]="
             selectedId() === dc.id
-              ? 'bg-slate-100 text-slate-900'
-              : 'text-slate-500 hover:bg-slate-50 hover:text-slate-700'
+              ? 'bg-accent-50 text-accent-700 font-medium'
+              : 'text-slate-600 hover:bg-slate-50'
           "
           [attr.aria-pressed]="selectedId() === dc.id"
         >
-          {{ dc.name }}
           <span
-            class="h-1.5 w-1.5 rounded-full shrink-0"
+            class="h-2 w-2 rounded-full shrink-0"
             [class]="statusDotClass(dc.status)"
             aria-hidden="true"
           ></span>
+          <span class="flex-1 text-left">{{ dc.name }}</span>
         </button>
       }
     </nav>

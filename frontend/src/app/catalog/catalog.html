@@ -327,6 +327,7 @@
      ══════════════════════════════════════════════════════════════ -->
 <nldd-modal-dialog
   #entryModal
+  (close)="cancelDeleteEntry()"
   [attr.text]="'Delete \'' + (deleteEntry()?.model ?? '') + '\'?'"
   supporting-text="This will remove the product from the catalog. Existing assets will not be affected."
   accessible-label="Confirm catalog entry deletion"

@@ -687,6 +687,7 @@
      ══════════════════════════════════════════════════════════════ -->
 <nldd-modal-dialog
   #assetModal
+  (close)="cancelDeleteAsset()"
   [attr.text]="'Delete ' + (deleteAsset()?.assetTag ?? '') + '?'"
   [attr.supporting-text]="
     'Remove ' + (deleteAsset()?.model ?? '') + ' from inventory. This action cannot be undone.'
