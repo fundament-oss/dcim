@@ -13,7 +13,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { map } from 'rxjs';
 import DcSelectorComponent from '../shared/dc-selector';
 import RackDiagramComponent from './rack-diagram/rack-diagram';
-import { Rack, RACKS } from './rack.model';
+import RackDiagramEditorComponent from './rack-diagram-editor/rack-diagram-editor';
+import { DeviceState, DeviceType, Rack, RackDevice, RACKS } from './rack.model';
 import { DATACENTER_INFO, MOCK_RACK_ROWS } from '../datacenters/datacenter.model';
 
 // ── Notes & History types ──────────────────────────────────────────────────────
@@ -139,6 +140,28 @@ const RACK_HISTORY: Record<string, RackEvent[]> = {
   ],
 };
 
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function findFirstFreeSlot(rack: Rack, uSize: number): number | null {
+  const occupied = new Set<number>();
+  for (const dev of rack.devices) {
+    for (let u = dev.uStart; u < dev.uStart + dev.uSize; u += 1) {
+      occupied.add(u);
+    }
+  }
+  for (let top = rack.totalU; top >= uSize; top -= 1) {
+    let fits = true;
+    for (let u = top; u > top - uSize; u -= 1) {
+      if (occupied.has(u)) {
+        fits = false;
+        break;
+      }
+    }
+    if (fits) return top - uSize + 1;
+  }
+  return null;
+}
+
 // ── NativeElementRef ──────────────────────────────────────────────────────────
 
 interface NativeElementRef {
@@ -151,7 +174,7 @@ interface NativeElementRef {
   selector: 'app-racks',
   templateUrl: './racks.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [DcSelectorComponent, RackDiagramComponent],
+  imports: [DcSelectorComponent, RackDiagramComponent, RackDiagramEditorComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export default class RacksComponent {
@@ -177,6 +200,13 @@ export default class RacksComponent {
 
   deleteRack = signal<Rack | null>(null);
 
+  // ── Edit-layout mode ───────────────────────────────────────────────────────
+  editMode = signal(false);
+
+  deleteDeviceTarget = signal<RackDevice | null>(null);
+
+  addDeviceForm = signal<Partial<RackDevice> | null>(null);
+
   readonly datacenters = DATACENTER_INFO;
 
   readonly rackRows = MOCK_RACK_ROWS;
@@ -190,6 +220,18 @@ export default class RacksComponent {
   private readonly fRackDcId = viewChild<NativeElementRef>('fRackDcId');
 
   private readonly fRackTotalU = viewChild<NativeElementRef>('fRackTotalU');
+
+  private readonly deviceSheetEl = viewChild<NativeElementRef>('deviceSheet');
+
+  private readonly deviceModalEl = viewChild<NativeElementRef>('deviceModal');
+
+  private readonly fDeviceName = viewChild<NativeElementRef>('fDeviceName');
+
+  private readonly fDeviceType = viewChild<NativeElementRef>('fDeviceType');
+
+  private readonly fDeviceUSize = viewChild<NativeElementRef>('fDeviceUSize');
+
+  private readonly fDeviceState = viewChild<NativeElementRef>('fDeviceState');
 
   readonly currentDC = computed(() => this.currentRack()?.dcId ?? 'ams-01');
 
@@ -211,6 +253,20 @@ export default class RacksComponent {
       const el = this.rackModalEl()?.nativeElement as { show?: () => void; hide?: () => void };
       if (this.deleteRack() !== null) el?.show?.();
       else el?.hide?.();
+    });
+    effect(() => {
+      const el = this.deviceSheetEl()?.nativeElement as { show?: () => void; hide?: () => void };
+      if (this.addDeviceForm() !== null) el?.show?.();
+      else el?.hide?.();
+    });
+    effect(() => {
+      const el = this.deviceModalEl()?.nativeElement as { show?: () => void; hide?: () => void };
+      if (this.deleteDeviceTarget() !== null) el?.show?.();
+      else el?.hide?.();
+    });
+    effect(() => {
+      this.currentRackId();
+      this.editMode.set(false);
     });
   }
 
@@ -312,6 +368,75 @@ export default class RacksComponent {
     }
     this.deleteRack.set(null);
   }
+
+  // ── Edit-layout mode actions ───────────────────────────────────────────────
+
+  toggleEditMode(): void {
+    this.editMode.update((v) => !v);
+  }
+
+  applyDeviceChanges(rackId: string, devices: RackDevice[]): void {
+    this.mutableRacks.update((list) =>
+      list.map((r) => (r.id === rackId ? { ...r, devices } : r)),
+    );
+  }
+
+  openDeleteDevice(device: RackDevice): void {
+    this.deleteDeviceTarget.set(device);
+  }
+
+  cancelDeleteDevice(): void {
+    this.deleteDeviceTarget.set(null);
+  }
+
+  confirmDeleteDevice(): void {
+    const target = this.deleteDeviceTarget();
+    const rack = this.currentRack();
+    if (!target || !rack) return;
+    this.applyDeviceChanges(
+      rack.id,
+      rack.devices.filter((d) => d.id !== target.id),
+    );
+    this.deleteDeviceTarget.set(null);
+  }
+
+  openAddDevice(): void {
+    this.addDeviceForm.set({ name: '', type: 'machine', uSize: 1, state: 'allocated' });
+  }
+
+  closeAddDevice(): void {
+    this.addDeviceForm.set(null);
+  }
+
+  saveDevice(): void {
+    const rack = this.currentRack();
+    const form = this.addDeviceForm();
+    if (!rack || !form) return;
+    const name = (this.fDeviceName()?.nativeElement as HTMLInputElement)?.value?.trim() ?? '';
+    const type =
+      ((this.fDeviceType()?.nativeElement as HTMLSelectElement)?.value as DeviceType) ??
+      'machine';
+    const uSize =
+      parseInt((this.fDeviceUSize()?.nativeElement as HTMLInputElement)?.value ?? '1', 10) || 1;
+    const state =
+      ((this.fDeviceState()?.nativeElement as HTMLSelectElement)?.value as DeviceState) ??
+      'allocated';
+    if (!name) return;
+    const slot = findFirstFreeSlot(rack, uSize);
+    if (slot === null) return;
+    const newDevice: RackDevice = {
+      id: `dev-${Date.now()}`,
+      name,
+      type,
+      uSize,
+      state,
+      uStart: slot,
+    };
+    this.applyDeviceChanges(rack.id, [...rack.devices, newDevice]);
+    this.addDeviceForm.set(null);
+  }
+
+  readonly currentRackFreeU = computed(() => this.rackStats().freeU);
 
   selectDC(dc: string): void {
     this.searchQuery.set('');
