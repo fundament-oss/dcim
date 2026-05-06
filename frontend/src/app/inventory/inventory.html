@@ -213,7 +213,7 @@
             <button
               role="columnheader"
               (click)="toggleSort('model')"
-              class="cursor-pointer flex items-center gap-1 text-left hover:text-slate-600 transition-colors"
+              class="uppercase cursor-pointer flex items-center gap-1 text-left hover:text-slate-600 transition-colors"
               [attr.aria-sort]="
                 sortColumn() === 'model'
                   ? sortDirection() === 'asc'
@@ -237,7 +237,7 @@
             <button
               role="columnheader"
               (click)="toggleSort('category')"
-              class="cursor-pointer hidden sm:flex items-center gap-1 text-left hover:text-slate-600 transition-colors"
+              class="uppercase cursor-pointer hidden sm:flex items-center gap-1 text-left hover:text-slate-600 transition-colors"
               [attr.aria-sort]="
                 sortColumn() === 'category'
                   ? sortDirection() === 'asc'
@@ -263,7 +263,7 @@
             <button
               role="columnheader"
               (click)="toggleSort('datacenter')"
-              class="cursor-pointer hidden md:flex items-center gap-1 text-left hover:text-slate-600 transition-colors"
+              class="uppercase cursor-pointer hidden md:flex items-center gap-1 text-left hover:text-slate-600 transition-colors"
               [attr.aria-sort]="
                 sortColumn() === 'datacenter'
                   ? sortDirection() === 'asc'
@@ -289,7 +289,7 @@
             <button
               role="columnheader"
               (click)="toggleSort('status')"
-              class="cursor-pointer hidden sm:flex items-center gap-1 text-left hover:text-slate-600 transition-colors"
+              class="uppercase cursor-pointer hidden sm:flex items-center gap-1 text-left hover:text-slate-600 transition-colors"
               [attr.aria-sort]="
                 sortColumn() === 'status'
                   ? sortDirection() === 'asc'
