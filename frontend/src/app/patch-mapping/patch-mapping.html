@@ -6,25 +6,6 @@
     <h1 class="text-lg font-semibold text-slate-900 leading-tight m-0">Patch mapping</h1>
   </div>
 
-  @if (activeView() === 'list') {
-    <nldd-button
-      variant="secondary"
-      text="Download CSV"
-      start-icon="arrow-down-in-bucket"
-      size="sm"
-      (click)="exportCsv()"
-      aria-label="Export cables as CSV"
-    ></nldd-button>
-    <nldd-button
-      variant="accent-filled"
-      text="Add cable"
-      start-icon="plus-small"
-      size="sm"
-      (click)="openAddCable()"
-      aria-label="Add a new cable"
-    ></nldd-button>
-  }
-
   <!-- View toggle -->
   <nldd-segmented-control
     [value]="activeView()"
@@ -36,6 +17,23 @@
     <nldd-segmented-control-item value="list" text="Cables"></nldd-segmented-control-item>
     <nldd-segmented-control-item value="topology" text="Topology"></nldd-segmented-control-item>
   </nldd-segmented-control>
+
+  <nldd-button
+    variant="secondary"
+    text="Download CSV"
+    start-icon="arrow-down-in-bucket"
+    size="sm"
+    (click)="exportCsv()"
+    aria-label="Export cables as CSV"
+  ></nldd-button>
+  <nldd-button
+    variant="accent-filled"
+    text="Add cable"
+    start-icon="plus-small"
+    size="sm"
+    (click)="openAddCable()"
+    aria-label="Add a new cable"
+  ></nldd-button>
 </div>
 
 <!-- ══════════════════════════════════════════════════════════════
