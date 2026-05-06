@@ -3,27 +3,39 @@
 // option features.field_presence = IMPLICIT;
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import { file_buf_validate_validate } from "../buf/validate/validate_pb";
-import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import { file_google_protobuf_go_features, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
-import type { RackSlotType } from "./common_pb";
-import { file_v1_common } from "./common_pb";
-import type { Message } from "@bufbuild/protobuf";
+import type { GenFile, GenMessage, GenService } from '@bufbuild/protobuf/codegenv2';
+import { fileDesc, messageDesc, serviceDesc } from '@bufbuild/protobuf/codegenv2';
+import { file_buf_validate_validate } from '../buf/validate/validate_pb';
+import type { Timestamp } from '@bufbuild/protobuf/wkt';
+import {
+  file_google_protobuf_go_features,
+  file_google_protobuf_timestamp,
+} from '@bufbuild/protobuf/wkt';
+import type { RackSlotType } from './common_pb';
+import { file_v1_common } from './common_pb';
+import type { Message } from '@bufbuild/protobuf';
 
 /**
  * Describes the file v1/placement.proto.
  */
-export const file_v1_placement: GenFile = /*@__PURE__*/
-  fileDesc("ChJ2MS9wbGFjZW1lbnQucHJvdG8SB2RjaW0udjEiZwoMUmFja0xvY2F0aW9uEg8KB3JhY2tfaWQYCiABKAkSFwoPcmFja191bml0X3N0YXJ0GBQgASgFEi0KDnJhY2tfc2xvdF90eXBlGB4gASgOMhUuZGNpbS52MS5SYWNrU2xvdFR5cGUiTQoUU3ViQ29tcG9uZW50TG9jYXRpb24SGwoTcGFyZW50X3BsYWNlbWVudF9pZBgKIAEoCRIYChBwYXJlbnRfcG9ydF9uYW1lGBQgASgJIsMCCglQbGFjZW1lbnQSCgoCaWQYCiABKAkSEAoIYXNzZXRfaWQYFCABKAkSJQoEcmFjaxgeIAEoCzIVLmRjaW0udjEuUmFja0xvY2F0aW9uSAASNgoNc3ViX2NvbXBvbmVudBgoIAEoCzIdLmRjaW0udjEuU3ViQ29tcG9uZW50TG9jYXRpb25IABIgChFsb2dpY2FsX2RldmljZV9pZBgyIAEoCUIFqgECCAESGwoMZXh0ZXJuYWxfcmVmGDwgASgJQgWqAQIIARINCgVub3RlcxhGIAEoCRIrCgdjcmVhdGVkGFAgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCgdkZWxldGVkGFogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIFqgECCAFCCgoIbG9jYXRpb24i1wEKFkNyZWF0ZVBsYWNlbWVudFJlcXVlc3QSGgoIYXNzZXRfaWQYCiABKAlCCLpIBXIDsAEBEiUKBHJhY2sYFCABKAsyFS5kY2ltLnYxLlJhY2tMb2NhdGlvbkgAEjYKDXN1Yl9jb21wb25lbnQYHiABKAsyHS5kY2ltLnYxLlN1YkNvbXBvbmVudExvY2F0aW9uSAASIAoRbG9naWNhbF9kZXZpY2VfaWQYRiABKAlCBaoBAggBEg0KBW5vdGVzGFAgASgJQhEKCGxvY2F0aW9uEgW6SAIIASJAChdDcmVhdGVQbGFjZW1lbnRSZXNwb25zZRIlCglwbGFjZW1lbnQYCiABKAsyEi5kY2ltLnYxLlBsYWNlbWVudCIrChNHZXRQbGFjZW1lbnRSZXF1ZXN0EhQKAmlkGAogASgJQgi6SAVyA7ABASI9ChRHZXRQbGFjZW1lbnRSZXNwb25zZRIlCglwbGFjZW1lbnQYCiABKAsyEi5kY2ltLnYxLlBsYWNlbWVudCLRAQoWVXBkYXRlUGxhY2VtZW50UmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQESJQoEcmFjaxgUIAEoCzIVLmRjaW0udjEuUmFja0xvY2F0aW9uSAASNgoNc3ViX2NvbXBvbmVudBgeIAEoCzIdLmRjaW0udjEuU3ViQ29tcG9uZW50TG9jYXRpb25IABIgChFsb2dpY2FsX2RldmljZV9pZBhGIAEoCUIFqgECCAESFAoFbm90ZXMYUCABKAlCBaoBAggBQgoKCGxvY2F0aW9uIkAKF1VwZGF0ZVBsYWNlbWVudFJlc3BvbnNlEiUKCXBsYWNlbWVudBgKIAEoCzISLmRjaW0udjEuUGxhY2VtZW50Ii4KFkRlbGV0ZVBsYWNlbWVudFJlcXVlc3QSFAoCaWQYCiABKAlCCLpIBXIDsAEBIhkKF0RlbGV0ZVBsYWNlbWVudFJlc3BvbnNlIjgKG0xpc3RQbGFjZW1lbnRzQnlSYWNrUmVxdWVzdBIZCgdyYWNrX2lkGAogASgJQgi6SAVyA7ABASJGChxMaXN0UGxhY2VtZW50c0J5UmFja1Jlc3BvbnNlEiYKCnBsYWNlbWVudHMYCiADKAsyEi5kY2ltLnYxLlBsYWNlbWVudCJDChpMaXN0Q2hpbGRQbGFjZW1lbnRzUmVxdWVzdBIlChNwYXJlbnRfcGxhY2VtZW50X2lkGAogASgJQgi6SAVyA7ABASJFChtMaXN0Q2hpbGRQbGFjZW1lbnRzUmVzcG9uc2USJgoKcGxhY2VtZW50cxgKIAMoCzISLmRjaW0udjEuUGxhY2VtZW50MqgEChBQbGFjZW1lbnRTZXJ2aWNlElQKD0NyZWF0ZVBsYWNlbWVudBIfLmRjaW0udjEuQ3JlYXRlUGxhY2VtZW50UmVxdWVzdBogLmRjaW0udjEuQ3JlYXRlUGxhY2VtZW50UmVzcG9uc2USSwoMR2V0UGxhY2VtZW50EhwuZGNpbS52MS5HZXRQbGFjZW1lbnRSZXF1ZXN0Gh0uZGNpbS52MS5HZXRQbGFjZW1lbnRSZXNwb25zZRJUCg9VcGRhdGVQbGFjZW1lbnQSHy5kY2ltLnYxLlVwZGF0ZVBsYWNlbWVudFJlcXVlc3QaIC5kY2ltLnYxLlVwZGF0ZVBsYWNlbWVudFJlc3BvbnNlElQKD0RlbGV0ZVBsYWNlbWVudBIfLmRjaW0udjEuRGVsZXRlUGxhY2VtZW50UmVxdWVzdBogLmRjaW0udjEuRGVsZXRlUGxhY2VtZW50UmVzcG9uc2USYwoUTGlzdFBsYWNlbWVudHNCeVJhY2sSJC5kY2ltLnYxLkxpc3RQbGFjZW1lbnRzQnlSYWNrUmVxdWVzdBolLmRjaW0udjEuTGlzdFBsYWNlbWVudHNCeVJhY2tSZXNwb25zZRJgChNMaXN0Q2hpbGRQbGFjZW1lbnRzEiMuZGNpbS52MS5MaXN0Q2hpbGRQbGFjZW1lbnRzUmVxdWVzdBokLmRjaW0udjEuTGlzdENoaWxkUGxhY2VtZW50c1Jlc3BvbnNlQkVaOWdpdGh1Yi5jb20vZnVuZGFtZW50LW9zcy9kY2ltL2FwaS9wa2cvcHJvdG8vZ2VuL3YxO2RjaW12MZIDBwgC0j4CEANiCGVkaXRpb25zcOgH", [file_buf_validate_validate, file_google_protobuf_go_features, file_google_protobuf_timestamp, file_v1_common]);
+export const file_v1_placement: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    'ChJ2MS9wbGFjZW1lbnQucHJvdG8SB2RjaW0udjEiZwoMUmFja0xvY2F0aW9uEg8KB3JhY2tfaWQYCiABKAkSFwoPcmFja191bml0X3N0YXJ0GBQgASgFEi0KDnJhY2tfc2xvdF90eXBlGB4gASgOMhUuZGNpbS52MS5SYWNrU2xvdFR5cGUiTQoUU3ViQ29tcG9uZW50TG9jYXRpb24SGwoTcGFyZW50X3BsYWNlbWVudF9pZBgKIAEoCRIYChBwYXJlbnRfcG9ydF9uYW1lGBQgASgJIsMCCglQbGFjZW1lbnQSCgoCaWQYCiABKAkSEAoIYXNzZXRfaWQYFCABKAkSJQoEcmFjaxgeIAEoCzIVLmRjaW0udjEuUmFja0xvY2F0aW9uSAASNgoNc3ViX2NvbXBvbmVudBgoIAEoCzIdLmRjaW0udjEuU3ViQ29tcG9uZW50TG9jYXRpb25IABIgChFsb2dpY2FsX2RldmljZV9pZBgyIAEoCUIFqgECCAESGwoMZXh0ZXJuYWxfcmVmGDwgASgJQgWqAQIIARINCgVub3RlcxhGIAEoCRIrCgdjcmVhdGVkGFAgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCgdkZWxldGVkGFogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIFqgECCAFCCgoIbG9jYXRpb24i1wEKFkNyZWF0ZVBsYWNlbWVudFJlcXVlc3QSGgoIYXNzZXRfaWQYCiABKAlCCLpIBXIDsAEBEiUKBHJhY2sYFCABKAsyFS5kY2ltLnYxLlJhY2tMb2NhdGlvbkgAEjYKDXN1Yl9jb21wb25lbnQYHiABKAsyHS5kY2ltLnYxLlN1YkNvbXBvbmVudExvY2F0aW9uSAASIAoRbG9naWNhbF9kZXZpY2VfaWQYRiABKAlCBaoBAggBEg0KBW5vdGVzGFAgASgJQhEKCGxvY2F0aW9uEgW6SAIIASJAChdDcmVhdGVQbGFjZW1lbnRSZXNwb25zZRIlCglwbGFjZW1lbnQYCiABKAsyEi5kY2ltLnYxLlBsYWNlbWVudCIrChNHZXRQbGFjZW1lbnRSZXF1ZXN0EhQKAmlkGAogASgJQgi6SAVyA7ABASI9ChRHZXRQbGFjZW1lbnRSZXNwb25zZRIlCglwbGFjZW1lbnQYCiABKAsyEi5kY2ltLnYxLlBsYWNlbWVudCLRAQoWVXBkYXRlUGxhY2VtZW50UmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQESJQoEcmFjaxgUIAEoCzIVLmRjaW0udjEuUmFja0xvY2F0aW9uSAASNgoNc3ViX2NvbXBvbmVudBgeIAEoCzIdLmRjaW0udjEuU3ViQ29tcG9uZW50TG9jYXRpb25IABIgChFsb2dpY2FsX2RldmljZV9pZBhGIAEoCUIFqgECCAESFAoFbm90ZXMYUCABKAlCBaoBAggBQgoKCGxvY2F0aW9uIkAKF1VwZGF0ZVBsYWNlbWVudFJlc3BvbnNlEiUKCXBsYWNlbWVudBgKIAEoCzISLmRjaW0udjEuUGxhY2VtZW50Ii4KFkRlbGV0ZVBsYWNlbWVudFJlcXVlc3QSFAoCaWQYCiABKAlCCLpIBXIDsAEBIhkKF0RlbGV0ZVBsYWNlbWVudFJlc3BvbnNlIjgKG0xpc3RQbGFjZW1lbnRzQnlSYWNrUmVxdWVzdBIZCgdyYWNrX2lkGAogASgJQgi6SAVyA7ABASJGChxMaXN0UGxhY2VtZW50c0J5UmFja1Jlc3BvbnNlEiYKCnBsYWNlbWVudHMYCiADKAsyEi5kY2ltLnYxLlBsYWNlbWVudCJDChpMaXN0Q2hpbGRQbGFjZW1lbnRzUmVxdWVzdBIlChNwYXJlbnRfcGxhY2VtZW50X2lkGAogASgJQgi6SAVyA7ABASJFChtMaXN0Q2hpbGRQbGFjZW1lbnRzUmVzcG9uc2USJgoKcGxhY2VtZW50cxgKIAMoCzISLmRjaW0udjEuUGxhY2VtZW50MqgEChBQbGFjZW1lbnRTZXJ2aWNlElQKD0NyZWF0ZVBsYWNlbWVudBIfLmRjaW0udjEuQ3JlYXRlUGxhY2VtZW50UmVxdWVzdBogLmRjaW0udjEuQ3JlYXRlUGxhY2VtZW50UmVzcG9uc2USSwoMR2V0UGxhY2VtZW50EhwuZGNpbS52MS5HZXRQbGFjZW1lbnRSZXF1ZXN0Gh0uZGNpbS52MS5HZXRQbGFjZW1lbnRSZXNwb25zZRJUCg9VcGRhdGVQbGFjZW1lbnQSHy5kY2ltLnYxLlVwZGF0ZVBsYWNlbWVudFJlcXVlc3QaIC5kY2ltLnYxLlVwZGF0ZVBsYWNlbWVudFJlc3BvbnNlElQKD0RlbGV0ZVBsYWNlbWVudBIfLmRjaW0udjEuRGVsZXRlUGxhY2VtZW50UmVxdWVzdBogLmRjaW0udjEuRGVsZXRlUGxhY2VtZW50UmVzcG9uc2USYwoUTGlzdFBsYWNlbWVudHNCeVJhY2sSJC5kY2ltLnYxLkxpc3RQbGFjZW1lbnRzQnlSYWNrUmVxdWVzdBolLmRjaW0udjEuTGlzdFBsYWNlbWVudHNCeVJhY2tSZXNwb25zZRJgChNMaXN0Q2hpbGRQbGFjZW1lbnRzEiMuZGNpbS52MS5MaXN0Q2hpbGRQbGFjZW1lbnRzUmVxdWVzdBokLmRjaW0udjEuTGlzdENoaWxkUGxhY2VtZW50c1Jlc3BvbnNlQkVaOWdpdGh1Yi5jb20vZnVuZGFtZW50LW9zcy9kY2ltL2FwaS9wa2cvcHJvdG8vZ2VuL3YxO2RjaW12MZIDBwgC0j4CEANiCGVkaXRpb25zcOgH',
+    [
+      file_buf_validate_validate,
+      file_google_protobuf_go_features,
+      file_google_protobuf_timestamp,
+      file_v1_common,
+    ],
+  );
 
 /**
  * RackLocation places an asset directly in a rack.
  *
  * @generated from message dcim.v1.RackLocation
  */
-export type RackLocation = Message<"dcim.v1.RackLocation"> & {
+export type RackLocation = Message<'dcim.v1.RackLocation'> & {
   /**
    * @generated from field: string rack_id = 10;
    */
@@ -44,7 +56,8 @@ export type RackLocation = Message<"dcim.v1.RackLocation"> & {
  * Describes the message dcim.v1.RackLocation.
  * Use `create(RackLocationSchema)` to create a new message.
  */
-export const RackLocationSchema: GenMessage<RackLocation> = /*@__PURE__*/
+export const RackLocationSchema: GenMessage<RackLocation> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 0);
 
 /**
@@ -52,7 +65,7 @@ export const RackLocationSchema: GenMessage<RackLocation> = /*@__PURE__*/
  *
  * @generated from message dcim.v1.SubComponentLocation
  */
-export type SubComponentLocation = Message<"dcim.v1.SubComponentLocation"> & {
+export type SubComponentLocation = Message<'dcim.v1.SubComponentLocation'> & {
   /**
    * @generated from field: string parent_placement_id = 10;
    */
@@ -68,7 +81,8 @@ export type SubComponentLocation = Message<"dcim.v1.SubComponentLocation"> & {
  * Describes the message dcim.v1.SubComponentLocation.
  * Use `create(SubComponentLocationSchema)` to create a new message.
  */
-export const SubComponentLocationSchema: GenMessage<SubComponentLocation> = /*@__PURE__*/
+export const SubComponentLocationSchema: GenMessage<SubComponentLocation> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 1);
 
 /**
@@ -76,7 +90,7 @@ export const SubComponentLocationSchema: GenMessage<SubComponentLocation> = /*@_
  *
  * @generated from message dcim.v1.Placement
  */
-export type Placement = Message<"dcim.v1.Placement"> & {
+export type Placement = Message<'dcim.v1.Placement'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -90,19 +104,22 @@ export type Placement = Message<"dcim.v1.Placement"> & {
   /**
    * @generated from oneof dcim.v1.Placement.location
    */
-  location: {
-    /**
-     * @generated from field: dcim.v1.RackLocation rack = 30;
-     */
-    value: RackLocation;
-    case: "rack";
-  } | {
-    /**
-     * @generated from field: dcim.v1.SubComponentLocation sub_component = 40;
-     */
-    value: SubComponentLocation;
-    case: "subComponent";
-  } | { case: undefined; value?: undefined };
+  location:
+    | {
+        /**
+         * @generated from field: dcim.v1.RackLocation rack = 30;
+         */
+        value: RackLocation;
+        case: 'rack';
+      }
+    | {
+        /**
+         * @generated from field: dcim.v1.SubComponentLocation sub_component = 40;
+         */
+        value: SubComponentLocation;
+        case: 'subComponent';
+      }
+    | { case: undefined; value?: undefined };
 
   /**
    * Optional link to the logical design.
@@ -136,13 +153,14 @@ export type Placement = Message<"dcim.v1.Placement"> & {
  * Describes the message dcim.v1.Placement.
  * Use `create(PlacementSchema)` to create a new message.
  */
-export const PlacementSchema: GenMessage<Placement> = /*@__PURE__*/
+export const PlacementSchema: GenMessage<Placement> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 2);
 
 /**
  * @generated from message dcim.v1.CreatePlacementRequest
  */
-export type CreatePlacementRequest = Message<"dcim.v1.CreatePlacementRequest"> & {
+export type CreatePlacementRequest = Message<'dcim.v1.CreatePlacementRequest'> & {
   /**
    * @generated from field: string asset_id = 10;
    */
@@ -151,19 +169,22 @@ export type CreatePlacementRequest = Message<"dcim.v1.CreatePlacementRequest"> &
   /**
    * @generated from oneof dcim.v1.CreatePlacementRequest.location
    */
-  location: {
-    /**
-     * @generated from field: dcim.v1.RackLocation rack = 20;
-     */
-    value: RackLocation;
-    case: "rack";
-  } | {
-    /**
-     * @generated from field: dcim.v1.SubComponentLocation sub_component = 30;
-     */
-    value: SubComponentLocation;
-    case: "subComponent";
-  } | { case: undefined; value?: undefined };
+  location:
+    | {
+        /**
+         * @generated from field: dcim.v1.RackLocation rack = 20;
+         */
+        value: RackLocation;
+        case: 'rack';
+      }
+    | {
+        /**
+         * @generated from field: dcim.v1.SubComponentLocation sub_component = 30;
+         */
+        value: SubComponentLocation;
+        case: 'subComponent';
+      }
+    | { case: undefined; value?: undefined };
 
   /**
    * @generated from field: string logical_device_id = 70 [features.field_presence = EXPLICIT];
@@ -180,13 +201,14 @@ export type CreatePlacementRequest = Message<"dcim.v1.CreatePlacementRequest"> &
  * Describes the message dcim.v1.CreatePlacementRequest.
  * Use `create(CreatePlacementRequestSchema)` to create a new message.
  */
-export const CreatePlacementRequestSchema: GenMessage<CreatePlacementRequest> = /*@__PURE__*/
+export const CreatePlacementRequestSchema: GenMessage<CreatePlacementRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 3);
 
 /**
  * @generated from message dcim.v1.CreatePlacementResponse
  */
-export type CreatePlacementResponse = Message<"dcim.v1.CreatePlacementResponse"> & {
+export type CreatePlacementResponse = Message<'dcim.v1.CreatePlacementResponse'> & {
   /**
    * @generated from field: dcim.v1.Placement placement = 10;
    */
@@ -197,13 +219,14 @@ export type CreatePlacementResponse = Message<"dcim.v1.CreatePlacementResponse">
  * Describes the message dcim.v1.CreatePlacementResponse.
  * Use `create(CreatePlacementResponseSchema)` to create a new message.
  */
-export const CreatePlacementResponseSchema: GenMessage<CreatePlacementResponse> = /*@__PURE__*/
+export const CreatePlacementResponseSchema: GenMessage<CreatePlacementResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 4);
 
 /**
  * @generated from message dcim.v1.GetPlacementRequest
  */
-export type GetPlacementRequest = Message<"dcim.v1.GetPlacementRequest"> & {
+export type GetPlacementRequest = Message<'dcim.v1.GetPlacementRequest'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -214,13 +237,14 @@ export type GetPlacementRequest = Message<"dcim.v1.GetPlacementRequest"> & {
  * Describes the message dcim.v1.GetPlacementRequest.
  * Use `create(GetPlacementRequestSchema)` to create a new message.
  */
-export const GetPlacementRequestSchema: GenMessage<GetPlacementRequest> = /*@__PURE__*/
+export const GetPlacementRequestSchema: GenMessage<GetPlacementRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 5);
 
 /**
  * @generated from message dcim.v1.GetPlacementResponse
  */
-export type GetPlacementResponse = Message<"dcim.v1.GetPlacementResponse"> & {
+export type GetPlacementResponse = Message<'dcim.v1.GetPlacementResponse'> & {
   /**
    * @generated from field: dcim.v1.Placement placement = 10;
    */
@@ -231,13 +255,14 @@ export type GetPlacementResponse = Message<"dcim.v1.GetPlacementResponse"> & {
  * Describes the message dcim.v1.GetPlacementResponse.
  * Use `create(GetPlacementResponseSchema)` to create a new message.
  */
-export const GetPlacementResponseSchema: GenMessage<GetPlacementResponse> = /*@__PURE__*/
+export const GetPlacementResponseSchema: GenMessage<GetPlacementResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 6);
 
 /**
  * @generated from message dcim.v1.UpdatePlacementRequest
  */
-export type UpdatePlacementRequest = Message<"dcim.v1.UpdatePlacementRequest"> & {
+export type UpdatePlacementRequest = Message<'dcim.v1.UpdatePlacementRequest'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -246,19 +271,22 @@ export type UpdatePlacementRequest = Message<"dcim.v1.UpdatePlacementRequest"> &
   /**
    * @generated from oneof dcim.v1.UpdatePlacementRequest.location
    */
-  location: {
-    /**
-     * @generated from field: dcim.v1.RackLocation rack = 20;
-     */
-    value: RackLocation;
-    case: "rack";
-  } | {
-    /**
-     * @generated from field: dcim.v1.SubComponentLocation sub_component = 30;
-     */
-    value: SubComponentLocation;
-    case: "subComponent";
-  } | { case: undefined; value?: undefined };
+  location:
+    | {
+        /**
+         * @generated from field: dcim.v1.RackLocation rack = 20;
+         */
+        value: RackLocation;
+        case: 'rack';
+      }
+    | {
+        /**
+         * @generated from field: dcim.v1.SubComponentLocation sub_component = 30;
+         */
+        value: SubComponentLocation;
+        case: 'subComponent';
+      }
+    | { case: undefined; value?: undefined };
 
   /**
    * @generated from field: string logical_device_id = 70 [features.field_presence = EXPLICIT];
@@ -275,13 +303,14 @@ export type UpdatePlacementRequest = Message<"dcim.v1.UpdatePlacementRequest"> &
  * Describes the message dcim.v1.UpdatePlacementRequest.
  * Use `create(UpdatePlacementRequestSchema)` to create a new message.
  */
-export const UpdatePlacementRequestSchema: GenMessage<UpdatePlacementRequest> = /*@__PURE__*/
+export const UpdatePlacementRequestSchema: GenMessage<UpdatePlacementRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 7);
 
 /**
  * @generated from message dcim.v1.UpdatePlacementResponse
  */
-export type UpdatePlacementResponse = Message<"dcim.v1.UpdatePlacementResponse"> & {
+export type UpdatePlacementResponse = Message<'dcim.v1.UpdatePlacementResponse'> & {
   /**
    * @generated from field: dcim.v1.Placement placement = 10;
    */
@@ -292,13 +321,14 @@ export type UpdatePlacementResponse = Message<"dcim.v1.UpdatePlacementResponse">
  * Describes the message dcim.v1.UpdatePlacementResponse.
  * Use `create(UpdatePlacementResponseSchema)` to create a new message.
  */
-export const UpdatePlacementResponseSchema: GenMessage<UpdatePlacementResponse> = /*@__PURE__*/
+export const UpdatePlacementResponseSchema: GenMessage<UpdatePlacementResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 8);
 
 /**
  * @generated from message dcim.v1.DeletePlacementRequest
  */
-export type DeletePlacementRequest = Message<"dcim.v1.DeletePlacementRequest"> & {
+export type DeletePlacementRequest = Message<'dcim.v1.DeletePlacementRequest'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -309,26 +339,27 @@ export type DeletePlacementRequest = Message<"dcim.v1.DeletePlacementRequest"> &
  * Describes the message dcim.v1.DeletePlacementRequest.
  * Use `create(DeletePlacementRequestSchema)` to create a new message.
  */
-export const DeletePlacementRequestSchema: GenMessage<DeletePlacementRequest> = /*@__PURE__*/
+export const DeletePlacementRequestSchema: GenMessage<DeletePlacementRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 9);
 
 /**
  * @generated from message dcim.v1.DeletePlacementResponse
  */
-export type DeletePlacementResponse = Message<"dcim.v1.DeletePlacementResponse"> & {
-};
+export type DeletePlacementResponse = Message<'dcim.v1.DeletePlacementResponse'> & {};
 
 /**
  * Describes the message dcim.v1.DeletePlacementResponse.
  * Use `create(DeletePlacementResponseSchema)` to create a new message.
  */
-export const DeletePlacementResponseSchema: GenMessage<DeletePlacementResponse> = /*@__PURE__*/
+export const DeletePlacementResponseSchema: GenMessage<DeletePlacementResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 10);
 
 /**
  * @generated from message dcim.v1.ListPlacementsByRackRequest
  */
-export type ListPlacementsByRackRequest = Message<"dcim.v1.ListPlacementsByRackRequest"> & {
+export type ListPlacementsByRackRequest = Message<'dcim.v1.ListPlacementsByRackRequest'> & {
   /**
    * @generated from field: string rack_id = 10;
    */
@@ -339,13 +370,14 @@ export type ListPlacementsByRackRequest = Message<"dcim.v1.ListPlacementsByRackR
  * Describes the message dcim.v1.ListPlacementsByRackRequest.
  * Use `create(ListPlacementsByRackRequestSchema)` to create a new message.
  */
-export const ListPlacementsByRackRequestSchema: GenMessage<ListPlacementsByRackRequest> = /*@__PURE__*/
+export const ListPlacementsByRackRequestSchema: GenMessage<ListPlacementsByRackRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 11);
 
 /**
  * @generated from message dcim.v1.ListPlacementsByRackResponse
  */
-export type ListPlacementsByRackResponse = Message<"dcim.v1.ListPlacementsByRackResponse"> & {
+export type ListPlacementsByRackResponse = Message<'dcim.v1.ListPlacementsByRackResponse'> & {
   /**
    * @generated from field: repeated dcim.v1.Placement placements = 10;
    */
@@ -356,13 +388,14 @@ export type ListPlacementsByRackResponse = Message<"dcim.v1.ListPlacementsByRack
  * Describes the message dcim.v1.ListPlacementsByRackResponse.
  * Use `create(ListPlacementsByRackResponseSchema)` to create a new message.
  */
-export const ListPlacementsByRackResponseSchema: GenMessage<ListPlacementsByRackResponse> = /*@__PURE__*/
+export const ListPlacementsByRackResponseSchema: GenMessage<ListPlacementsByRackResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 12);
 
 /**
  * @generated from message dcim.v1.ListChildPlacementsRequest
  */
-export type ListChildPlacementsRequest = Message<"dcim.v1.ListChildPlacementsRequest"> & {
+export type ListChildPlacementsRequest = Message<'dcim.v1.ListChildPlacementsRequest'> & {
   /**
    * @generated from field: string parent_placement_id = 10;
    */
@@ -373,13 +406,14 @@ export type ListChildPlacementsRequest = Message<"dcim.v1.ListChildPlacementsReq
  * Describes the message dcim.v1.ListChildPlacementsRequest.
  * Use `create(ListChildPlacementsRequestSchema)` to create a new message.
  */
-export const ListChildPlacementsRequestSchema: GenMessage<ListChildPlacementsRequest> = /*@__PURE__*/
+export const ListChildPlacementsRequestSchema: GenMessage<ListChildPlacementsRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 13);
 
 /**
  * @generated from message dcim.v1.ListChildPlacementsResponse
  */
-export type ListChildPlacementsResponse = Message<"dcim.v1.ListChildPlacementsResponse"> & {
+export type ListChildPlacementsResponse = Message<'dcim.v1.ListChildPlacementsResponse'> & {
   /**
    * @generated from field: repeated dcim.v1.Placement placements = 10;
    */
@@ -390,7 +424,8 @@ export type ListChildPlacementsResponse = Message<"dcim.v1.ListChildPlacementsRe
  * Describes the message dcim.v1.ListChildPlacementsResponse.
  * Use `create(ListChildPlacementsResponseSchema)` to create a new message.
  */
-export const ListChildPlacementsResponseSchema: GenMessage<ListChildPlacementsResponse> = /*@__PURE__*/
+export const ListChildPlacementsResponseSchema: GenMessage<ListChildPlacementsResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_placement, 14);
 
 /**
@@ -401,50 +436,48 @@ export const PlacementService: GenService<{
    * @generated from rpc dcim.v1.PlacementService.CreatePlacement
    */
   createPlacement: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof CreatePlacementRequestSchema;
     output: typeof CreatePlacementResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.PlacementService.GetPlacement
    */
   getPlacement: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof GetPlacementRequestSchema;
     output: typeof GetPlacementResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.PlacementService.UpdatePlacement
    */
   updatePlacement: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof UpdatePlacementRequestSchema;
     output: typeof UpdatePlacementResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.PlacementService.DeletePlacement
    */
   deletePlacement: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof DeletePlacementRequestSchema;
     output: typeof DeletePlacementResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.PlacementService.ListPlacementsByRack
    */
   listPlacementsByRack: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof ListPlacementsByRackRequestSchema;
     output: typeof ListPlacementsByRackResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.PlacementService.ListChildPlacements
    */
   listChildPlacements: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof ListChildPlacementsRequestSchema;
     output: typeof ListChildPlacementsResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_v1_placement, 0);
-
+  };
+}> = /*@__PURE__*/ serviceDesc(file_v1_placement, 0);

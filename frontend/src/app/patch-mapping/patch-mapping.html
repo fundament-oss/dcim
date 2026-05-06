@@ -71,8 +71,8 @@
     [cable]="editCable()"
     [dcId]="selectedDcId()"
     (save)="saveFromForm($event)"
-    (cancel)="closeForm()"
-    (delete)="openDeleteCable($event)"
+    (cancelForm)="closeForm()"
+    (cableDelete)="openDeleteCable($event)"
   />
 </nldd-sheet>
 

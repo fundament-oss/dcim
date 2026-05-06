@@ -32,6 +32,7 @@ export default class PatchMappingComponent {
   private readonly router = inject(Router);
 
   readonly selectedDcId = signal('ams-01');
+
   readonly activeView = signal<'list' | 'topology'>('list');
 
   // ── Cable state ────────────────────────────────────────────────────────────
@@ -42,11 +43,13 @@ export default class PatchMappingComponent {
   );
 
   readonly editCable = signal<Partial<Cable> | null>(null);
+
   readonly deleteCable = signal<Cable | null>(null);
 
   readonly DEVICE_PORTS = DEVICE_PORTS;
 
   private readonly cableSheetEl = viewChild<ElementRef>('cableSheet');
+
   private readonly deleteModalEl = viewChild<ElementRef>('deleteModal');
 
   constructor() {
@@ -82,10 +85,7 @@ export default class PatchMappingComponent {
       this.mutableCables.update((list) => list.map((c) => (c.id === cable.id ? cable : c)));
     } else {
       const id = `cab-${Date.now().toString(36)}`;
-      this.mutableCables.update((list) => [
-        ...list,
-        { ...cable, id, dcId: this.selectedDcId() },
-      ]);
+      this.mutableCables.update((list) => [...list, { ...cable, id, dcId: this.selectedDcId() }]);
     }
     this.editCable.set(null);
   }
@@ -111,7 +111,7 @@ export default class PatchMappingComponent {
   }
 
   navigateToDevice(id: string): void {
-    void this.router.navigate(['/racks/device', id]);
+    this.router.navigate(['/racks/device', id]);
   }
 
   // ── CSV export ─────────────────────────────────────────────────────────────
@@ -119,9 +119,19 @@ export default class PatchMappingComponent {
   exportCsv(): void {
     const cables = this.dcCables();
     const headers = [
-      'ID', 'Label', 'A Device', 'A Port', 'A Port Type',
-      'B Device', 'B Port', 'B Port Type',
-      'Status', 'Type', 'Color', 'Description', 'Comments',
+      'ID',
+      'Label',
+      'A Device',
+      'A Port',
+      'A Port Type',
+      'B Device',
+      'B Port',
+      'B Port Type',
+      'Status',
+      'Type',
+      'Color',
+      'Description',
+      'Comments',
     ];
     const rows = cables.map((c) => [
       c.id,

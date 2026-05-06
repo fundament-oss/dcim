@@ -34,40 +34,48 @@ interface DeviceOption {
 })
 export default class CableFormComponent {
   readonly cable = input<Partial<Cable> | null>(null);
+
   readonly dcId = input.required<string>();
 
   readonly save = output<Cable>();
-  readonly cancel = output<void>();
-  readonly delete = output<Cable>();
+
+  readonly cancelForm = output<void>();
+
+  readonly cableDelete = output<Cable>();
 
   // ── A Side ─────────────────────────────────────────────────────────────────
   readonly aPortType = signal<PortType | ''>('');
+
   readonly aDeviceId = signal('');
+
   readonly aPortId = signal('');
 
   // ── B Side ─────────────────────────────────────────────────────────────────
   readonly bPortType = signal<PortType | ''>('');
+
   readonly bDeviceId = signal('');
+
   readonly bPortId = signal('');
 
   // ── Cable fields ───────────────────────────────────────────────────────────
   readonly cableType = signal<CableType | ''>('');
+
   readonly cableStatus = signal<CableStatus>('connected');
+
   readonly cableLabel = signal('');
+
   readonly cableColor = signal<CableColor | undefined>(undefined);
+
   readonly cableDescription = signal('');
+
   readonly cableComments = signal('');
 
   // ── Derived: devices in this DC ───────────────────────────────────────────
   readonly dcDevices = computed<DeviceOption[]>(() => {
     const dcId = this.dcId();
-    const result: DeviceOption[] = [];
-    for (const rack of RACKS) {
-      if (rack.dcId !== dcId) continue;
-      for (const dev of rack.devices) {
-        result.push({ id: dev.id, name: dev.name });
-      }
-    }
+    const result = RACKS.filter((rack) => rack.dcId === dcId).flatMap((rack) =>
+      rack.devices.map((dev) => ({ id: dev.id, name: dev.name })),
+    );
     return result.sort((a, b) => a.name.localeCompare(b.name));
   });
 
@@ -88,17 +96,18 @@ export default class CableFormComponent {
     return type ? ports.filter((p) => p.type === type) : ports;
   });
 
-  readonly isEditMode = computed(() => !!(this.cable()?.id));
+  readonly isEditMode = computed(() => !!this.cable()?.id);
 
-  readonly canSave = computed(() => {
-    return !!(
-      this.aDeviceId() &&
-      this.aPortId() &&
-      this.bDeviceId() &&
-      this.bPortId() &&
-      this.cableType()
-    );
-  });
+  readonly canSave = computed(
+    () =>
+      !!(
+        this.aDeviceId() &&
+        this.aPortId() &&
+        this.bDeviceId() &&
+        this.bPortId() &&
+        this.cableType()
+      ),
+  );
 
   constructor() {
     effect(() => {
@@ -200,12 +209,12 @@ export default class CableFormComponent {
   }
 
   onCancel(): void {
-    this.cancel.emit();
+    this.cancelForm.emit();
   }
 
   onDelete(): void {
     const c = this.cable();
-    if (c?.id) this.delete.emit(c as Cable);
+    if (c?.id) this.cableDelete.emit(c as Cable);
   }
 
   // ── Constants for template ─────────────────────────────────────────────────
@@ -219,9 +228,19 @@ export default class CableFormComponent {
   ];
 
   readonly CABLE_TYPES: CableType[] = [
-    'cat5e', 'cat6', 'cat6a', 'cat7', 'cat8',
-    'dac', 'aoc', 'mmf', 'smf',
-    'power', 'console', 'usb', 'other',
+    'cat5e',
+    'cat6',
+    'cat6a',
+    'cat7',
+    'cat8',
+    'dac',
+    'aoc',
+    'mmf',
+    'smf',
+    'power',
+    'console',
+    'usb',
+    'other',
   ];
 
   readonly CABLE_STATUSES: { value: CableStatus; label: string }[] = [
@@ -231,10 +250,19 @@ export default class CableFormComponent {
   ];
 
   readonly CABLE_COLORS: CableColor[] = [
-    'dark-grey', 'light-grey', 'red', 'green', 'blue',
-    'yellow', 'purple', 'orange', 'teal', 'white',
+    'dark-grey',
+    'light-grey',
+    'red',
+    'green',
+    'blue',
+    'yellow',
+    'purple',
+    'orange',
+    'teal',
+    'white',
   ];
 
   readonly CABLE_COLOR_HEX = CABLE_COLOR_HEX;
+
   readonly PORT_TYPE_LABEL = PORT_TYPE_LABEL;
 }

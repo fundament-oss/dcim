@@ -26,10 +26,13 @@ export default class PatchMappingFlowWrapperComponent
   @ViewChild('container', { static: true }) container!: ElementRef;
 
   @Input() cables: Cable[] = [];
+
   @Input() devicePorts: Record<string, Port[]> = {};
+
   @Input() selectedCableId: string | null = null;
 
   readonly cableSelected = output<string>();
+
   readonly deviceNavigate = output<string>();
 
   private root: ReturnType<typeof ReactDOM.createRoot> | undefined;

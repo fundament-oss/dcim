@@ -453,7 +453,11 @@
             </div>
 
             <!-- Tab bar -->
-            <div class="flex border-b border-gray-100 px-4 pt-1.5 gap-0.5 overflow-x-auto" role="tablist" aria-label="Port type tabs">
+            <div
+              class="flex border-b border-gray-100 px-4 pt-1.5 gap-0.5 overflow-x-auto"
+              role="tablist"
+              aria-label="Port type tabs"
+            >
               @for (tab of PORT_TABS; track tab) {
                 <button
                   class="px-3 py-1.5 text-xs font-medium whitespace-nowrap border-b-2 -mb-px transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-inset"
@@ -475,7 +479,9 @@
 
             <!-- Add port inline form -->
             @if (showAddPortForm()) {
-              <div class="px-4 py-3 bg-slate-50 border-b border-gray-100 flex flex-wrap items-center gap-2">
+              <div
+                class="px-4 py-3 bg-slate-50 border-b border-gray-100 flex flex-wrap items-center gap-2"
+              >
                 <input
                   type="text"
                   [value]="newPortName()"
@@ -514,7 +520,10 @@
               [attr.aria-labelledby]="'port-tab-' + activePortTab()"
             >
               @if (devicePorts().length > 0) {
-                <table class="w-full text-xs" [attr.aria-label]="PORT_TYPE_LABEL[activePortTab()] + ' table'">
+                <table
+                  class="w-full text-xs"
+                  [attr.aria-label]="PORT_TYPE_LABEL[activePortTab()] + ' table'"
+                >
                   <thead class="bg-slate-50 border-b border-gray-100">
                     <tr>
                       <th class="px-4 py-2 text-left font-medium text-gray-500">Name</th>
@@ -530,7 +539,9 @@
                     @for (port of devicePorts(); track port.id) {
                       @let cable = portCableMap().get(port.id);
                       <tr class="hover:bg-slate-50 group">
-                        <td class="px-4 py-2.5 font-mono text-gray-800 font-medium">{{ port.name }}</td>
+                        <td class="px-4 py-2.5 font-mono text-gray-800 font-medium">
+                          {{ port.name }}
+                        </td>
                         <td class="px-4 py-2.5 text-gray-500">{{ port.label ?? '—' }}</td>
                         <td class="px-4 py-2.5">
                           @if (cable) {
@@ -538,25 +549,30 @@
                               routerLink="/patch-mapping"
                               class="font-mono text-indigo-600 underline hover:text-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
                               [title]="cable.id"
-                            >{{ cable.label ?? cable.id }}</a>
+                              >{{ cable.label ?? cable.id }}</a
+                            >
                           } @else {
                             <span class="text-gray-300">—</span>
                           }
                         </td>
                         <td class="px-4 py-2.5 font-mono text-gray-500">
                           @if (cable) {
-                            @let peer = cable.aSide.deviceId === deviceId() ? cable.bSide : cable.aSide;
+                            @let peer =
+                              cable.aSide.deviceId === deviceId() ? cable.bSide : cable.aSide;
                             <a
                               [routerLink]="['/racks/device', peer.deviceId]"
                               class="text-indigo-600 hover:underline focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded"
-                            >{{ peer.deviceName }}</a>
+                              >{{ peer.deviceName }}</a
+                            >
                             <span class="text-gray-400 ml-1">› {{ peer.portName }}</span>
                           } @else {
                             <span class="text-gray-300">—</span>
                           }
                         </td>
                         <td class="px-4 py-2.5 text-right">
-                          <div class="opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-end gap-1">
+                          <div
+                            class="opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-end gap-1"
+                          >
                             @if (cable) {
                               <button
                                 (click)="disconnectCable(port.id)"

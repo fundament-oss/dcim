@@ -91,13 +91,19 @@ export default class DeviceDetailComponent {
 
   // ── Port management ────────────────────────────────────────────────────────
   readonly activePortTab = signal<PortType>('network-interface');
+
   readonly showAddPortForm = signal(false);
+
   readonly newPortName = signal('');
+
   readonly newPortLabel = signal('');
+
   private readonly extraPorts = signal<Record<string, Port[]>>({});
+
   private readonly removedCableIds = signal<Set<string>>(new Set());
 
   readonly PORT_TABS = PORT_TABS;
+
   readonly PORT_TYPE_LABEL = PORT_TYPE_LABEL;
 
   readonly devicePorts = computed<Port[]>(() => {
@@ -111,13 +117,12 @@ export default class DeviceDetailComponent {
   readonly portCableMap = computed<Map<string, Cable>>(() => {
     const devId = this.deviceId();
     const removed = this.removedCableIds();
-    const map = new Map<string, Cable>();
-    for (const cable of MOCK_CABLES) {
-      if (removed.has(cable.id)) continue;
-      if (cable.aSide.deviceId === devId) map.set(cable.aSide.portId, cable);
-      if (cable.bSide.deviceId === devId) map.set(cable.bSide.portId, cable);
-    }
-    return map;
+    const cableMap = new Map<string, Cable>();
+    MOCK_CABLES.filter((cable) => !removed.has(cable.id)).forEach((cable) => {
+      if (cable.aSide.deviceId === devId) cableMap.set(cable.aSide.portId, cable);
+      if (cable.bSide.deviceId === devId) cableMap.set(cable.bSide.portId, cable);
+    });
+    return cableMap;
   });
 
   addPort(): void {
@@ -147,7 +152,7 @@ export default class DeviceDetailComponent {
   }
 
   openConnectForm(port: Port): void {
-    void this.router.navigate(['/patch-mapping'], {
+    this.router.navigate(['/patch-mapping'], {
       queryParams: { aDeviceId: port.deviceId, aPortId: port.id },
     });
   }

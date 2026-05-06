@@ -55,9 +55,7 @@ function DeviceNode({ data }: NodeProps<DeviceNodeData>) {
       p.type === 'console-port' ||
       p.type === 'console-server-port',
   );
-  const rightPorts = data.ports.filter(
-    (p) => p.type === 'power-port' || p.type === 'power-outlet',
-  );
+  const rightPorts = data.ports.filter((p) => p.type === 'power-port' || p.type === 'power-outlet');
 
   const height = Math.max(64, Math.max(leftPorts.length, rightPorts.length) * 18 + 36);
 
@@ -111,7 +109,15 @@ function DeviceNode({ data }: NodeProps<DeviceNodeData>) {
         >
           {TYPE_BADGE[data.deviceType] ?? data.deviceType.toUpperCase()}
         </span>
-        <span style={{ color: '#1e293b', fontWeight: 600, overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+        <span
+          style={{
+            color: '#1e293b',
+            fontWeight: 600,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+          }}
+        >
           {data.label}
         </span>
       </div>
@@ -183,24 +189,79 @@ interface DeviceLayout {
   position: { x: number; y: number };
 }
 
-const RACK_LAYOUTS: { id: string; label: string; x: number; y: number; width: number; height: number }[] = [
-  { id: 'rack-r01', label: 'AMS-01-R01', x: 40,  y: 40, width: 230, height: 480 },
+const RACK_LAYOUTS: {
+  id: string;
+  label: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}[] = [
+  { id: 'rack-r01', label: 'AMS-01-R01', x: 40, y: 40, width: 230, height: 480 },
   { id: 'rack-r02', label: 'AMS-01-R02', x: 320, y: 40, width: 230, height: 360 },
   { id: 'rack-r04', label: 'AMS-01-R04', x: 600, y: 40, width: 230, height: 200 },
 ];
 
 const DEVICE_LAYOUTS: DeviceLayout[] = [
   // R01
-  { id: 'd-001', label: 'tor-switch-01',  deviceType: 'switch', parentNode: 'rack-r01', position: { x: 20, y: 50 } },
-  { id: 'd-002', label: 'patch-panel-01', deviceType: 'patch',  parentNode: 'rack-r01', position: { x: 20, y: 155 } },
-  { id: 'd-003', label: 'server-01',      deviceType: 'server', parentNode: 'rack-r01', position: { x: 20, y: 260 } },
-  { id: 'd-008', label: 'pdu-01',         deviceType: 'pdu',    parentNode: 'rack-r01', position: { x: 20, y: 390 } },
+  {
+    id: 'd-001',
+    label: 'tor-switch-01',
+    deviceType: 'switch',
+    parentNode: 'rack-r01',
+    position: { x: 20, y: 50 },
+  },
+  {
+    id: 'd-002',
+    label: 'patch-panel-01',
+    deviceType: 'patch',
+    parentNode: 'rack-r01',
+    position: { x: 20, y: 155 },
+  },
+  {
+    id: 'd-003',
+    label: 'server-01',
+    deviceType: 'server',
+    parentNode: 'rack-r01',
+    position: { x: 20, y: 260 },
+  },
+  {
+    id: 'd-008',
+    label: 'pdu-01',
+    deviceType: 'pdu',
+    parentNode: 'rack-r01',
+    position: { x: 20, y: 390 },
+  },
   // R02
-  { id: 'd-101', label: 'leaf-switch-01', deviceType: 'switch', parentNode: 'rack-r02', position: { x: 20, y: 50 } },
-  { id: 'd-102', label: 'server-10',      deviceType: 'server', parentNode: 'rack-r02', position: { x: 20, y: 180 } },
-  { id: 'd-103', label: 'server-11',      deviceType: 'server', parentNode: 'rack-r02', position: { x: 20, y: 290 } },
+  {
+    id: 'd-101',
+    label: 'leaf-switch-01',
+    deviceType: 'switch',
+    parentNode: 'rack-r02',
+    position: { x: 20, y: 50 },
+  },
+  {
+    id: 'd-102',
+    label: 'server-10',
+    deviceType: 'server',
+    parentNode: 'rack-r02',
+    position: { x: 20, y: 180 },
+  },
+  {
+    id: 'd-103',
+    label: 'server-11',
+    deviceType: 'server',
+    parentNode: 'rack-r02',
+    position: { x: 20, y: 290 },
+  },
   // R04
-  { id: 'd-301', label: 'spine-switch-01', deviceType: 'switch', parentNode: 'rack-r04', position: { x: 20, y: 50 } },
+  {
+    id: 'd-301',
+    label: 'spine-switch-01',
+    deviceType: 'switch',
+    parentNode: 'rack-r04',
+    position: { x: 20, y: 50 },
+  },
 ];
 
 function buildNodes(

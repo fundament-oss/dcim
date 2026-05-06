@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, CUSTOM_ELEMENTS_SCHEMA, input, output, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  CUSTOM_ELEMENTS_SCHEMA,
+  input,
+  output,
+  signal,
+} from '@angular/core';
 import {
   Cable,
   CableColor,
@@ -25,28 +33,33 @@ interface DeviceOption {
 })
 export default class CableListComponent {
   readonly cables = input.required<Cable[]>();
+
   readonly dcId = input.required<string>();
 
   readonly editCable = output<Cable>();
+
   readonly deleteCable = output<Cable>();
+
   readonly dcSelected = output<string>();
 
   readonly searchText = signal('');
+
   readonly filterDeviceId = signal('');
+
   readonly filterStatus = signal<CableStatus | ''>('');
+
   readonly filterType = signal<CableType | ''>('');
 
   readonly dcDevices = computed<DeviceOption[]>(() => {
     const seen = new Set<string>();
-    const result: DeviceOption[] = [];
-    for (const c of this.cables()) {
-      for (const side of [c.aSide, c.bSide]) {
-        if (!seen.has(side.deviceId)) {
-          seen.add(side.deviceId);
-          result.push({ id: side.deviceId, name: side.deviceName });
-        }
-      }
-    }
+    const result = this.cables()
+      .flatMap((c) => [c.aSide, c.bSide])
+      .filter((side) => {
+        if (seen.has(side.deviceId)) return false;
+        seen.add(side.deviceId);
+        return true;
+      })
+      .map((side) => ({ id: side.deviceId, name: side.deviceName }));
     return result.sort((a, b) => a.name.localeCompare(b.name));
   });
 
@@ -80,32 +93,33 @@ export default class CableListComponent {
 
   readonly statusCounts = computed(() => {
     const counts: Record<string, number> = { all: this.cables().length };
-    for (const c of this.cables()) {
+    this.cables().forEach((c) => {
       counts[c.status] = (counts[c.status] ?? 0) + 1;
-    }
+    });
     return counts;
   });
 
   readonly typeCounts = computed(() => {
     const counts: Record<string, number> = {};
-    for (const c of this.cables()) {
+    this.cables().forEach((c) => {
       counts[c.type] = (counts[c.type] ?? 0) + 1;
-    }
+    });
     return counts;
   });
 
   readonly hasActiveFilters = computed(
-    () => !!(this.filterDeviceId() || this.filterStatus() || this.filterType() || this.searchText()),
+    () =>
+      !!(this.filterDeviceId() || this.filterStatus() || this.filterType() || this.searchText()),
   );
 
-  statusDotClass(status: CableStatus): string {
+  readonly statusDotClass = (status: CableStatus): string => {
     const map: Record<CableStatus, string> = {
       planned: 'bg-amber-400',
       connected: 'bg-teal-500',
       decommissioned: 'bg-slate-400',
     };
     return map[status] ?? 'bg-slate-300';
-  }
+  };
 
   clearFilters(): void {
     this.filterDeviceId.set('');
@@ -115,8 +129,11 @@ export default class CableListComponent {
   }
 
   readonly CABLE_STATUS_COLORS = CABLE_STATUS_COLORS;
+
   readonly CABLE_STATUS_LABEL = CABLE_STATUS_LABEL;
+
   readonly CABLE_COLOR_HEX = CABLE_COLOR_HEX;
+
   readonly PORT_TYPE_LABEL = PORT_TYPE_LABEL;
 
   readonly CABLE_STATUSES: { value: CableStatus; label: string }[] = [
@@ -126,14 +143,23 @@ export default class CableListComponent {
   ];
 
   readonly CABLE_TYPES: CableType[] = [
-    'cat5e', 'cat6', 'cat6a', 'cat7', 'cat8',
-    'dac', 'aoc', 'mmf', 'smf',
-    'power', 'console', 'usb', 'other',
+    'cat5e',
+    'cat6',
+    'cat6a',
+    'cat7',
+    'cat8',
+    'dac',
+    'aoc',
+    'mmf',
+    'smf',
+    'power',
+    'console',
+    'usb',
+    'other',
   ];
 
-  colorHex(color: CableColor | undefined): string | null {
-    return color ? CABLE_COLOR_HEX[color] : null;
-  }
+  readonly colorHex = (color: CableColor | undefined): string | null =>
+    color ? CABLE_COLOR_HEX[color] : null;
 
   onDeviceFilterChange(event: Event): void {
     this.filterDeviceId.set((event.target as HTMLSelectElement).value);

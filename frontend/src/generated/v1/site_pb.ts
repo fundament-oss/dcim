@@ -3,25 +3,32 @@
 // option features.field_presence = IMPLICIT;
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import { file_buf_validate_validate } from "../buf/validate/validate_pb";
-import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import { file_google_protobuf_go_features, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
-import type { Message } from "@bufbuild/protobuf";
+import type { GenFile, GenMessage, GenService } from '@bufbuild/protobuf/codegenv2';
+import { fileDesc, messageDesc, serviceDesc } from '@bufbuild/protobuf/codegenv2';
+import { file_buf_validate_validate } from '../buf/validate/validate_pb';
+import type { Timestamp } from '@bufbuild/protobuf/wkt';
+import {
+  file_google_protobuf_go_features,
+  file_google_protobuf_timestamp,
+} from '@bufbuild/protobuf/wkt';
+import type { Message } from '@bufbuild/protobuf';
 
 /**
  * Describes the file v1/site.proto.
  */
-export const file_v1_site: GenFile = /*@__PURE__*/
-  fileDesc("Cg12MS9zaXRlLnByb3RvEgdkY2ltLnYxIpIBCgRTaXRlEgoKAmlkGAogASgJEgwKBG5hbWUYFCABKAkSDwoHYWRkcmVzcxgeIAEoCRIrCgdjcmVhdGVkGCggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCgdkZWxldGVkGDIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIFqgECCAEioQEKBFJvb20SCgoCaWQYCiABKAkSDwoHc2l0ZV9pZBgUIAEoCRIMCgRuYW1lGB4gASgJEg0KBWZsb29yGCggASgJEisKB2NyZWF0ZWQYMiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjIKB2RlbGV0ZWQYPCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgWqAQIIASLLAQoHUmFja1JvdxIKCgJpZBgKIAEoCRIPCgdyb29tX2lkGBQgASgJEgwKBG5hbWUYHiABKAkSGQoKcG9zaXRpb25feBgoIAEoAUIFqgECCAESGQoKcG9zaXRpb25feRgyIAEoAUIFqgECCAESKwoHY3JlYXRlZBg8IAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMgoHZGVsZXRlZBhGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBaoBAggBIhIKEExpc3RTaXRlc1JlcXVlc3QiMQoRTGlzdFNpdGVzUmVzcG9uc2USHAoFc2l0ZXMYCiADKAsyDS5kY2ltLnYxLlNpdGUiJgoOR2V0U2l0ZVJlcXVlc3QSFAoCaWQYCiABKAlCCLpIBXIDsAEBIi4KD0dldFNpdGVSZXNwb25zZRIbCgRzaXRlGAogASgLMg0uZGNpbS52MS5TaXRlIjsKEUNyZWF0ZVNpdGVSZXF1ZXN0EhUKBG5hbWUYCiABKAlCB7pIBHICEAESDwoHYWRkcmVzcxgUIAEoCSIlChJDcmVhdGVTaXRlUmVzcG9uc2USDwoHc2l0ZV9pZBgKIAEoCSJWChFVcGRhdGVTaXRlUmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQESEwoEbmFtZRgUIAEoCUIFqgECCAESFgoHYWRkcmVzcxgeIAEoCUIFqgECCAEiFAoSVXBkYXRlU2l0ZVJlc3BvbnNlIikKEURlbGV0ZVNpdGVSZXF1ZXN0EhQKAmlkGAogASgJQgi6SAVyA7ABASIUChJEZWxldGVTaXRlUmVzcG9uc2UiKgoQTGlzdFJvb21zUmVxdWVzdBIWCgdzaXRlX2lkGAogASgJQgWqAQIIASIxChFMaXN0Um9vbXNSZXNwb25zZRIcCgVyb29tcxgKIAMoCzINLmRjaW0udjEuUm9vbSImCg5HZXRSb29tUmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQEiLgoPR2V0Um9vbVJlc3BvbnNlEhsKBHJvb20YCiABKAsyDS5kY2ltLnYxLlJvb20iVAoRQ3JlYXRlUm9vbVJlcXVlc3QSGQoHc2l0ZV9pZBgKIAEoCUIIukgFcgOwAQESFQoEbmFtZRgUIAEoCUIHukgEcgIQARINCgVmbG9vchgeIAEoCSIxChJDcmVhdGVSb29tUmVzcG9uc2USGwoEcm9vbRgKIAEoCzINLmRjaW0udjEuUm9vbSJUChFVcGRhdGVSb29tUmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQESEwoEbmFtZRgUIAEoCUIFqgECCAESFAoFZmxvb3IYHiABKAlCBaoBAggBIjEKElVwZGF0ZVJvb21SZXNwb25zZRIbCgRyb29tGAogASgLMg0uZGNpbS52MS5Sb29tIikKEURlbGV0ZVJvb21SZXF1ZXN0EhQKAmlkGAogASgJQgi6SAVyA7ABASIUChJEZWxldGVSb29tUmVzcG9uc2UiLQoTTGlzdFJhY2tSb3dzUmVxdWVzdBIWCgdyb29tX2lkGAogASgJQgWqAQIIASI7ChRMaXN0UmFja1Jvd3NSZXNwb25zZRIjCglyYWNrX3Jvd3MYCiADKAsyEC5kY2ltLnYxLlJhY2tSb3ciKQoRR2V0UmFja1Jvd1JlcXVlc3QSFAoCaWQYCiABKAlCCLpIBXIDsAEBIjgKEkdldFJhY2tSb3dSZXNwb25zZRIiCghyYWNrX3JvdxgKIAEoCzIQLmRjaW0udjEuUmFja1JvdyJ+ChRDcmVhdGVSYWNrUm93UmVxdWVzdBIZCgdyb29tX2lkGAogASgJQgi6SAVyA7ABARIVCgRuYW1lGBQgASgJQge6SARyAhABEhkKCnBvc2l0aW9uX3gYHiABKAFCBaoBAggBEhkKCnBvc2l0aW9uX3kYKCABKAFCBaoBAggBIjsKFUNyZWF0ZVJhY2tSb3dSZXNwb25zZRIiCghyYWNrX3JvdxgKIAEoCzIQLmRjaW0udjEuUmFja1JvdyJ3ChRVcGRhdGVSYWNrUm93UmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQESEwoEbmFtZRgUIAEoCUIFqgECCAESGQoKcG9zaXRpb25feBgeIAEoAUIFqgECCAESGQoKcG9zaXRpb25feRgoIAEoAUIFqgECCAEiOwoVVXBkYXRlUmFja1Jvd1Jlc3BvbnNlEiIKCHJhY2tfcm93GAogASgLMhAuZGNpbS52MS5SYWNrUm93IiwKFERlbGV0ZVJhY2tSb3dSZXF1ZXN0EhQKAmlkGAogASgJQgi6SAVyA7ABASIXChVEZWxldGVSYWNrUm93UmVzcG9uc2Uy5AIKC1NpdGVTZXJ2aWNlEkIKCUxpc3RTaXRlcxIZLmRjaW0udjEuTGlzdFNpdGVzUmVxdWVzdBoaLmRjaW0udjEuTGlzdFNpdGVzUmVzcG9uc2USPAoHR2V0U2l0ZRIXLmRjaW0udjEuR2V0U2l0ZVJlcXVlc3QaGC5kY2ltLnYxLkdldFNpdGVSZXNwb25zZRJFCgpDcmVhdGVTaXRlEhouZGNpbS52MS5DcmVhdGVTaXRlUmVxdWVzdBobLmRjaW0udjEuQ3JlYXRlU2l0ZVJlc3BvbnNlEkUKClVwZGF0ZVNpdGUSGi5kY2ltLnYxLlVwZGF0ZVNpdGVSZXF1ZXN0GhsuZGNpbS52MS5VcGRhdGVTaXRlUmVzcG9uc2USRQoKRGVsZXRlU2l0ZRIaLmRjaW0udjEuRGVsZXRlU2l0ZVJlcXVlc3QaGy5kY2ltLnYxLkRlbGV0ZVNpdGVSZXNwb25zZTLkAgoLUm9vbVNlcnZpY2USQgoJTGlzdFJvb21zEhkuZGNpbS52MS5MaXN0Um9vbXNSZXF1ZXN0GhouZGNpbS52MS5MaXN0Um9vbXNSZXNwb25zZRI8CgdHZXRSb29tEhcuZGNpbS52MS5HZXRSb29tUmVxdWVzdBoYLmRjaW0udjEuR2V0Um9vbVJlc3BvbnNlEkUKCkNyZWF0ZVJvb20SGi5kY2ltLnYxLkNyZWF0ZVJvb21SZXF1ZXN0GhsuZGNpbS52MS5DcmVhdGVSb29tUmVzcG9uc2USRQoKVXBkYXRlUm9vbRIaLmRjaW0udjEuVXBkYXRlUm9vbVJlcXVlc3QaGy5kY2ltLnYxLlVwZGF0ZVJvb21SZXNwb25zZRJFCgpEZWxldGVSb29tEhouZGNpbS52MS5EZWxldGVSb29tUmVxdWVzdBobLmRjaW0udjEuRGVsZXRlUm9vbVJlc3BvbnNlMpQDCg5SYWNrUm93U2VydmljZRJLCgxMaXN0UmFja1Jvd3MSHC5kY2ltLnYxLkxpc3RSYWNrUm93c1JlcXVlc3QaHS5kY2ltLnYxLkxpc3RSYWNrUm93c1Jlc3BvbnNlEkUKCkdldFJhY2tSb3cSGi5kY2ltLnYxLkdldFJhY2tSb3dSZXF1ZXN0GhsuZGNpbS52MS5HZXRSYWNrUm93UmVzcG9uc2USTgoNQ3JlYXRlUmFja1JvdxIdLmRjaW0udjEuQ3JlYXRlUmFja1Jvd1JlcXVlc3QaHi5kY2ltLnYxLkNyZWF0ZVJhY2tSb3dSZXNwb25zZRJOCg1VcGRhdGVSYWNrUm93Eh0uZGNpbS52MS5VcGRhdGVSYWNrUm93UmVxdWVzdBoeLmRjaW0udjEuVXBkYXRlUmFja1Jvd1Jlc3BvbnNlEk4KDURlbGV0ZVJhY2tSb3cSHS5kY2ltLnYxLkRlbGV0ZVJhY2tSb3dSZXF1ZXN0Gh4uZGNpbS52MS5EZWxldGVSYWNrUm93UmVzcG9uc2VCRVo5Z2l0aHViLmNvbS9mdW5kYW1lbnQtb3NzL2RjaW0vYXBpL3BrZy9wcm90by9nZW4vdjE7ZGNpbXYxkgMHCALSPgIQA2IIZWRpdGlvbnNw6Ac", [file_buf_validate_validate, file_google_protobuf_go_features, file_google_protobuf_timestamp]);
+export const file_v1_site: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    'Cg12MS9zaXRlLnByb3RvEgdkY2ltLnYxIpIBCgRTaXRlEgoKAmlkGAogASgJEgwKBG5hbWUYFCABKAkSDwoHYWRkcmVzcxgeIAEoCRIrCgdjcmVhdGVkGCggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCgdkZWxldGVkGDIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIFqgECCAEioQEKBFJvb20SCgoCaWQYCiABKAkSDwoHc2l0ZV9pZBgUIAEoCRIMCgRuYW1lGB4gASgJEg0KBWZsb29yGCggASgJEisKB2NyZWF0ZWQYMiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjIKB2RlbGV0ZWQYPCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgWqAQIIASLLAQoHUmFja1JvdxIKCgJpZBgKIAEoCRIPCgdyb29tX2lkGBQgASgJEgwKBG5hbWUYHiABKAkSGQoKcG9zaXRpb25feBgoIAEoAUIFqgECCAESGQoKcG9zaXRpb25feRgyIAEoAUIFqgECCAESKwoHY3JlYXRlZBg8IAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMgoHZGVsZXRlZBhGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBaoBAggBIhIKEExpc3RTaXRlc1JlcXVlc3QiMQoRTGlzdFNpdGVzUmVzcG9uc2USHAoFc2l0ZXMYCiADKAsyDS5kY2ltLnYxLlNpdGUiJgoOR2V0U2l0ZVJlcXVlc3QSFAoCaWQYCiABKAlCCLpIBXIDsAEBIi4KD0dldFNpdGVSZXNwb25zZRIbCgRzaXRlGAogASgLMg0uZGNpbS52MS5TaXRlIjsKEUNyZWF0ZVNpdGVSZXF1ZXN0EhUKBG5hbWUYCiABKAlCB7pIBHICEAESDwoHYWRkcmVzcxgUIAEoCSIlChJDcmVhdGVTaXRlUmVzcG9uc2USDwoHc2l0ZV9pZBgKIAEoCSJWChFVcGRhdGVTaXRlUmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQESEwoEbmFtZRgUIAEoCUIFqgECCAESFgoHYWRkcmVzcxgeIAEoCUIFqgECCAEiFAoSVXBkYXRlU2l0ZVJlc3BvbnNlIikKEURlbGV0ZVNpdGVSZXF1ZXN0EhQKAmlkGAogASgJQgi6SAVyA7ABASIUChJEZWxldGVTaXRlUmVzcG9uc2UiKgoQTGlzdFJvb21zUmVxdWVzdBIWCgdzaXRlX2lkGAogASgJQgWqAQIIASIxChFMaXN0Um9vbXNSZXNwb25zZRIcCgVyb29tcxgKIAMoCzINLmRjaW0udjEuUm9vbSImCg5HZXRSb29tUmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQEiLgoPR2V0Um9vbVJlc3BvbnNlEhsKBHJvb20YCiABKAsyDS5kY2ltLnYxLlJvb20iVAoRQ3JlYXRlUm9vbVJlcXVlc3QSGQoHc2l0ZV9pZBgKIAEoCUIIukgFcgOwAQESFQoEbmFtZRgUIAEoCUIHukgEcgIQARINCgVmbG9vchgeIAEoCSIxChJDcmVhdGVSb29tUmVzcG9uc2USGwoEcm9vbRgKIAEoCzINLmRjaW0udjEuUm9vbSJUChFVcGRhdGVSb29tUmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQESEwoEbmFtZRgUIAEoCUIFqgECCAESFAoFZmxvb3IYHiABKAlCBaoBAggBIjEKElVwZGF0ZVJvb21SZXNwb25zZRIbCgRyb29tGAogASgLMg0uZGNpbS52MS5Sb29tIikKEURlbGV0ZVJvb21SZXF1ZXN0EhQKAmlkGAogASgJQgi6SAVyA7ABASIUChJEZWxldGVSb29tUmVzcG9uc2UiLQoTTGlzdFJhY2tSb3dzUmVxdWVzdBIWCgdyb29tX2lkGAogASgJQgWqAQIIASI7ChRMaXN0UmFja1Jvd3NSZXNwb25zZRIjCglyYWNrX3Jvd3MYCiADKAsyEC5kY2ltLnYxLlJhY2tSb3ciKQoRR2V0UmFja1Jvd1JlcXVlc3QSFAoCaWQYCiABKAlCCLpIBXIDsAEBIjgKEkdldFJhY2tSb3dSZXNwb25zZRIiCghyYWNrX3JvdxgKIAEoCzIQLmRjaW0udjEuUmFja1JvdyJ+ChRDcmVhdGVSYWNrUm93UmVxdWVzdBIZCgdyb29tX2lkGAogASgJQgi6SAVyA7ABARIVCgRuYW1lGBQgASgJQge6SARyAhABEhkKCnBvc2l0aW9uX3gYHiABKAFCBaoBAggBEhkKCnBvc2l0aW9uX3kYKCABKAFCBaoBAggBIjsKFUNyZWF0ZVJhY2tSb3dSZXNwb25zZRIiCghyYWNrX3JvdxgKIAEoCzIQLmRjaW0udjEuUmFja1JvdyJ3ChRVcGRhdGVSYWNrUm93UmVxdWVzdBIUCgJpZBgKIAEoCUIIukgFcgOwAQESEwoEbmFtZRgUIAEoCUIFqgECCAESGQoKcG9zaXRpb25feBgeIAEoAUIFqgECCAESGQoKcG9zaXRpb25feRgoIAEoAUIFqgECCAEiOwoVVXBkYXRlUmFja1Jvd1Jlc3BvbnNlEiIKCHJhY2tfcm93GAogASgLMhAuZGNpbS52MS5SYWNrUm93IiwKFERlbGV0ZVJhY2tSb3dSZXF1ZXN0EhQKAmlkGAogASgJQgi6SAVyA7ABASIXChVEZWxldGVSYWNrUm93UmVzcG9uc2Uy5AIKC1NpdGVTZXJ2aWNlEkIKCUxpc3RTaXRlcxIZLmRjaW0udjEuTGlzdFNpdGVzUmVxdWVzdBoaLmRjaW0udjEuTGlzdFNpdGVzUmVzcG9uc2USPAoHR2V0U2l0ZRIXLmRjaW0udjEuR2V0U2l0ZVJlcXVlc3QaGC5kY2ltLnYxLkdldFNpdGVSZXNwb25zZRJFCgpDcmVhdGVTaXRlEhouZGNpbS52MS5DcmVhdGVTaXRlUmVxdWVzdBobLmRjaW0udjEuQ3JlYXRlU2l0ZVJlc3BvbnNlEkUKClVwZGF0ZVNpdGUSGi5kY2ltLnYxLlVwZGF0ZVNpdGVSZXF1ZXN0GhsuZGNpbS52MS5VcGRhdGVTaXRlUmVzcG9uc2USRQoKRGVsZXRlU2l0ZRIaLmRjaW0udjEuRGVsZXRlU2l0ZVJlcXVlc3QaGy5kY2ltLnYxLkRlbGV0ZVNpdGVSZXNwb25zZTLkAgoLUm9vbVNlcnZpY2USQgoJTGlzdFJvb21zEhkuZGNpbS52MS5MaXN0Um9vbXNSZXF1ZXN0GhouZGNpbS52MS5MaXN0Um9vbXNSZXNwb25zZRI8CgdHZXRSb29tEhcuZGNpbS52MS5HZXRSb29tUmVxdWVzdBoYLmRjaW0udjEuR2V0Um9vbVJlc3BvbnNlEkUKCkNyZWF0ZVJvb20SGi5kY2ltLnYxLkNyZWF0ZVJvb21SZXF1ZXN0GhsuZGNpbS52MS5DcmVhdGVSb29tUmVzcG9uc2USRQoKVXBkYXRlUm9vbRIaLmRjaW0udjEuVXBkYXRlUm9vbVJlcXVlc3QaGy5kY2ltLnYxLlVwZGF0ZVJvb21SZXNwb25zZRJFCgpEZWxldGVSb29tEhouZGNpbS52MS5EZWxldGVSb29tUmVxdWVzdBobLmRjaW0udjEuRGVsZXRlUm9vbVJlc3BvbnNlMpQDCg5SYWNrUm93U2VydmljZRJLCgxMaXN0UmFja1Jvd3MSHC5kY2ltLnYxLkxpc3RSYWNrUm93c1JlcXVlc3QaHS5kY2ltLnYxLkxpc3RSYWNrUm93c1Jlc3BvbnNlEkUKCkdldFJhY2tSb3cSGi5kY2ltLnYxLkdldFJhY2tSb3dSZXF1ZXN0GhsuZGNpbS52MS5HZXRSYWNrUm93UmVzcG9uc2USTgoNQ3JlYXRlUmFja1JvdxIdLmRjaW0udjEuQ3JlYXRlUmFja1Jvd1JlcXVlc3QaHi5kY2ltLnYxLkNyZWF0ZVJhY2tSb3dSZXNwb25zZRJOCg1VcGRhdGVSYWNrUm93Eh0uZGNpbS52MS5VcGRhdGVSYWNrUm93UmVxdWVzdBoeLmRjaW0udjEuVXBkYXRlUmFja1Jvd1Jlc3BvbnNlEk4KDURlbGV0ZVJhY2tSb3cSHS5kY2ltLnYxLkRlbGV0ZVJhY2tSb3dSZXF1ZXN0Gh4uZGNpbS52MS5EZWxldGVSYWNrUm93UmVzcG9uc2VCRVo5Z2l0aHViLmNvbS9mdW5kYW1lbnQtb3NzL2RjaW0vYXBpL3BrZy9wcm90by9nZW4vdjE7ZGNpbXYxkgMHCALSPgIQA2IIZWRpdGlvbnNw6Ac',
+    [file_buf_validate_validate, file_google_protobuf_go_features, file_google_protobuf_timestamp],
+  );
 
 /**
  * Site is a physical data center location (core.sites).
  *
  * @generated from message dcim.v1.Site
  */
-export type Site = Message<"dcim.v1.Site"> & {
+export type Site = Message<'dcim.v1.Site'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -52,15 +59,14 @@ export type Site = Message<"dcim.v1.Site"> & {
  * Describes the message dcim.v1.Site.
  * Use `create(SiteSchema)` to create a new message.
  */
-export const SiteSchema: GenMessage<Site> = /*@__PURE__*/
-  messageDesc(file_v1_site, 0);
+export const SiteSchema: GenMessage<Site> = /*@__PURE__*/ messageDesc(file_v1_site, 0);
 
 /**
  * Room is a hall or room within a site (core.rooms).
  *
  * @generated from message dcim.v1.Room
  */
-export type Room = Message<"dcim.v1.Room"> & {
+export type Room = Message<'dcim.v1.Room'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -96,8 +102,7 @@ export type Room = Message<"dcim.v1.Room"> & {
  * Describes the message dcim.v1.Room.
  * Use `create(RoomSchema)` to create a new message.
  */
-export const RoomSchema: GenMessage<Room> = /*@__PURE__*/
-  messageDesc(file_v1_site, 1);
+export const RoomSchema: GenMessage<Room> = /*@__PURE__*/ messageDesc(file_v1_site, 1);
 
 /**
  * RackRow is a row of racks within a room (core.rack_rows).
@@ -105,7 +110,7 @@ export const RoomSchema: GenMessage<Room> = /*@__PURE__*/
  *
  * @generated from message dcim.v1.RackRow
  */
-export type RackRow = Message<"dcim.v1.RackRow"> & {
+export type RackRow = Message<'dcim.v1.RackRow'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -146,26 +151,25 @@ export type RackRow = Message<"dcim.v1.RackRow"> & {
  * Describes the message dcim.v1.RackRow.
  * Use `create(RackRowSchema)` to create a new message.
  */
-export const RackRowSchema: GenMessage<RackRow> = /*@__PURE__*/
-  messageDesc(file_v1_site, 2);
+export const RackRowSchema: GenMessage<RackRow> = /*@__PURE__*/ messageDesc(file_v1_site, 2);
 
 /**
  * @generated from message dcim.v1.ListSitesRequest
  */
-export type ListSitesRequest = Message<"dcim.v1.ListSitesRequest"> & {
-};
+export type ListSitesRequest = Message<'dcim.v1.ListSitesRequest'> & {};
 
 /**
  * Describes the message dcim.v1.ListSitesRequest.
  * Use `create(ListSitesRequestSchema)` to create a new message.
  */
-export const ListSitesRequestSchema: GenMessage<ListSitesRequest> = /*@__PURE__*/
+export const ListSitesRequestSchema: GenMessage<ListSitesRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 3);
 
 /**
  * @generated from message dcim.v1.ListSitesResponse
  */
-export type ListSitesResponse = Message<"dcim.v1.ListSitesResponse"> & {
+export type ListSitesResponse = Message<'dcim.v1.ListSitesResponse'> & {
   /**
    * @generated from field: repeated dcim.v1.Site sites = 10;
    */
@@ -176,13 +180,14 @@ export type ListSitesResponse = Message<"dcim.v1.ListSitesResponse"> & {
  * Describes the message dcim.v1.ListSitesResponse.
  * Use `create(ListSitesResponseSchema)` to create a new message.
  */
-export const ListSitesResponseSchema: GenMessage<ListSitesResponse> = /*@__PURE__*/
+export const ListSitesResponseSchema: GenMessage<ListSitesResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 4);
 
 /**
  * @generated from message dcim.v1.GetSiteRequest
  */
-export type GetSiteRequest = Message<"dcim.v1.GetSiteRequest"> & {
+export type GetSiteRequest = Message<'dcim.v1.GetSiteRequest'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -193,13 +198,14 @@ export type GetSiteRequest = Message<"dcim.v1.GetSiteRequest"> & {
  * Describes the message dcim.v1.GetSiteRequest.
  * Use `create(GetSiteRequestSchema)` to create a new message.
  */
-export const GetSiteRequestSchema: GenMessage<GetSiteRequest> = /*@__PURE__*/
+export const GetSiteRequestSchema: GenMessage<GetSiteRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 5);
 
 /**
  * @generated from message dcim.v1.GetSiteResponse
  */
-export type GetSiteResponse = Message<"dcim.v1.GetSiteResponse"> & {
+export type GetSiteResponse = Message<'dcim.v1.GetSiteResponse'> & {
   /**
    * @generated from field: dcim.v1.Site site = 10;
    */
@@ -210,13 +216,14 @@ export type GetSiteResponse = Message<"dcim.v1.GetSiteResponse"> & {
  * Describes the message dcim.v1.GetSiteResponse.
  * Use `create(GetSiteResponseSchema)` to create a new message.
  */
-export const GetSiteResponseSchema: GenMessage<GetSiteResponse> = /*@__PURE__*/
+export const GetSiteResponseSchema: GenMessage<GetSiteResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 6);
 
 /**
  * @generated from message dcim.v1.CreateSiteRequest
  */
-export type CreateSiteRequest = Message<"dcim.v1.CreateSiteRequest"> & {
+export type CreateSiteRequest = Message<'dcim.v1.CreateSiteRequest'> & {
   /**
    * @generated from field: string name = 10;
    */
@@ -232,13 +239,14 @@ export type CreateSiteRequest = Message<"dcim.v1.CreateSiteRequest"> & {
  * Describes the message dcim.v1.CreateSiteRequest.
  * Use `create(CreateSiteRequestSchema)` to create a new message.
  */
-export const CreateSiteRequestSchema: GenMessage<CreateSiteRequest> = /*@__PURE__*/
+export const CreateSiteRequestSchema: GenMessage<CreateSiteRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 7);
 
 /**
  * @generated from message dcim.v1.CreateSiteResponse
  */
-export type CreateSiteResponse = Message<"dcim.v1.CreateSiteResponse"> & {
+export type CreateSiteResponse = Message<'dcim.v1.CreateSiteResponse'> & {
   /**
    * @generated from field: string site_id = 10;
    */
@@ -249,13 +257,14 @@ export type CreateSiteResponse = Message<"dcim.v1.CreateSiteResponse"> & {
  * Describes the message dcim.v1.CreateSiteResponse.
  * Use `create(CreateSiteResponseSchema)` to create a new message.
  */
-export const CreateSiteResponseSchema: GenMessage<CreateSiteResponse> = /*@__PURE__*/
+export const CreateSiteResponseSchema: GenMessage<CreateSiteResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 8);
 
 /**
  * @generated from message dcim.v1.UpdateSiteRequest
  */
-export type UpdateSiteRequest = Message<"dcim.v1.UpdateSiteRequest"> & {
+export type UpdateSiteRequest = Message<'dcim.v1.UpdateSiteRequest'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -276,26 +285,27 @@ export type UpdateSiteRequest = Message<"dcim.v1.UpdateSiteRequest"> & {
  * Describes the message dcim.v1.UpdateSiteRequest.
  * Use `create(UpdateSiteRequestSchema)` to create a new message.
  */
-export const UpdateSiteRequestSchema: GenMessage<UpdateSiteRequest> = /*@__PURE__*/
+export const UpdateSiteRequestSchema: GenMessage<UpdateSiteRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 9);
 
 /**
  * @generated from message dcim.v1.UpdateSiteResponse
  */
-export type UpdateSiteResponse = Message<"dcim.v1.UpdateSiteResponse"> & {
-};
+export type UpdateSiteResponse = Message<'dcim.v1.UpdateSiteResponse'> & {};
 
 /**
  * Describes the message dcim.v1.UpdateSiteResponse.
  * Use `create(UpdateSiteResponseSchema)` to create a new message.
  */
-export const UpdateSiteResponseSchema: GenMessage<UpdateSiteResponse> = /*@__PURE__*/
+export const UpdateSiteResponseSchema: GenMessage<UpdateSiteResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 10);
 
 /**
  * @generated from message dcim.v1.DeleteSiteRequest
  */
-export type DeleteSiteRequest = Message<"dcim.v1.DeleteSiteRequest"> & {
+export type DeleteSiteRequest = Message<'dcim.v1.DeleteSiteRequest'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -306,26 +316,27 @@ export type DeleteSiteRequest = Message<"dcim.v1.DeleteSiteRequest"> & {
  * Describes the message dcim.v1.DeleteSiteRequest.
  * Use `create(DeleteSiteRequestSchema)` to create a new message.
  */
-export const DeleteSiteRequestSchema: GenMessage<DeleteSiteRequest> = /*@__PURE__*/
+export const DeleteSiteRequestSchema: GenMessage<DeleteSiteRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 11);
 
 /**
  * @generated from message dcim.v1.DeleteSiteResponse
  */
-export type DeleteSiteResponse = Message<"dcim.v1.DeleteSiteResponse"> & {
-};
+export type DeleteSiteResponse = Message<'dcim.v1.DeleteSiteResponse'> & {};
 
 /**
  * Describes the message dcim.v1.DeleteSiteResponse.
  * Use `create(DeleteSiteResponseSchema)` to create a new message.
  */
-export const DeleteSiteResponseSchema: GenMessage<DeleteSiteResponse> = /*@__PURE__*/
+export const DeleteSiteResponseSchema: GenMessage<DeleteSiteResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 12);
 
 /**
  * @generated from message dcim.v1.ListRoomsRequest
  */
-export type ListRoomsRequest = Message<"dcim.v1.ListRoomsRequest"> & {
+export type ListRoomsRequest = Message<'dcim.v1.ListRoomsRequest'> & {
   /**
    * @generated from field: string site_id = 10 [features.field_presence = EXPLICIT];
    */
@@ -336,13 +347,14 @@ export type ListRoomsRequest = Message<"dcim.v1.ListRoomsRequest"> & {
  * Describes the message dcim.v1.ListRoomsRequest.
  * Use `create(ListRoomsRequestSchema)` to create a new message.
  */
-export const ListRoomsRequestSchema: GenMessage<ListRoomsRequest> = /*@__PURE__*/
+export const ListRoomsRequestSchema: GenMessage<ListRoomsRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 13);
 
 /**
  * @generated from message dcim.v1.ListRoomsResponse
  */
-export type ListRoomsResponse = Message<"dcim.v1.ListRoomsResponse"> & {
+export type ListRoomsResponse = Message<'dcim.v1.ListRoomsResponse'> & {
   /**
    * @generated from field: repeated dcim.v1.Room rooms = 10;
    */
@@ -353,13 +365,14 @@ export type ListRoomsResponse = Message<"dcim.v1.ListRoomsResponse"> & {
  * Describes the message dcim.v1.ListRoomsResponse.
  * Use `create(ListRoomsResponseSchema)` to create a new message.
  */
-export const ListRoomsResponseSchema: GenMessage<ListRoomsResponse> = /*@__PURE__*/
+export const ListRoomsResponseSchema: GenMessage<ListRoomsResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 14);
 
 /**
  * @generated from message dcim.v1.GetRoomRequest
  */
-export type GetRoomRequest = Message<"dcim.v1.GetRoomRequest"> & {
+export type GetRoomRequest = Message<'dcim.v1.GetRoomRequest'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -370,13 +383,14 @@ export type GetRoomRequest = Message<"dcim.v1.GetRoomRequest"> & {
  * Describes the message dcim.v1.GetRoomRequest.
  * Use `create(GetRoomRequestSchema)` to create a new message.
  */
-export const GetRoomRequestSchema: GenMessage<GetRoomRequest> = /*@__PURE__*/
+export const GetRoomRequestSchema: GenMessage<GetRoomRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 15);
 
 /**
  * @generated from message dcim.v1.GetRoomResponse
  */
-export type GetRoomResponse = Message<"dcim.v1.GetRoomResponse"> & {
+export type GetRoomResponse = Message<'dcim.v1.GetRoomResponse'> & {
   /**
    * @generated from field: dcim.v1.Room room = 10;
    */
@@ -387,13 +401,14 @@ export type GetRoomResponse = Message<"dcim.v1.GetRoomResponse"> & {
  * Describes the message dcim.v1.GetRoomResponse.
  * Use `create(GetRoomResponseSchema)` to create a new message.
  */
-export const GetRoomResponseSchema: GenMessage<GetRoomResponse> = /*@__PURE__*/
+export const GetRoomResponseSchema: GenMessage<GetRoomResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 16);
 
 /**
  * @generated from message dcim.v1.CreateRoomRequest
  */
-export type CreateRoomRequest = Message<"dcim.v1.CreateRoomRequest"> & {
+export type CreateRoomRequest = Message<'dcim.v1.CreateRoomRequest'> & {
   /**
    * @generated from field: string site_id = 10;
    */
@@ -414,13 +429,14 @@ export type CreateRoomRequest = Message<"dcim.v1.CreateRoomRequest"> & {
  * Describes the message dcim.v1.CreateRoomRequest.
  * Use `create(CreateRoomRequestSchema)` to create a new message.
  */
-export const CreateRoomRequestSchema: GenMessage<CreateRoomRequest> = /*@__PURE__*/
+export const CreateRoomRequestSchema: GenMessage<CreateRoomRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 17);
 
 /**
  * @generated from message dcim.v1.CreateRoomResponse
  */
-export type CreateRoomResponse = Message<"dcim.v1.CreateRoomResponse"> & {
+export type CreateRoomResponse = Message<'dcim.v1.CreateRoomResponse'> & {
   /**
    * @generated from field: dcim.v1.Room room = 10;
    */
@@ -431,13 +447,14 @@ export type CreateRoomResponse = Message<"dcim.v1.CreateRoomResponse"> & {
  * Describes the message dcim.v1.CreateRoomResponse.
  * Use `create(CreateRoomResponseSchema)` to create a new message.
  */
-export const CreateRoomResponseSchema: GenMessage<CreateRoomResponse> = /*@__PURE__*/
+export const CreateRoomResponseSchema: GenMessage<CreateRoomResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 18);
 
 /**
  * @generated from message dcim.v1.UpdateRoomRequest
  */
-export type UpdateRoomRequest = Message<"dcim.v1.UpdateRoomRequest"> & {
+export type UpdateRoomRequest = Message<'dcim.v1.UpdateRoomRequest'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -458,13 +475,14 @@ export type UpdateRoomRequest = Message<"dcim.v1.UpdateRoomRequest"> & {
  * Describes the message dcim.v1.UpdateRoomRequest.
  * Use `create(UpdateRoomRequestSchema)` to create a new message.
  */
-export const UpdateRoomRequestSchema: GenMessage<UpdateRoomRequest> = /*@__PURE__*/
+export const UpdateRoomRequestSchema: GenMessage<UpdateRoomRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 19);
 
 /**
  * @generated from message dcim.v1.UpdateRoomResponse
  */
-export type UpdateRoomResponse = Message<"dcim.v1.UpdateRoomResponse"> & {
+export type UpdateRoomResponse = Message<'dcim.v1.UpdateRoomResponse'> & {
   /**
    * @generated from field: dcim.v1.Room room = 10;
    */
@@ -475,13 +493,14 @@ export type UpdateRoomResponse = Message<"dcim.v1.UpdateRoomResponse"> & {
  * Describes the message dcim.v1.UpdateRoomResponse.
  * Use `create(UpdateRoomResponseSchema)` to create a new message.
  */
-export const UpdateRoomResponseSchema: GenMessage<UpdateRoomResponse> = /*@__PURE__*/
+export const UpdateRoomResponseSchema: GenMessage<UpdateRoomResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 20);
 
 /**
  * @generated from message dcim.v1.DeleteRoomRequest
  */
-export type DeleteRoomRequest = Message<"dcim.v1.DeleteRoomRequest"> & {
+export type DeleteRoomRequest = Message<'dcim.v1.DeleteRoomRequest'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -492,26 +511,27 @@ export type DeleteRoomRequest = Message<"dcim.v1.DeleteRoomRequest"> & {
  * Describes the message dcim.v1.DeleteRoomRequest.
  * Use `create(DeleteRoomRequestSchema)` to create a new message.
  */
-export const DeleteRoomRequestSchema: GenMessage<DeleteRoomRequest> = /*@__PURE__*/
+export const DeleteRoomRequestSchema: GenMessage<DeleteRoomRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 21);
 
 /**
  * @generated from message dcim.v1.DeleteRoomResponse
  */
-export type DeleteRoomResponse = Message<"dcim.v1.DeleteRoomResponse"> & {
-};
+export type DeleteRoomResponse = Message<'dcim.v1.DeleteRoomResponse'> & {};
 
 /**
  * Describes the message dcim.v1.DeleteRoomResponse.
  * Use `create(DeleteRoomResponseSchema)` to create a new message.
  */
-export const DeleteRoomResponseSchema: GenMessage<DeleteRoomResponse> = /*@__PURE__*/
+export const DeleteRoomResponseSchema: GenMessage<DeleteRoomResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 22);
 
 /**
  * @generated from message dcim.v1.ListRackRowsRequest
  */
-export type ListRackRowsRequest = Message<"dcim.v1.ListRackRowsRequest"> & {
+export type ListRackRowsRequest = Message<'dcim.v1.ListRackRowsRequest'> & {
   /**
    * @generated from field: string room_id = 10 [features.field_presence = EXPLICIT];
    */
@@ -522,13 +542,14 @@ export type ListRackRowsRequest = Message<"dcim.v1.ListRackRowsRequest"> & {
  * Describes the message dcim.v1.ListRackRowsRequest.
  * Use `create(ListRackRowsRequestSchema)` to create a new message.
  */
-export const ListRackRowsRequestSchema: GenMessage<ListRackRowsRequest> = /*@__PURE__*/
+export const ListRackRowsRequestSchema: GenMessage<ListRackRowsRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 23);
 
 /**
  * @generated from message dcim.v1.ListRackRowsResponse
  */
-export type ListRackRowsResponse = Message<"dcim.v1.ListRackRowsResponse"> & {
+export type ListRackRowsResponse = Message<'dcim.v1.ListRackRowsResponse'> & {
   /**
    * @generated from field: repeated dcim.v1.RackRow rack_rows = 10;
    */
@@ -539,13 +560,14 @@ export type ListRackRowsResponse = Message<"dcim.v1.ListRackRowsResponse"> & {
  * Describes the message dcim.v1.ListRackRowsResponse.
  * Use `create(ListRackRowsResponseSchema)` to create a new message.
  */
-export const ListRackRowsResponseSchema: GenMessage<ListRackRowsResponse> = /*@__PURE__*/
+export const ListRackRowsResponseSchema: GenMessage<ListRackRowsResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 24);
 
 /**
  * @generated from message dcim.v1.GetRackRowRequest
  */
-export type GetRackRowRequest = Message<"dcim.v1.GetRackRowRequest"> & {
+export type GetRackRowRequest = Message<'dcim.v1.GetRackRowRequest'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -556,13 +578,14 @@ export type GetRackRowRequest = Message<"dcim.v1.GetRackRowRequest"> & {
  * Describes the message dcim.v1.GetRackRowRequest.
  * Use `create(GetRackRowRequestSchema)` to create a new message.
  */
-export const GetRackRowRequestSchema: GenMessage<GetRackRowRequest> = /*@__PURE__*/
+export const GetRackRowRequestSchema: GenMessage<GetRackRowRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 25);
 
 /**
  * @generated from message dcim.v1.GetRackRowResponse
  */
-export type GetRackRowResponse = Message<"dcim.v1.GetRackRowResponse"> & {
+export type GetRackRowResponse = Message<'dcim.v1.GetRackRowResponse'> & {
   /**
    * @generated from field: dcim.v1.RackRow rack_row = 10;
    */
@@ -573,13 +596,14 @@ export type GetRackRowResponse = Message<"dcim.v1.GetRackRowResponse"> & {
  * Describes the message dcim.v1.GetRackRowResponse.
  * Use `create(GetRackRowResponseSchema)` to create a new message.
  */
-export const GetRackRowResponseSchema: GenMessage<GetRackRowResponse> = /*@__PURE__*/
+export const GetRackRowResponseSchema: GenMessage<GetRackRowResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 26);
 
 /**
  * @generated from message dcim.v1.CreateRackRowRequest
  */
-export type CreateRackRowRequest = Message<"dcim.v1.CreateRackRowRequest"> & {
+export type CreateRackRowRequest = Message<'dcim.v1.CreateRackRowRequest'> & {
   /**
    * @generated from field: string room_id = 10;
    */
@@ -605,13 +629,14 @@ export type CreateRackRowRequest = Message<"dcim.v1.CreateRackRowRequest"> & {
  * Describes the message dcim.v1.CreateRackRowRequest.
  * Use `create(CreateRackRowRequestSchema)` to create a new message.
  */
-export const CreateRackRowRequestSchema: GenMessage<CreateRackRowRequest> = /*@__PURE__*/
+export const CreateRackRowRequestSchema: GenMessage<CreateRackRowRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 27);
 
 /**
  * @generated from message dcim.v1.CreateRackRowResponse
  */
-export type CreateRackRowResponse = Message<"dcim.v1.CreateRackRowResponse"> & {
+export type CreateRackRowResponse = Message<'dcim.v1.CreateRackRowResponse'> & {
   /**
    * @generated from field: dcim.v1.RackRow rack_row = 10;
    */
@@ -622,13 +647,14 @@ export type CreateRackRowResponse = Message<"dcim.v1.CreateRackRowResponse"> & {
  * Describes the message dcim.v1.CreateRackRowResponse.
  * Use `create(CreateRackRowResponseSchema)` to create a new message.
  */
-export const CreateRackRowResponseSchema: GenMessage<CreateRackRowResponse> = /*@__PURE__*/
+export const CreateRackRowResponseSchema: GenMessage<CreateRackRowResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 28);
 
 /**
  * @generated from message dcim.v1.UpdateRackRowRequest
  */
-export type UpdateRackRowRequest = Message<"dcim.v1.UpdateRackRowRequest"> & {
+export type UpdateRackRowRequest = Message<'dcim.v1.UpdateRackRowRequest'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -654,13 +680,14 @@ export type UpdateRackRowRequest = Message<"dcim.v1.UpdateRackRowRequest"> & {
  * Describes the message dcim.v1.UpdateRackRowRequest.
  * Use `create(UpdateRackRowRequestSchema)` to create a new message.
  */
-export const UpdateRackRowRequestSchema: GenMessage<UpdateRackRowRequest> = /*@__PURE__*/
+export const UpdateRackRowRequestSchema: GenMessage<UpdateRackRowRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 29);
 
 /**
  * @generated from message dcim.v1.UpdateRackRowResponse
  */
-export type UpdateRackRowResponse = Message<"dcim.v1.UpdateRackRowResponse"> & {
+export type UpdateRackRowResponse = Message<'dcim.v1.UpdateRackRowResponse'> & {
   /**
    * @generated from field: dcim.v1.RackRow rack_row = 10;
    */
@@ -671,13 +698,14 @@ export type UpdateRackRowResponse = Message<"dcim.v1.UpdateRackRowResponse"> & {
  * Describes the message dcim.v1.UpdateRackRowResponse.
  * Use `create(UpdateRackRowResponseSchema)` to create a new message.
  */
-export const UpdateRackRowResponseSchema: GenMessage<UpdateRackRowResponse> = /*@__PURE__*/
+export const UpdateRackRowResponseSchema: GenMessage<UpdateRackRowResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 30);
 
 /**
  * @generated from message dcim.v1.DeleteRackRowRequest
  */
-export type DeleteRackRowRequest = Message<"dcim.v1.DeleteRackRowRequest"> & {
+export type DeleteRackRowRequest = Message<'dcim.v1.DeleteRackRowRequest'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -688,20 +716,21 @@ export type DeleteRackRowRequest = Message<"dcim.v1.DeleteRackRowRequest"> & {
  * Describes the message dcim.v1.DeleteRackRowRequest.
  * Use `create(DeleteRackRowRequestSchema)` to create a new message.
  */
-export const DeleteRackRowRequestSchema: GenMessage<DeleteRackRowRequest> = /*@__PURE__*/
+export const DeleteRackRowRequestSchema: GenMessage<DeleteRackRowRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 31);
 
 /**
  * @generated from message dcim.v1.DeleteRackRowResponse
  */
-export type DeleteRackRowResponse = Message<"dcim.v1.DeleteRackRowResponse"> & {
-};
+export type DeleteRackRowResponse = Message<'dcim.v1.DeleteRackRowResponse'> & {};
 
 /**
  * Describes the message dcim.v1.DeleteRackRowResponse.
  * Use `create(DeleteRackRowResponseSchema)` to create a new message.
  */
-export const DeleteRackRowResponseSchema: GenMessage<DeleteRackRowResponse> = /*@__PURE__*/
+export const DeleteRackRowResponseSchema: GenMessage<DeleteRackRowResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_site, 32);
 
 /**
@@ -712,44 +741,43 @@ export const SiteService: GenService<{
    * @generated from rpc dcim.v1.SiteService.ListSites
    */
   listSites: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof ListSitesRequestSchema;
     output: typeof ListSitesResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.SiteService.GetSite
    */
   getSite: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof GetSiteRequestSchema;
     output: typeof GetSiteResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.SiteService.CreateSite
    */
   createSite: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof CreateSiteRequestSchema;
     output: typeof CreateSiteResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.SiteService.UpdateSite
    */
   updateSite: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof UpdateSiteRequestSchema;
     output: typeof UpdateSiteResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.SiteService.DeleteSite
    */
   deleteSite: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof DeleteSiteRequestSchema;
     output: typeof DeleteSiteResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_v1_site, 0);
+  };
+}> = /*@__PURE__*/ serviceDesc(file_v1_site, 0);
 
 /**
  * @generated from service dcim.v1.RoomService
@@ -759,44 +787,43 @@ export const RoomService: GenService<{
    * @generated from rpc dcim.v1.RoomService.ListRooms
    */
   listRooms: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof ListRoomsRequestSchema;
     output: typeof ListRoomsResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.RoomService.GetRoom
    */
   getRoom: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof GetRoomRequestSchema;
     output: typeof GetRoomResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.RoomService.CreateRoom
    */
   createRoom: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof CreateRoomRequestSchema;
     output: typeof CreateRoomResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.RoomService.UpdateRoom
    */
   updateRoom: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof UpdateRoomRequestSchema;
     output: typeof UpdateRoomResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.RoomService.DeleteRoom
    */
   deleteRoom: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof DeleteRoomRequestSchema;
     output: typeof DeleteRoomResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_v1_site, 1);
+  };
+}> = /*@__PURE__*/ serviceDesc(file_v1_site, 1);
 
 /**
  * @generated from service dcim.v1.RackRowService
@@ -806,42 +833,40 @@ export const RackRowService: GenService<{
    * @generated from rpc dcim.v1.RackRowService.ListRackRows
    */
   listRackRows: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof ListRackRowsRequestSchema;
     output: typeof ListRackRowsResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.RackRowService.GetRackRow
    */
   getRackRow: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof GetRackRowRequestSchema;
     output: typeof GetRackRowResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.RackRowService.CreateRackRow
    */
   createRackRow: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof CreateRackRowRequestSchema;
     output: typeof CreateRackRowResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.RackRowService.UpdateRackRow
    */
   updateRackRow: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof UpdateRackRowRequestSchema;
     output: typeof UpdateRackRowResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.RackRowService.DeleteRackRow
    */
   deleteRackRow: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof DeleteRackRowRequestSchema;
     output: typeof DeleteRackRowResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_v1_site, 2);
-
+  };
+}> = /*@__PURE__*/ serviceDesc(file_v1_site, 2);

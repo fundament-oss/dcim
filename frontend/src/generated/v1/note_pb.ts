@@ -3,20 +3,32 @@
 // option features.field_presence = IMPLICIT;
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import { file_buf_validate_validate } from "../buf/validate/validate_pb";
-import type { Timestamp } from "@bufbuild/protobuf/wkt";
-import { file_google_protobuf_go_features, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
-import type { NoteEntityType } from "./common_pb";
-import { file_v1_common } from "./common_pb";
-import type { Message } from "@bufbuild/protobuf";
+import type { GenFile, GenMessage, GenService } from '@bufbuild/protobuf/codegenv2';
+import { fileDesc, messageDesc, serviceDesc } from '@bufbuild/protobuf/codegenv2';
+import { file_buf_validate_validate } from '../buf/validate/validate_pb';
+import type { Timestamp } from '@bufbuild/protobuf/wkt';
+import {
+  file_google_protobuf_go_features,
+  file_google_protobuf_timestamp,
+} from '@bufbuild/protobuf/wkt';
+import type { NoteEntityType } from './common_pb';
+import { file_v1_common } from './common_pb';
+import type { Message } from '@bufbuild/protobuf';
 
 /**
  * Describes the file v1/note.proto.
  */
-export const file_v1_note: GenFile = /*@__PURE__*/
-  fileDesc("Cg12MS9ub3RlLnByb3RvEgdkY2ltLnYxItYBCgROb3RlEgoKAmlkGAogASgJEiwKC2VudGl0eV90eXBlGBQgASgOMhcuZGNpbS52MS5Ob3RlRW50aXR5VHlwZRIRCgllbnRpdHlfaWQYHiABKAkSDAoEYm9keRgoIAEoCRISCgpjcmVhdGVkX2J5GDIgASgJEisKB2NyZWF0ZWQYPCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjIKB2RlbGV0ZWQYRiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgWqAQIIASJpChBMaXN0Tm90ZXNSZXF1ZXN0EjgKC2VudGl0eV90eXBlGAogASgOMhcuZGNpbS52MS5Ob3RlRW50aXR5VHlwZUIKukgHggEEEAEgABIbCgllbnRpdHlfaWQYFCABKAlCCLpIBXIDsAEBIjEKEUxpc3ROb3Rlc1Jlc3BvbnNlEhwKBW5vdGVzGAogAygLMg0uZGNpbS52MS5Ob3RlIp4BChFDcmVhdGVOb3RlUmVxdWVzdBI4CgtlbnRpdHlfdHlwZRgKIAEoDjIXLmRjaW0udjEuTm90ZUVudGl0eVR5cGVCCrpIB4IBBBABIAASGwoJZW50aXR5X2lkGBQgASgJQgi6SAVyA7ABARIVCgRib2R5GB4gASgJQge6SARyAhABEhsKCmNyZWF0ZWRfYnkYKCABKAlCB7pIBHICEAEiMQoSQ3JlYXRlTm90ZVJlc3BvbnNlEhsKBG5vdGUYCiABKAsyDS5kY2ltLnYxLk5vdGUiKQoRRGVsZXRlTm90ZVJlcXVlc3QSFAoCaWQYCiABKAlCCLpIBXIDsAEBIhQKEkRlbGV0ZU5vdGVSZXNwb25zZTLfAQoLTm90ZVNlcnZpY2USQgoJTGlzdE5vdGVzEhkuZGNpbS52MS5MaXN0Tm90ZXNSZXF1ZXN0GhouZGNpbS52MS5MaXN0Tm90ZXNSZXNwb25zZRJFCgpDcmVhdGVOb3RlEhouZGNpbS52MS5DcmVhdGVOb3RlUmVxdWVzdBobLmRjaW0udjEuQ3JlYXRlTm90ZVJlc3BvbnNlEkUKCkRlbGV0ZU5vdGUSGi5kY2ltLnYxLkRlbGV0ZU5vdGVSZXF1ZXN0GhsuZGNpbS52MS5EZWxldGVOb3RlUmVzcG9uc2VCRVo5Z2l0aHViLmNvbS9mdW5kYW1lbnQtb3NzL2RjaW0vYXBpL3BrZy9wcm90by9nZW4vdjE7ZGNpbXYxkgMHCALSPgIQA2IIZWRpdGlvbnNw6Ac", [file_buf_validate_validate, file_google_protobuf_go_features, file_google_protobuf_timestamp, file_v1_common]);
+export const file_v1_note: GenFile =
+  /*@__PURE__*/
+  fileDesc(
+    'Cg12MS9ub3RlLnByb3RvEgdkY2ltLnYxItYBCgROb3RlEgoKAmlkGAogASgJEiwKC2VudGl0eV90eXBlGBQgASgOMhcuZGNpbS52MS5Ob3RlRW50aXR5VHlwZRIRCgllbnRpdHlfaWQYHiABKAkSDAoEYm9keRgoIAEoCRISCgpjcmVhdGVkX2J5GDIgASgJEisKB2NyZWF0ZWQYPCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjIKB2RlbGV0ZWQYRiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgWqAQIIASJpChBMaXN0Tm90ZXNSZXF1ZXN0EjgKC2VudGl0eV90eXBlGAogASgOMhcuZGNpbS52MS5Ob3RlRW50aXR5VHlwZUIKukgHggEEEAEgABIbCgllbnRpdHlfaWQYFCABKAlCCLpIBXIDsAEBIjEKEUxpc3ROb3Rlc1Jlc3BvbnNlEhwKBW5vdGVzGAogAygLMg0uZGNpbS52MS5Ob3RlIp4BChFDcmVhdGVOb3RlUmVxdWVzdBI4CgtlbnRpdHlfdHlwZRgKIAEoDjIXLmRjaW0udjEuTm90ZUVudGl0eVR5cGVCCrpIB4IBBBABIAASGwoJZW50aXR5X2lkGBQgASgJQgi6SAVyA7ABARIVCgRib2R5GB4gASgJQge6SARyAhABEhsKCmNyZWF0ZWRfYnkYKCABKAlCB7pIBHICEAEiMQoSQ3JlYXRlTm90ZVJlc3BvbnNlEhsKBG5vdGUYCiABKAsyDS5kY2ltLnYxLk5vdGUiKQoRRGVsZXRlTm90ZVJlcXVlc3QSFAoCaWQYCiABKAlCCLpIBXIDsAEBIhQKEkRlbGV0ZU5vdGVSZXNwb25zZTLfAQoLTm90ZVNlcnZpY2USQgoJTGlzdE5vdGVzEhkuZGNpbS52MS5MaXN0Tm90ZXNSZXF1ZXN0GhouZGNpbS52MS5MaXN0Tm90ZXNSZXNwb25zZRJFCgpDcmVhdGVOb3RlEhouZGNpbS52MS5DcmVhdGVOb3RlUmVxdWVzdBobLmRjaW0udjEuQ3JlYXRlTm90ZVJlc3BvbnNlEkUKCkRlbGV0ZU5vdGUSGi5kY2ltLnYxLkRlbGV0ZU5vdGVSZXF1ZXN0GhsuZGNpbS52MS5EZWxldGVOb3RlUmVzcG9uc2VCRVo5Z2l0aHViLmNvbS9mdW5kYW1lbnQtb3NzL2RjaW0vYXBpL3BrZy9wcm90by9nZW4vdjE7ZGNpbXYxkgMHCALSPgIQA2IIZWRpdGlvbnNw6Ac',
+    [
+      file_buf_validate_validate,
+      file_google_protobuf_go_features,
+      file_google_protobuf_timestamp,
+      file_v1_common,
+    ],
+  );
 
 /**
  * Note is a polymorphic comment attached to any DCIM entity (core.notes).
@@ -24,7 +36,7 @@ export const file_v1_note: GenFile = /*@__PURE__*/
  *
  * @generated from message dcim.v1.Note
  */
-export type Note = Message<"dcim.v1.Note"> & {
+export type Note = Message<'dcim.v1.Note'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -65,13 +77,12 @@ export type Note = Message<"dcim.v1.Note"> & {
  * Describes the message dcim.v1.Note.
  * Use `create(NoteSchema)` to create a new message.
  */
-export const NoteSchema: GenMessage<Note> = /*@__PURE__*/
-  messageDesc(file_v1_note, 0);
+export const NoteSchema: GenMessage<Note> = /*@__PURE__*/ messageDesc(file_v1_note, 0);
 
 /**
  * @generated from message dcim.v1.ListNotesRequest
  */
-export type ListNotesRequest = Message<"dcim.v1.ListNotesRequest"> & {
+export type ListNotesRequest = Message<'dcim.v1.ListNotesRequest'> & {
   /**
    * @generated from field: dcim.v1.NoteEntityType entity_type = 10;
    */
@@ -87,13 +98,14 @@ export type ListNotesRequest = Message<"dcim.v1.ListNotesRequest"> & {
  * Describes the message dcim.v1.ListNotesRequest.
  * Use `create(ListNotesRequestSchema)` to create a new message.
  */
-export const ListNotesRequestSchema: GenMessage<ListNotesRequest> = /*@__PURE__*/
+export const ListNotesRequestSchema: GenMessage<ListNotesRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_note, 1);
 
 /**
  * @generated from message dcim.v1.ListNotesResponse
  */
-export type ListNotesResponse = Message<"dcim.v1.ListNotesResponse"> & {
+export type ListNotesResponse = Message<'dcim.v1.ListNotesResponse'> & {
   /**
    * @generated from field: repeated dcim.v1.Note notes = 10;
    */
@@ -104,13 +116,14 @@ export type ListNotesResponse = Message<"dcim.v1.ListNotesResponse"> & {
  * Describes the message dcim.v1.ListNotesResponse.
  * Use `create(ListNotesResponseSchema)` to create a new message.
  */
-export const ListNotesResponseSchema: GenMessage<ListNotesResponse> = /*@__PURE__*/
+export const ListNotesResponseSchema: GenMessage<ListNotesResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_note, 2);
 
 /**
  * @generated from message dcim.v1.CreateNoteRequest
  */
-export type CreateNoteRequest = Message<"dcim.v1.CreateNoteRequest"> & {
+export type CreateNoteRequest = Message<'dcim.v1.CreateNoteRequest'> & {
   /**
    * @generated from field: dcim.v1.NoteEntityType entity_type = 10;
    */
@@ -136,13 +149,14 @@ export type CreateNoteRequest = Message<"dcim.v1.CreateNoteRequest"> & {
  * Describes the message dcim.v1.CreateNoteRequest.
  * Use `create(CreateNoteRequestSchema)` to create a new message.
  */
-export const CreateNoteRequestSchema: GenMessage<CreateNoteRequest> = /*@__PURE__*/
+export const CreateNoteRequestSchema: GenMessage<CreateNoteRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_note, 3);
 
 /**
  * @generated from message dcim.v1.CreateNoteResponse
  */
-export type CreateNoteResponse = Message<"dcim.v1.CreateNoteResponse"> & {
+export type CreateNoteResponse = Message<'dcim.v1.CreateNoteResponse'> & {
   /**
    * @generated from field: dcim.v1.Note note = 10;
    */
@@ -153,7 +167,8 @@ export type CreateNoteResponse = Message<"dcim.v1.CreateNoteResponse"> & {
  * Describes the message dcim.v1.CreateNoteResponse.
  * Use `create(CreateNoteResponseSchema)` to create a new message.
  */
-export const CreateNoteResponseSchema: GenMessage<CreateNoteResponse> = /*@__PURE__*/
+export const CreateNoteResponseSchema: GenMessage<CreateNoteResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_note, 4);
 
 /**
@@ -161,7 +176,7 @@ export const CreateNoteResponseSchema: GenMessage<CreateNoteResponse> = /*@__PUR
  *
  * @generated from message dcim.v1.DeleteNoteRequest
  */
-export type DeleteNoteRequest = Message<"dcim.v1.DeleteNoteRequest"> & {
+export type DeleteNoteRequest = Message<'dcim.v1.DeleteNoteRequest'> & {
   /**
    * @generated from field: string id = 10;
    */
@@ -172,20 +187,21 @@ export type DeleteNoteRequest = Message<"dcim.v1.DeleteNoteRequest"> & {
  * Describes the message dcim.v1.DeleteNoteRequest.
  * Use `create(DeleteNoteRequestSchema)` to create a new message.
  */
-export const DeleteNoteRequestSchema: GenMessage<DeleteNoteRequest> = /*@__PURE__*/
+export const DeleteNoteRequestSchema: GenMessage<DeleteNoteRequest> =
+  /*@__PURE__*/
   messageDesc(file_v1_note, 5);
 
 /**
  * @generated from message dcim.v1.DeleteNoteResponse
  */
-export type DeleteNoteResponse = Message<"dcim.v1.DeleteNoteResponse"> & {
-};
+export type DeleteNoteResponse = Message<'dcim.v1.DeleteNoteResponse'> & {};
 
 /**
  * Describes the message dcim.v1.DeleteNoteResponse.
  * Use `create(DeleteNoteResponseSchema)` to create a new message.
  */
-export const DeleteNoteResponseSchema: GenMessage<DeleteNoteResponse> = /*@__PURE__*/
+export const DeleteNoteResponseSchema: GenMessage<DeleteNoteResponse> =
+  /*@__PURE__*/
   messageDesc(file_v1_note, 6);
 
 /**
@@ -196,26 +212,24 @@ export const NoteService: GenService<{
    * @generated from rpc dcim.v1.NoteService.ListNotes
    */
   listNotes: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof ListNotesRequestSchema;
     output: typeof ListNotesResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.NoteService.CreateNote
    */
   createNote: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof CreateNoteRequestSchema;
     output: typeof CreateNoteResponseSchema;
-  },
+  };
   /**
    * @generated from rpc dcim.v1.NoteService.DeleteNote
    */
   deleteNote: {
-    methodKind: "unary";
+    methodKind: 'unary';
     input: typeof DeleteNoteRequestSchema;
     output: typeof DeleteNoteResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_v1_note, 0);
-
+  };
+}> = /*@__PURE__*/ serviceDesc(file_v1_note, 0);
