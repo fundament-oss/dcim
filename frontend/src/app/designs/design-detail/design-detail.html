@@ -313,6 +313,7 @@
      ══════════════════════════════════════════════════════════════ -->
 <nldd-modal-dialog
   #deviceModal
+  (close)="cancelDeleteDevice()"
   [attr.text]="'Delete device \'' + (deleteDevice()?.name ?? '') + '\'?'"
   supporting-text="All connections to/from this device will also be removed."
   accessible-label="Confirm device deletion"
@@ -429,6 +430,7 @@
      ══════════════════════════════════════════════════════════════ -->
 <nldd-modal-dialog
   #connModal
+  (close)="cancelDeleteConnection()"
   [attr.text]="
     'Delete connection ' +
     deviceName(deleteConnection()?.sourceDeviceId ?? '') +

@@ -214,6 +214,7 @@
      ══════════════════════════════════════════════════════════════ -->
 <nldd-modal-dialog
   #deleteModal
+  (close)="cancelDeleteDesign()"
   [attr.text]="'Delete \'' + (deleteDesign()?.name ?? '') + '\'?'"
   supporting-text="All devices and connections in this design will be permanently removed."
   accessible-label="Confirm design deletion"
